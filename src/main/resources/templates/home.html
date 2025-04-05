@@ -1,10 +1,824 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Психолог Артеменко - Профессиональная помощь</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS CSS (для анимаций при прокрутке) -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <!-- Пользовательские стили -->
+    <style>
+        :root {
+            --primary-color: #5a717f;
+            --secondary-color: #e9ebe8;
+            --accent-color: #b69f7e;
+            --dark-color: #333333;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark-color);
+            overflow-x: hidden;
+        }
+
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .navbar {
+            transition: all 0.4s;
+            padding: 1rem 0;
+        }
+
+        .navbar-scrolled {
+            background-color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar .nav-link {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 1rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s;
+        }
+
+        .navbar .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/img/clasic.jpg') no-repeat center center;
+            background-size: cover; /* меняем с 'cover' на 'contain' */
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+            background-color: #333; /* добавляем фоновый цвет для незаполненных областей */
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-main {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-main:hover {
+            background-color: white;
+            color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 1rem 0;
+        }
+
+        .testimonial-section {
+            background-color: var(--secondary-color);
+            padding: 6rem 0;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-date {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .stats-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/img/smile.jpg') no-repeat center center;
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            padding: 6rem 0;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .contact-info i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            margin-right: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-title {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .scroll-top.show {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
-$END$
+<!-- Кнопка прокрутки наверх -->
+<div class="scroll-top" id="scrollTop">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<!-- Шапка и навигация -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Психолог Артеменко</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">Обо мне</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#blog">Блог</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Контакты</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero секция -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
+            <h1>Психологическая помощь для вашего благополучия</h1>
+            <p>Я помогаю людям преодолевать жизненные трудности, обрести внутреннюю гармонию и улучшить качество жизни. Вместе мы найдем путь к вашему эмоциональному равновесию.</p>
+            <div class="d-flex">
+                <a href="#contact" class="btn btn-main me-3">Записаться на консультацию</a>
+                <a href="#about" class="btn btn-outline-light">Узнать больше</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- О психологе -->
+<section class="py-5 py-md-7" id="about">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <div class="about-image">
+                    <img src="/img/black.jpg" alt="Психолог Артеменко" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <h2 class="section-title">Обо мне</h2>
+                <p class="section-subtitle">Профессиональный психолог с 10-летним опытом работы</p>
+                <p>Я дипломированный психолог, имеющий многолетний опыт работы с различными психологическими проблемами. Моя цель — помочь вам преодолеть трудности, обрести внутреннюю гармонию и улучшить качество жизни.</p>
+                <p>В моей практике я использую комплексный подход, включающий элементы когнитивно-поведенческой терапии, позитивной психологии и других современных методик, которые доказали свою эффективность.</p>
+                <div class="mt-4">
+                    <a href="#contact" class="btn btn-main">Записаться на консультацию</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Услуги -->
+<section class="py-5 py-md-7 bg-light" id="services">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Мои услуги</h2>
+            <p class="section-subtitle text-center">Индивидуальный подход к каждому клиенту</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center p-4 p-md-5">
+                        <div class="service-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Индивидуальные консультации</h3>
+                        <p>Персональные сессии для работы с вашими уникальными проблемами, целями и потребностями.</p>
+                        <a href="#" class="btn btn-outline-secondary mt-3">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center p-4 p-md-5">
+                        <div class="service-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Семейная терапия</h3>
+                        <p>Решение семейных конфликтов, улучшение взаимоотношений между близкими людьми.</p>
+                        <a href="#" class="btn btn-outline-secondary mt-3">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center p-4 p-md-5">
+                        <div class="service-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Психология отношений</h3>
+                        <p>Помощь в построении здоровых отношений, решение конфликтов с партнером.</p>
+                        <a href="#" class="btn btn-outline-secondary mt-3">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center p-4 p-md-5">
+                        <div class="service-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Когнитивно-поведенческая терапия</h3>
+                        <p>Изменение негативных мыслей и поведения, развитие новых навыков совладания со стрессом.</p>
+                        <a href="#" class="btn btn-outline-secondary mt-3">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center p-4 p-md-5">
+                        <div class="service-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Онлайн-консультации</h3>
+                        <p>Удобный формат для тех, кто не может посещать кабинет очно или живет в другом городе.</p>
+                        <a href="#" class="btn btn-outline-secondary mt-3">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center p-4 p-md-5">
+                        <div class="service-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Обучающие программы</h3>
+                        <p>Авторские курсы и тренинги для развития эмоционального интеллекта и личностного роста.</p>
+                        <a href="#" class="btn btn-outline-secondary mt-3">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Статистика -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up">
+                <div class="stat-number" data-target="10">0</div>
+                <div>Лет опыта</div>
+            </div>
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-number" data-target="500">0</div>
+                <div>Клиентов</div>
+            </div>
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-number" data-target="25">0</div>
+                <div>Программ</div>
+            </div>
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-number" data-target="95">0</div>
+                <div>% Позитивных отзывов</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Отзывы клиентов -->
+<section class="testimonial-section" id="testimonials">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Отзывы клиентов</h2>
+            <p class="section-subtitle text-center">Что говорят люди, прошедшие консультации</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-quote-left fa-2x text-muted"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Анна М.</h5>
+                            <small class="text-muted">Клиент 1 год</small>
+                        </div>
+                    </div>
+                    <p>Благодаря консультациям я смогла преодолеть депрессию и наладить отношения с близкими. Спасибо за профессионализм и поддержку!</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-quote-left fa-2x text-muted"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Сергей К.</h5>
+                            <small class="text-muted">Клиент 6 месяцев</small>
+                        </div>
+                    </div>
+                    <p>Обратился по вопросу профессионального выгорания. После нескольких сессий смог найти новые смыслы в работе и жизни. Рекомендую!</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-quote-left fa-2x text-muted"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Елена Д.</h5>
+                            <small class="text-muted">Клиент 2 года</small>
+                        </div>
+                    </div>
+                    <p>Семейная терапия помогла нам с мужем услышать друг друга и восстановить отношения, которые были на грани развода. Очень благодарна!</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Блог -->
+<section class="py-5 py-md-7" id="blog">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Последние публикации</h2>
+            <p class="section-subtitle text-center">Полезные статьи и советы от психолога</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                <div class="card blog-card h-100">
+                    <img src="https://i.imgur.com/qQXGGDj.jpg" class="card-img-top" alt="Блог">
+                    <div class="card-body">
+                        <div class="blog-date mb-2">10 марта 2025</div>
+                        <h3 class="h5 mb-3">Как справиться с тревогой в современном мире</h3>
+                        <p>Практические советы и техники, которые помогут вам уменьшить тревожность и научиться жить полной жизнью.</p>
+                        <a href="#" class="btn btn-link p-0">Читать далее <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card blog-card h-100">
+                    <img src="https://i.imgur.com/RUyjx9p.jpg" class="card-img-top" alt="Блог">
+                    <div class="card-body">
+                        <div class="blog-date mb-2">1 марта 2025</div>
+                        <h3 class="h5 mb-3">Эмоциональное выгорание: причины и пути восстановления</h3>
+                        <p>Разбираемся в причинах эмоционального выгорания и изучаем эффективные стратегии восстановления.</p>
+                        <a href="#" class="btn btn-link p-0">Читать далее <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card blog-card h-100">
+                    <img src="https://i.imgur.com/FS11K9W.jpg" class="card-img-top" alt="Блог">
+                    <div class="card-body">
+                        <div class="blog-date mb-2">20 февраля 2025</div>
+                        <h3 class="h5 mb-3">Как наладить отношения с подростком: советы родителям</h3>
+                        <p>Ключевые принципы эффективного общения с подростками, которые помогут построить доверительные отношения.</p>
+                        <a href="#" class="btn btn-link p-0">Читать далее <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="#" class="btn btn-outline-primary">Все статьи</a>
+        </div>
+    </div>
+</section>
+
+<!-- Запись на консультацию и контакты -->
+<section class="py-5 py-md-7 bg-light" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <h2 class="section-title">Запись на консультацию</h2>
+                <p class="mb-4">Заполните форму, и я свяжусь с вами в ближайшее время для подтверждения записи.</p>
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Ваше имя" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="tel" class="form-control" placeholder="Телефон" required>
+                        </div>
+                        <div class="col-12">
+                            <select class="form-select" required>
+                                <option value="" selected disabled>Выберите услугу</option>
+                                <option value="individual">Индивидуальная консультация</option>
+                                <option value="family">Семейная терапия</option>
+                                <option value="online">Онлайн-консультация</option>
+                                <option value="relationships">Психология отношений</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <textarea class="form-control" rows="4" placeholder="Ваше сообщение"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-main">Отправить заявку</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <h2 class="section-title">Контактная информация</h2>
+                <p class="mb-4">Вы также можете связаться со мной напрямую по указанным контактам или посетить мой офис.</p>
+                <div class="contact-info mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Адрес</h5>
+                            <p class="mb-0">г. Москва, ул. Примерная, д. 123, офис 45</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Телефон</h5>
+                            <p class="mb-0">+7 (XXX) XXX-XX-XX</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Email</h5>
+                            <p class="mb-0">info@психолог-артеменко.рф</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Часы работы</h5>
+                            <p class="mb-0">Пн-Пт: 9:00 - 20:00, Сб: 10:00 - 15:00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-media">
+                    <h5 class="h6 mb-3">Социальные сети</h5>
+                    <div>
+                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Футер -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="footer-title">Психолог Артеменко</h5>
+                <p>Профессиональная психологическая помощь для вашего благополучия и гармонии.</p>
+                <div class="mt-3">
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2 mb-4 mb-md-0">
+                <h5 class="footer-title">Навигация</h5>
+                <div class="footer-links">
+                    <a href="#">Главная</a>
+                    <a href="#about">Обо мне</a>
+                    <a href="#services">Услуги</a>
+                    <a href="#blog">Блог</a>
+                    <a href="#contact">Контакты</a>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4 mb-md-0">
+                <h5 class="footer-title">Услуги</h5>
+                <div class="footer-links">
+                    <a href="#">Индивидуальные консультации</a>
+                    <a href="#">Семейная терапия</a>
+                    <a href="#">Психология отношений</a>
+                    <a href="#">Онлайн-консультации</a>
+                    <a href="#">Обучающие программы</a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h5 class="footer-title">Контакты</h5>
+                <div class="footer-links">
+                    <a href="#"><i class="fas fa-map-marker-alt me-2"></i> г. Москва, ул. Примерная, 123</a>
+                    <a href="#"><i class="fas fa-phone me-2"></i> +7 (XXX) XXX-XX-XX</a>
+                    <a href="#"><i class="fas fa-envelope me-2"></i> info@психолог-артеменко.рф</a>
+                    <a href="#"><i class="fas fa-clock me-2"></i> Пн-Пт: 9:00 - 20:00</a>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-4 mb-4" style="background-color: rgba(255,255,255,0.1);">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="mb-0">© 2025 Психолог Артеменко. Все права защищены.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <a href="#" class="text-white me-3">Политика конфиденциальности</a>
+                <a href="#" class="text-white">Условия использования</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS JS (для анимаций при прокрутке) -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Пользовательские скрипты -->
+<script>
+    // Инициализация AOS
+    AOS.init({
+        once: true
+    });
+
+    // Анимация счетчиков статистики
+    document.addEventListener('DOMContentLoaded', function() {
+        const counters = document.querySelectorAll('.stat-number');
+
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000; // 2 секунды
+            const increment = target / (duration / 20); // Обновление каждые 20мс
+
+            let currentValue = 0;
+
+            const updateCounter = () => {
+                currentValue += increment;
+
+                if (currentValue < target) {
+                    counter.textContent = Math.ceil(currentValue);
+                    setTimeout(updateCounter, 20);
+                } else {
+                    counter.textContent = target;
+                }
+            };
+
+            // Запускаем счетчик когда элемент в области видимости
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        updateCounter();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            observer.observe(counter);
+        });
+    });
+
+    // Изменение навигационной панели при прокрутке
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+
+        // Кнопка прокрутки наверх
+        const scrollTopBtn = document.getElementById('scrollTop');
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add('show');
+        } else {
+            scrollTopBtn.classList.remove('show');
+        }
+    });
+
+    // Прокрутка наверх
+    document.getElementById('scrollTop').addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Плавная прокрутка к разделам
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>

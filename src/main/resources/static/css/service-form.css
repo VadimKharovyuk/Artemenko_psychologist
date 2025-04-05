@@ -1,0 +1,122 @@
+/* Custom CSS for Service Form */
+
+/* Global Styles */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+/* Form Heading */
+h1 {
+    color: #2c3e50;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #34495e;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 0.625rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+    margin-right: 0.5rem;
+    transform: scale(1.2);
+}
+
+/* File Input Styling */
+input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px dashed #ced4da;
+    border-radius: 6px;
+}
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .container {
+        padding: 1rem;
+        margin-top: 0;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Validation Styles */
+input:invalid,
+textarea:invalid {
+    border-color: #e74c3c;
+}
+
+/* Optional: Add some spacing between form elements */
+form > div {
+    margin-bottom: 1rem;
+}
+
+/* Color Scheme Variables (for easy customization) */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --text-color: #333;
+    --background-color: #f4f6f9;
+}

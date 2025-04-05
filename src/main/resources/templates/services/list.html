@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Услуги</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-$END$
+<div class="container mt-5">
+  <h1 class="mb-4">Наши услуги</h1>
+
+  <!-- Сообщения об успехе или ошибке -->
+  <div th:if="${successMessage}" class="alert alert-success" role="alert">
+    <span th:text="${successMessage}"></span>
+  </div>
+  <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+    <span th:text="${errorMessage}"></span>
+  </div>
+
+  <!-- Кнопка создания новой услуги -->
+  <a href="/services/create" class="btn btn-primary mb-3">
+    Добавить новую услугу
+  </a>
+
+  <!-- Таблица услуг -->
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Название</th>
+      <th>Описание</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="service : ${services}">
+      <td th:text="${service.id}"></td>
+      <td th:text="${service.title}"></td>
+      <td th:text="${service.description}"></td>
+      <td>
+        <!-- Кнопки действий -->
+        <a th:href="@{/services/edit/{id}(id=${service.id})}" class="btn btn-sm btn-warning">
+          Изменить
+        </a>
+        <a th:href="@{/services/delete/{id}(id=${service.id})}"
+           class="btn btn-sm btn-danger"
+           onclick="return confirm('Вы уверены, что хотите удалить эту услугу?')">
+          Удалить
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
