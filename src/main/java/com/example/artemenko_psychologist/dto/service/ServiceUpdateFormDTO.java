@@ -1,4 +1,4 @@
-package com.example.artemenko_psychologist.dto;
+package com.example.artemenko_psychologist.dto.service;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -13,13 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 
 /**
- * DTO для формы создания и редактирования услуги
+ * DTO для формы редактирования услуги
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceCreateFormDTO {
+public class ServiceUpdateFormDTO {
+    @NotNull(message = "ID услуги обязателен для редактирования")
     private Long id;
 
     @NotBlank(message = "Название услуги не может быть пустым")
@@ -31,7 +32,7 @@ public class ServiceCreateFormDTO {
     private String description;
 
     @NotBlank(message = "Краткое описание не может быть пустым")
-    @Size(min = 10, max = 100, message = "Краткое описание должно содержать от 10 до 100 символов")
+
     private String shortDescription;
 
     @NotNull(message = "Цена не может быть пустой")
@@ -44,9 +45,11 @@ public class ServiceCreateFormDTO {
 
     private Integer displayOrder;
 
-    private boolean active = true;
+    private boolean active;
 
-    private MultipartFile imageFile;
+    // Существующее изображение
     private String imageUrl;
 
+    // Новое изображение (если загружается)
+    private MultipartFile imageFile;
 }

@@ -1,6 +1,6 @@
 package com.example.artemenko_psychologist.controller;
 
-import com.example.artemenko_psychologist.dto.ServiceCardDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceCardDTO;
 import com.example.artemenko_psychologist.dto.blog.BlogPostListDto;
 import com.example.artemenko_psychologist.service.BlogPostService;
 import com.example.artemenko_psychologist.service.ServiceService;

@@ -1,9 +1,9 @@
 package com.example.artemenko_psychologist.maper;
 
-import com.example.artemenko_psychologist.dto.ServiceCardDTO;
-import com.example.artemenko_psychologist.dto.ServiceCreateFormDTO;
-import com.example.artemenko_psychologist.dto.ServiceDTO;
-import com.example.artemenko_psychologist.dto.ServiceUpdateFormDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceCardDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceCreateFormDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceUpdateFormDTO;
 import com.example.artemenko_psychologist.entity.Service;
 import org.springframework.stereotype.Component;
 

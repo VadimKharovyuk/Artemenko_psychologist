@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Психолог Артеменко - Профессиональная помощь</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -599,7 +599,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h5 class="h6 mb-0">Адреса</h5>
-                            <p class="mb-0">м. Москва, вул. Прикладна, буд. 123, офіс 45</p>
+                            <p class="mb-0">м. Киев, вул. Прикладна, буд. 123, офіс 45</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center mb-3">
@@ -624,19 +624,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="social-media">
-                    <h5 class="h6 mb-3">Соціальні мережі</h5>
-                    <div>
-                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
+<!--                <div class="social-media">-->
+<!--                    <h5 class="h6 mb-3">Соціальні мережі</h5>-->
+<!--                    <div>-->
+<!--                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>-->
+<!--                        <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>-->
+<!--                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>-->
+<!--                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
 </section>
+
 <!-- Футер -->
 <footer>
     <div class="container">
@@ -671,14 +672,30 @@
                     <a href="#">Навчальні програми</a>
                 </div>
             </div>
-            <div class="col-md-3">
-                <h5 class="footer-title">Контакти</h5>
-                <div class="footer-links">
-                    <a href="#"><i class="fas fa-map-marker-alt me-2"></i> м. Москва, вул. Прикладна, 123</a>
-                    <a href="#"><i class="fas fa-phone me-2"></i> +7 (XXX) XXX-XX-XX</a>
-                    <a href="#"><i class="fas fa-envelope me-2"></i> info@психолог-артеменко.рф</a>
-                    <a href="#"><i class="fas fa-clock me-2"></i> Пн-Пт: 9:00 - 20:00</a>
+            <div class="col-lg-3">
+                <h5>Підписатися на новини</h5>
+                <!-- Флеш-сообщения -->
+                <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${successMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
+
+                <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span th:text="${warningMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <p>Будьте в курсі нових статей, спеціальних пропозицій та подій</p>
+                <form th:action="@{/subscribe}" method="post" class="mb-3">
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
+                        <button class="btn btn-primary" type="submit">Підписатися</button>
+                    </div>
+                </form>
             </div>
         </div>
         <hr class="mt-4 mb-4" style="background-color: rgba(255,255,255,0.1);">

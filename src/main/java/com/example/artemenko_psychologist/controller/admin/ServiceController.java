@@ -1,8 +1,8 @@
 package com.example.artemenko_psychologist.controller.admin;
 
-import com.example.artemenko_psychologist.dto.ServiceCreateFormDTO;
-import com.example.artemenko_psychologist.dto.ServiceDTO;
-import com.example.artemenko_psychologist.dto.ServiceUpdateFormDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceCreateFormDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceDTO;
+import com.example.artemenko_psychologist.dto.service.ServiceUpdateFormDTO;
 import com.example.artemenko_psychologist.exception.ResourceNotFoundException;
 import com.example.artemenko_psychologist.service.ServiceService;
 import lombok.RequiredArgsConstructor;

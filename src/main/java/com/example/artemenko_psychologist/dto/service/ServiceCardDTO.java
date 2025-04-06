@@ -1,4 +1,4 @@
-package com.example.artemenko_psychologist.dto;
+package com.example.artemenko_psychologist.dto.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
