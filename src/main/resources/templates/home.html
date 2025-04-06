@@ -296,7 +296,7 @@
     <i class="fas fa-arrow-up"></i>
 </div>
 
-<!-- Шапка и навигация -->
+<!-- Шапка та навігація -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">Психолог Артеменко</a>
@@ -306,34 +306,34 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная</a>
+                    <a class="nav-link" href="#">Головна</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#about">Обо мне</a>
+                    <a class="nav-link" href="#about">Про мене</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#services">Услуги</a>
+                    <a class="nav-link" href="#services">Послуги</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#blog">Блог</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Контакты</a>
+                    <a class="nav-link" href="#contact">Контакти</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Hero секция -->
+<!-- Hero секція -->
 <section class="hero">
     <div class="container">
         <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
-            <h1>Психологическая помощь для вашего благополучия</h1>
-            <p>Я помогаю людям преодолевать жизненные трудности, обрести внутреннюю гармонию и улучшить качество жизни. Вместе мы найдем путь к вашему эмоциональному равновесию.</p>
+            <h1>Психологічна допомога для вашого добробуту</h1>
+            <p>Я допомагаю людям долати життєві труднощі, знаходити внутрішню гармонію та покращувати якість життя. Разом ми знайдемо шлях до вашої емоційної рівноваги.</p>
             <div class="d-flex">
-                <a href="#contact" class="btn btn-main me-3">Записаться на консультацию</a>
-                <a href="#about" class="btn btn-outline-light">Узнать больше</a>
+                <a href="#contact" class="btn btn-main me-3">Записатися на консультацію</a>
+                <a href="#about" class="btn btn-outline-light">Дізнатися більше</a>
             </div>
         </div>
     </div>
@@ -349,12 +349,12 @@
                 </div>
             </div>
             <div class="col-lg-6" data-aos="fade-left">
-                <h2 class="section-title">Обо мне</h2>
-                <p class="section-subtitle">Профессиональный психолог с 10-летним опытом работы</p>
-                <p>Я дипломированный психолог, имеющий многолетний опыт работы с различными психологическими проблемами. Моя цель — помочь вам преодолеть трудности, обрести внутреннюю гармонию и улучшить качество жизни.</p>
-                <p>В моей практике я использую комплексный подход, включающий элементы когнитивно-поведенческой терапии, позитивной психологии и других современных методик, которые доказали свою эффективность.</p>
+                <h2 class="section-title">Про мене</h2>
+                <p class="section-subtitle">Професійний психолог із 10-річним досвідом роботи</p>
+                <p>Я дипломований психолог із багаторічним досвідом роботи з різноманітними психологічними проблемами. Моя мета — допомогти вам подолати труднощі, знайти внутрішню гармонію та покращити якість життя.</p>
+                <p>У своїй практиці я використовую комплексний підхід, що включає елементи когнітивно-поведінкової терапії, позитивної психології та інших сучасних методик, які довели свою ефективність.</p>
                 <div class="mt-4">
-                    <a href="#contact" class="btn btn-main">Записаться на консультацию</a>
+                    <a href="#contact" class="btn btn-main">Записатися на консультацію</a>
                 </div>
             </div>
         </div>
@@ -362,15 +362,15 @@
 </section>
 
 
-<!-- Услуги -->
+<!-- Послуги -->
 <section class="py-5 py-md-7 bg-light" id="services">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title mx-auto" style="width: fit-content;">Мои услуги</h2>
-            <p class="section-subtitle text-center">Индивидуальный подход к каждому клиенту</p>
+            <h2 class="section-title mx-auto" style="width: fit-content;">Мої послуги</h2>
+            <p class="section-subtitle text-center">Індивідуальний підхід до кожного клієнта</p>
         </div>
         <div class="row">
-            <!-- Динамический список услуг -->
+            <!-- Динамічний список послуг -->
             <div th:each="service, stat : ${serviceCardDTO}"
                  class="col-md-6 col-lg-4"
                  th:data-aos="fade-up"
@@ -378,23 +378,23 @@
                 <div class="card service-card h-100">
                     <div class="card-body text-center p-4 p-md-5">
                         <div class="service-icon">
-                            <!-- Если у услуги есть класс иконки, используем его -->
+                            <!-- Якщо у послуги є клас іконки, використовуємо його -->
                             <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>
-                            <!-- Если иконки нет, используем стандартную -->
+                            <!-- Якщо іконки немає, використовуємо стандартну -->
                             <i th:unless="${service.iconClass != null}" class="fas fa-heart"></i>
                         </div>
-                        <h3 class="h4 mb-3" th:text="${service.title}">Название услуги</h3>
-                        <p th:text="${service.shortDescription}">Описание услуги.</p>
-                        <a th:href="@{/services/{id}(id=${service.id})}" class="btn btn-outline-secondary mt-3">Подробнее</a>
+                        <h3 class="h4 mb-3" th:text="${service.title}">Назва послуги</h3>
+                        <p th:text="${service.shortDescription}">Опис послуги.</p>
+                        <a th:href="@{/services/{id}(id=${service.id})}" class="btn btn-outline-secondary mt-3">Детальніше</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Кнопка "Посмотреть все" -->
+        <!-- Кнопка "Переглянути всі" -->
         <div class="text-center mt-4" data-aos="fade-up">
             <a th:href="@{/services}" class="btn" style="background-color: #b69f7e; color: white; border: none;">
-                <i class="bi bi-grid me-2"></i>Посмотреть все услуги
+                <i class="bi bi-grid me-2"></i>Переглянути всі послуги
             </a>
         </div>
     </div>
@@ -406,30 +406,29 @@
         <div class="row">
             <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up">
                 <div class="stat-number" data-target="10">0</div>
-                <div>Лет опыта</div>
+                <div>Років досвіду</div>
             </div>
             <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="100">
                 <div class="stat-number" data-target="500">0</div>
-                <div>Клиентов</div>
+                <div>Клієнтів</div>
             </div>
             <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="200">
                 <div class="stat-number" data-target="25">0</div>
-                <div>Программ</div>
+                <div>Програм</div>
             </div>
             <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="300">
                 <div class="stat-number" data-target="95">0</div>
-                <div>% Позитивных отзывов</div>
+                <div>% Позитивних відгуків</div>
             </div>
         </div>
     </div>
 </section>
-
-<!-- Отзывы клиентов -->
+<!-- Відгуки клієнтів -->
 <section class="testimonial-section" id="testimonials">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title mx-auto" style="width: fit-content;">Отзывы клиентов</h2>
-            <p class="section-subtitle text-center">Что говорят люди, прошедшие консультации</p>
+            <h2 class="section-title mx-auto" style="width: fit-content;">Відгуки клієнтів</h2>
+            <p class="section-subtitle text-center">Що кажуть люди, які пройшли консультації</p>
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-4" data-aos="fade-up">
@@ -440,10 +439,10 @@
                         </div>
                         <div>
                             <h5 class="mb-0">Анна М.</h5>
-                            <small class="text-muted">Клиент 1 год</small>
+                            <small class="text-muted">Клієнтка 1 рік</small>
                         </div>
                     </div>
-                    <p>Благодаря консультациям я смогла преодолеть депрессию и наладить отношения с близкими. Спасибо за профессионализм и поддержку!</p>
+                    <p>Завдяки консультаціям я змогла подолати депресію та налагодити стосунки з близькими. Дякую за професіоналізм та підтримку!</p>
                     <div class="text-warning">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -460,11 +459,11 @@
                             <i class="fas fa-quote-left fa-2x text-muted"></i>
                         </div>
                         <div>
-                            <h5 class="mb-0">Сергей К.</h5>
-                            <small class="text-muted">Клиент 6 месяцев</small>
+                            <h5 class="mb-0">Сергій К.</h5>
+                            <small class="text-muted">Клієнт 6 місяців</small>
                         </div>
                     </div>
-                    <p>Обратился по вопросу профессионального выгорания. После нескольких сессий смог найти новые смыслы в работе и жизни. Рекомендую!</p>
+                    <p>Звернувся з проблемою професійного вигорання. Після кількох сесій зміг знайти нові сенси в роботі та житті. Рекомендую!</p>
                     <div class="text-warning">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -481,11 +480,11 @@
                             <i class="fas fa-quote-left fa-2x text-muted"></i>
                         </div>
                         <div>
-                            <h5 class="mb-0">Елена Д.</h5>
-                            <small class="text-muted">Клиент 2 года</small>
+                            <h5 class="mb-0">Олена Д.</h5>
+                            <small class="text-muted">Клієнтка 2 роки</small>
                         </div>
                     </div>
-                    <p>Семейная терапия помогла нам с мужем услышать друг друга и восстановить отношения, которые были на грани развода. Очень благодарна!</p>
+                    <p>Сімейна терапія допомогла нам з чоловіком почути одне одного та відновити стосунки, які були на межі розлучення. Дуже вдячна!</p>
                     <div class="text-warning">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -499,22 +498,22 @@
     </div>
 </section>
 
-<!-- Блог -->
+<<!-- Блог -->
 <section class="py-5 py-md-7" id="blog">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title mx-auto" style="width: fit-content;">Последние публикации</h2>
-            <p class="section-subtitle text-center">Полезные статьи и советы от психолога</p>
+            <h2 class="section-title mx-auto" style="width: fit-content;">Останні публікації</h2>
+            <p class="section-subtitle text-center">Корисні статті та поради від психолога</p>
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-4" data-aos="fade-up">
                 <div class="card blog-card h-100">
                     <img src="https://i.imgur.com/qQXGGDj.jpg" class="card-img-top" alt="Блог">
                     <div class="card-body">
-                        <div class="blog-date mb-2">10 марта 2025</div>
-                        <h3 class="h5 mb-3">Как справиться с тревогой в современном мире</h3>
-                        <p>Практические советы и техники, которые помогут вам уменьшить тревожность и научиться жить полной жизнью.</p>
-                        <a href="#" class="btn btn-link p-0">Читать далее <i class="fas fa-arrow-right ms-1"></i></a>
+                        <div class="blog-date mb-2">10 березня 2025</div>
+                        <h3 class="h5 mb-3">Як впоратися з тривогою в сучасному світі</h3>
+                        <p>Практичні поради та техніки, які допоможуть вам зменшити тривожність і навчитися жити повноцінним життям.</p>
+                        <a href="#" class="btn btn-link p-0">Читати далі <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
@@ -522,10 +521,10 @@
                 <div class="card blog-card h-100">
                     <img src="https://i.imgur.com/RUyjx9p.jpg" class="card-img-top" alt="Блог">
                     <div class="card-body">
-                        <div class="blog-date mb-2">1 марта 2025</div>
-                        <h3 class="h5 mb-3">Эмоциональное выгорание: причины и пути восстановления</h3>
-                        <p>Разбираемся в причинах эмоционального выгорания и изучаем эффективные стратегии восстановления.</p>
-                        <a href="#" class="btn btn-link p-0">Читать далее <i class="fas fa-arrow-right ms-1"></i></a>
+                        <div class="blog-date mb-2">1 березня 2025</div>
+                        <h3 class="h5 mb-3">Емоційне вигорання: причини та шляхи відновлення</h3>
+                        <p>Розбираємося в причинах емоційного вигорання та вивчаємо ефективні стратегії відновлення.</p>
+                        <a href="#" class="btn btn-link p-0">Читати далі <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
@@ -533,62 +532,62 @@
                 <div class="card blog-card h-100">
                     <img src="https://i.imgur.com/FS11K9W.jpg" class="card-img-top" alt="Блог">
                     <div class="card-body">
-                        <div class="blog-date mb-2">20 февраля 2025</div>
-                        <h3 class="h5 mb-3">Как наладить отношения с подростком: советы родителям</h3>
-                        <p>Ключевые принципы эффективного общения с подростками, которые помогут построить доверительные отношения.</p>
-                        <a href="#" class="btn btn-link p-0">Читать далее <i class="fas fa-arrow-right ms-1"></i></a>
+                        <div class="blog-date mb-2">20 лютого 2025</div>
+                        <h3 class="h5 mb-3">Як налагодити стосунки з підлітком: поради батькам</h3>
+                        <p>Ключові принципи ефективної комунікації з підлітками, які допоможуть побудувати довірливі стосунки.</p>
+                        <a href="#" class="btn btn-link p-0">Читати далі <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="#" class="btn btn-outline-primary">Все статьи</a>
+            <a href="#" class="btn btn-outline-primary">Усі статті</a>
         </div>
     </div>
 </section>
 
-<!-- Запись на консультацию и контакты -->
+<!-- Запис на консультацію та контакти -->
 <section class="py-5 py-md-7 bg-light" id="contact">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-                <h2 class="section-title">Запись на консультацию</h2>
-                <p class="mb-4">Заполните форму, и я свяжусь с вами в ближайшее время для подтверждения записи.</p>
+                <h2 class="section-title">Запис на консультацію</h2>
+                <p class="mb-4">Заповніть форму, і я зв'яжуся з вами найближчим часом для підтвердження запису.</p>
                 <form>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Ваше имя" required>
+                            <input type="text" class="form-control" placeholder="Ваше ім'я" required>
                         </div>
                         <div class="col-md-6">
                             <input type="tel" class="form-control" placeholder="Телефон" required>
                         </div>
                         <div class="col-12">
                             <select class="form-select" required>
-                                <option value="" selected disabled>Выберите услугу</option>
-                                <option value="individual">Индивидуальная консультация</option>
-                                <option value="family">Семейная терапия</option>
-                                <option value="online">Онлайн-консультация</option>
-                                <option value="relationships">Психология отношений</option>
+                                <option value="" selected disabled>Оберіть послугу</option>
+                                <option value="individual">Індивідуальна консультація</option>
+                                <option value="family">Сімейна терапія</option>
+                                <option value="online">Онлайн-консультація</option>
+                                <option value="relationships">Психологія стосунків</option>
                             </select>
                         </div>
                         <div class="col-12">
-                            <textarea class="form-control" rows="4" placeholder="Ваше сообщение"></textarea>
+                            <textarea class="form-control" rows="4" placeholder="Ваше повідомлення"></textarea>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-main">Отправить заявку</button>
+                            <button type="submit" class="btn btn-main">Відправити заявку</button>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="col-lg-6" data-aos="fade-left">
-                <h2 class="section-title">Контактная информация</h2>
-                <p class="mb-4">Вы также можете связаться со мной напрямую по указанным контактам или посетить мой офис.</p>
+                <h2 class="section-title">Контактна інформація</h2>
+                <p class="mb-4">Ви також можете зв'язатися зі мною безпосередньо за вказаними контактами або відвідати мій офіс.</p>
                 <div class="contact-info mb-4">
                     <div class="d-flex align-items-center mb-3">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
-                            <h5 class="h6 mb-0">Адрес</h5>
-                            <p class="mb-0">г. Москва, ул. Примерная, д. 123, офис 45</p>
+                            <h5 class="h6 mb-0">Адреса</h5>
+                            <p class="mb-0">м. Москва, вул. Прикладна, буд. 123, офіс 45</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center mb-3">
@@ -608,13 +607,13 @@
                     <div class="d-flex align-items-center">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <h5 class="h6 mb-0">Часы работы</h5>
+                            <h5 class="h6 mb-0">Години роботи</h5>
                             <p class="mb-0">Пн-Пт: 9:00 - 20:00, Сб: 10:00 - 15:00</p>
                         </div>
                     </div>
                 </div>
                 <div class="social-media">
-                    <h5 class="h6 mb-3">Социальные сети</h5>
+                    <h5 class="h6 mb-3">Соціальні мережі</h5>
                     <div>
                         <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
@@ -626,14 +625,13 @@
         </div>
     </div>
 </section>
-
 <!-- Футер -->
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5 class="footer-title">Психолог Артеменко</h5>
-                <p>Профессиональная психологическая помощь для вашего благополучия и гармонии.</p>
+                <p>Професійна психологічна допомога для вашого благополуччя та гармонії.</p>
                 <div class="mt-3">
                     <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
                     <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
@@ -642,29 +640,29 @@
                 </div>
             </div>
             <div class="col-md-2 mb-4 mb-md-0">
-                <h5 class="footer-title">Навигация</h5>
+                <h5 class="footer-title">Навігація</h5>
                 <div class="footer-links">
-                    <a href="#">Главная</a>
-                    <a href="#about">Обо мне</a>
-                    <a href="/services">Услуги</a>
+                    <a href="#">Головна</a>
+                    <a href="#about">Про мене</a>
+                    <a href="/services">Послуги</a>
                     <a href="#blog">Блог</a>
-                    <a href="#contact">Контакты</a>
+                    <a href="#contact">Контакти</a>
                 </div>
             </div>
             <div class="col-md-3 mb-4 mb-md-0">
-                <h5 class="footer-title">Услуги</h5>
+                <h5 class="footer-title">Послуги</h5>
                 <div class="footer-links">
-                    <a href="#">Индивидуальные консультации</a>
-                    <a href="#">Семейная терапия</a>
-                    <a href="#">Психология отношений</a>
-                    <a href="#">Онлайн-консультации</a>
-                    <a href="#">Обучающие программы</a>
+                    <a href="#">Індивідуальні консультації</a>
+                    <a href="#">Сімейна терапія</a>
+                    <a href="#">Психологія стосунків</a>
+                    <a href="#">Онлайн-консультації</a>
+                    <a href="#">Навчальні програми</a>
                 </div>
             </div>
             <div class="col-md-3">
-                <h5 class="footer-title">Контакты</h5>
+                <h5 class="footer-title">Контакти</h5>
                 <div class="footer-links">
-                    <a href="#"><i class="fas fa-map-marker-alt me-2"></i> г. Москва, ул. Примерная, 123</a>
+                    <a href="#"><i class="fas fa-map-marker-alt me-2"></i> м. Москва, вул. Прикладна, 123</a>
                     <a href="#"><i class="fas fa-phone me-2"></i> +7 (XXX) XXX-XX-XX</a>
                     <a href="#"><i class="fas fa-envelope me-2"></i> info@психолог-артеменко.рф</a>
                     <a href="#"><i class="fas fa-clock me-2"></i> Пн-Пт: 9:00 - 20:00</a>
@@ -674,11 +672,11 @@
         <hr class="mt-4 mb-4" style="background-color: rgba(255,255,255,0.1);">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                <p class="mb-0">© 2025 Психолог Артеменко. Все права защищены.</p>
+                <p class="mb-0">© 2025 Психолог Артеменко. Усі права захищені.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <a href="#" class="text-white me-3">Политика конфиденциальности</a>
-                <a href="#" class="text-white">Условия использования</a>
+                <a href="#" class="text-white me-3">Політика конфіденційності</a>
+                <a href="#" class="text-white">Умови використання</a>
             </div>
         </div>
     </div>
