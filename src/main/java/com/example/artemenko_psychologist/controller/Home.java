@@ -1,6 +1,8 @@
 package com.example.artemenko_psychologist.controller;
 
 import com.example.artemenko_psychologist.dto.ServiceCardDTO;
+import com.example.artemenko_psychologist.dto.blog.BlogPostListDto;
+import com.example.artemenko_psychologist.service.BlogPostService;
 import com.example.artemenko_psychologist.service.ServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,12 +15,16 @@ import java.util.List;
 @Controller
 public class Home {
     private final ServiceService serviceService ;
+    private final BlogPostService blogPostService ;
 
 
     @GetMapping
     public String home(Model model) {
         List<ServiceCardDTO> serviceCardDTO = serviceService.getTopActiveServiceCards(6);
         model.addAttribute("serviceCardDTO", serviceCardDTO);
+
+        List<BlogPostListDto> blogPostList =blogPostService.getLatestBlogPosts(3);
+        model.addAttribute("blogPostList", blogPostList);
 
         return "home";
     }

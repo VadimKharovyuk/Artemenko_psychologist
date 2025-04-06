@@ -288,6 +288,18 @@
         .scroll-top.show {
             opacity: 1;
         }
+        .custom-outline-btn {
+            color: #b69f7e;
+            border-color: #b69f7e;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .custom-outline-btn:hover {
+            color: white;
+            background-color: #a58c6b; /* Немного темнее основного цвета */
+            border-color: #a58c6b;
+        }
     </style>
 </head>
 <body>
@@ -363,6 +375,7 @@
 
 
 <!-- Послуги -->
+<!-- Послуги -->
 <section class="py-5 py-md-7 bg-light" id="services">
     <div class="container">
         <div class="text-center mb-5">
@@ -375,17 +388,23 @@
                  class="col-md-6 col-lg-4"
                  th:data-aos="fade-up"
                  th:data-aos-delay="${100 + stat.index * 100}">
-                <div class="card service-card h-100">
-                    <div class="card-body text-center p-4 p-md-5">
-                        <div class="service-icon">
+                <div class="card service-card h-100 d-flex flex-column">
+                    <div class="card-body text-center p-4 p-md-5 d-flex flex-column">
+                        <div class="service-icon mb-3">
                             <!-- Якщо у послуги є клас іконки, використовуємо його -->
                             <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>
                             <!-- Якщо іконки немає, використовуємо стандартну -->
                             <i th:unless="${service.iconClass != null}" class="fas fa-heart"></i>
                         </div>
                         <h3 class="h4 mb-3" th:text="${service.title}">Назва послуги</h3>
-                        <p th:text="${service.shortDescription}">Опис послуги.</p>
-                        <a th:href="@{/services/{id}(id=${service.id})}" class="btn btn-outline-secondary mt-3">Детальніше</a>
+                        <p class="card-text flex-grow-1" style="min-height: 4.5rem; max-height: 4.5rem; overflow: hidden;"
+                           th:text="${service.shortDescription}">Опис послуги.</p>
+                        <div class="mt-auto">
+                            <a th:href="@{/services/{id}(id=${service.id})}"
+                               class="btn btn-outline-secondary mt-3">
+                                Детальніше
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -393,7 +412,9 @@
 
         <!-- Кнопка "Переглянути всі" -->
         <div class="text-center mt-4" data-aos="fade-up">
-            <a th:href="@{/services}" class="btn" style="background-color: #b69f7e; color: white; border: none;">
+            <a th:href="@{/services}"
+               class="btn d-inline-flex align-items-center"
+               style="background-color: #b69f7e; color: white; border: none;">
                 <i class="bi bi-grid me-2"></i>Переглянути всі послуги
             </a>
         </div>
@@ -497,54 +518,45 @@
         </div>
     </div>
 </section>
-
-<<!-- Блог -->
-<section class="py-5 py-md-7" id="blog">
+<!-- Блог -->
+<section class="py-5 py-md-7" id="blog" xmlns:th="http://www.thymeleaf.org">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title mx-auto" style="width: fit-content;">Останні публікації</h2>
             <p class="section-subtitle text-center">Корисні статті та поради від психолога</p>
         </div>
         <div class="row">
-            <div class="col-md-6 col-lg-4" data-aos="fade-up">
-                <div class="card blog-card h-100">
-                    <img src="https://i.imgur.com/qQXGGDj.jpg" class="card-img-top" alt="Блог">
-                    <div class="card-body">
-                        <div class="blog-date mb-2">10 березня 2025</div>
-                        <h3 class="h5 mb-3">Як впоратися з тривогою в сучасному світі</h3>
-                        <p>Практичні поради та техніки, які допоможуть вам зменшити тривожність і навчитися жити повноцінним життям.</p>
-                        <a href="#" class="btn btn-link p-0">Читати далі <i class="fas fa-arrow-right ms-1"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card blog-card h-100">
-                    <img src="https://i.imgur.com/RUyjx9p.jpg" class="card-img-top" alt="Блог">
-                    <div class="card-body">
-                        <div class="blog-date mb-2">1 березня 2025</div>
-                        <h3 class="h5 mb-3">Емоційне вигорання: причини та шляхи відновлення</h3>
-                        <p>Розбираємося в причинах емоційного вигорання та вивчаємо ефективні стратегії відновлення.</p>
-                        <a href="#" class="btn btn-link p-0">Читати далі <i class="fas fa-arrow-right ms-1"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="card blog-card h-100">
-                    <img src="https://i.imgur.com/FS11K9W.jpg" class="card-img-top" alt="Блог">
-                    <div class="card-body">
-                        <div class="blog-date mb-2">20 лютого 2025</div>
-                        <h3 class="h5 mb-3">Як налагодити стосунки з підлітком: поради батькам</h3>
-                        <p>Ключові принципи ефективної комунікації з підлітками, які допоможуть побудувати довірливі стосунки.</p>
-                        <a href="#" class="btn btn-link p-0">Читати далі <i class="fas fa-arrow-right ms-1"></i></a>
+            <div th:each="post : ${blogPostList}" class="col-md-6 col-lg-4" data-aos="fade-up"
+                 th:attr="data-aos-delay=${postStat.index * 100}">
+                <div class="card blog-card h-100 d-flex flex-column">
+                    <img th:src="${post.previewImageUrl}" class="card-img-top" alt="Блог">
+                    <div class="card-body d-flex flex-column">
+                        <div class="blog-date mb-2" th:text="${#temporals.format(post.publicationDate, 'dd MMMM yyyy')}">
+                            10 березня 2025
+                        </div>
+                        <h3 class="h5 mb-3" th:text="${post.title}">
+                            Назва блог-посту
+                        </h3>
+                        <p class="card-text flex-grow-1" style="min-height: 4.5rem; max-height: 4.5rem; overflow: hidden;"
+                           th:text="${post.shortDescription}">
+                            Короткий опис посту
+                        </p>
+                        <div class="mt-auto">
+                            <a th:href="@{/blog/{id}(id=${post.id})}"
+                               class="btn btn-link p-0 d-inline-flex align-items-center">
+                                Читати далі <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="#" class="btn btn-outline-primary">Усі статті</a>
+            <a th:href="@{/blog}" class="btn custom-outline-btn">Усі статті</a>
         </div>
     </div>
 </section>
+
 
 <!-- Запис на консультацію та контакти -->
 <section class="py-5 py-md-7 bg-light" id="contact">

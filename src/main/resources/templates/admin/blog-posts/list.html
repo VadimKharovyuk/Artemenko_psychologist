@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Управление блог-постами</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+  <div class="row mb-3">
+    <div class="col">
+      <h1>Блог-пости</h1>
+    </div>
+    <div class="col-auto">
+      <a href="/admin/blog-posts/create" class="btn btn-primary">
+        Створити новий пост
+      </a>
+    </div>
+  </div>
+
+  <!-- Повідомлення про успіх -->
+  <div th:if="${successMessage}" class="alert alert-success" role="alert">
+    <span th:text="${successMessage}"></span>
+  </div>
+
+  <!-- Таблиця постів -->
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Заголовок</th>
+      <th>Короткий опис</th>
+      <th>Категорія</th>
+      <th>Дата публікації</th>
+      <th>Дії</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${posts}">
+      <td th:text="${post.id}">1</td>
+      <td th:text="${post.title}">Заголовок поста</td>
+      <td th:text="${post.shortDescription}">Короткий опис</td>
+      <td th:text="${post.categoryName}">Категорія</td>
+      <td th:text="${#temporals.format(post.publicationDate, 'dd.MM.yyyy HH:mm')}">
+        01.01.2024 12:00
+      </td>
+      <td>
+        <div class="btn-group" role="group">
+          <a th:href="@{/admin/blog-posts/edit/{id}(id=${post.id})}"
+             class="btn btn-sm btn-warning">
+            Редагувати
+          </a>
+          <a th:href="@{/admin/blog-posts/delete/{id}(id=${post.id})}"
+             class="btn btn-sm btn-danger"
+             onclick="return confirm('Ви впевнені, що хочете видалити цей пост?')">
+            Видалити
+          </a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Повідомлення, якщо постів немає -->
+  <div th:if="${posts.isEmpty()}" class="alert alert-info">
+    Поки що немає жодного блог-поста
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
