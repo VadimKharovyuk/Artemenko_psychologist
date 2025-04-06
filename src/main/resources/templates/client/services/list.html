@@ -1,22 +1,98 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">-->
+<!--<link rel="stylesheet" th:href="@{/css/services.css}">-->
+<!--<head>-->
+<!--  <title th:text="${pageTitle}">Услуги психолога</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<section>-->
+<!--  &lt;!&ndash; Заголовок страницы &ndash;&gt;-->
+<!--  <div class="page-header">-->
+<!--    <div class="container">-->
+<!--      <h1 class="display-4">Услуги</h1>-->
+<!--      <nav aria-label="breadcrumb">-->
+<!--        <ol class="breadcrumb">-->
+<!--          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>-->
+<!--          <li class="breadcrumb-item active" aria-current="page">Услуги</li>-->
+<!--        </ol>-->
+<!--      </nav>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Сообщения об ошибках &ndash;&gt;-->
+<!--  <div class="container mt-4" th:if="${errorMessage}">-->
+<!--    <div class="alert alert-danger alert-dismissible fade show" role="alert">-->
+<!--      <span th:text="${errorMessage}"></span>-->
+<!--      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Список услуг &ndash;&gt;-->
+<!--  <div class="container py-5">-->
+<!--    <div class="row g-4">-->
+<!--      &lt;!&ndash; Для каждой услуги создаем карточку &ndash;&gt;-->
+<!--      <div class="col-md-6 col-lg-4" th:each="service : ${services}" data-aos="fade-up"-->
+<!--           th:data-aos-delay="${serviceStat.index * 100}">-->
+<!--        <div class="card service-card h-100">-->
+<!--          &lt;!&ndash; Если есть изображение, показываем его &ndash;&gt;-->
+<!--          <div class="service-image-container" th:if="${service.imageUrl != null}">-->
+<!--            <img th:src="${service.imageUrl}" class="card-img-top service-image"-->
+<!--                 th:alt="${service.title}">-->
+<!--          </div>-->
+<!--          <div class="card-body text-center p-4">-->
+<!--            <div class="service-icon mb-3">-->
+<!--              <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>-->
+<!--              <i th:unless="${service.iconClass != null}" class="bi bi-stars"></i>-->
+<!--            </div>-->
+<!--            <h3 class="h4 mb-3" th:text="${service.title}">Название услуги</h3>-->
+<!--            <p class="card-text" th:text="${service.shortDescription}">-->
+<!--              Краткое описание услуги-->
+<!--            </p>-->
+<!--            <div class="service-price mb-3">-->
+<!--              <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> ₽-->
+<!--              <span th:if="${service.durationMinutes}" class="duration">-->
+<!--                                / <span th:text="${service.durationMinutes}">60</span> мин-->
+<!--                            </span>-->
+<!--            </div>-->
+<!--            <a th:href="@{/services/{id}(id=${service.id})}" class="btn btn-primary stretched-link">-->
+<!--              Подробнее-->
+<!--            </a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Если услуг нет &ndash;&gt;-->
+<!--    <div class="text-center py-5" th:if="${#lists.isEmpty(services)}">-->
+<!--      <p class="lead">В настоящее время нет доступных услуг</p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
-<link rel="stylesheet" th:href="@{/css/services.css}">
 <head>
   <title th:text="${pageTitle}">Услуги психолога</title>
 </head>
 <body>
 <section>
-  <!-- Заголовок страницы -->
-  <div class="page-header">
-    <div class="container">
-      <h1 class="display-4">Услуги</h1>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Услуги</li>
-        </ol>
-      </nav>
+  <!-- Параллакс заголовок страницы -->
+  <div class="parallax-header">
+    <div class="parallax-bg"></div>
+    <div class="parallax-content">
+      <div class="container">
+        <h1 class="display-4 text-white">Услуги</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0">
+            <li class="breadcrumb-item"><a th:href="@{/}" class="text-white">Главная</a></li>
+            <li class="breadcrumb-item active text-white-50" aria-current="page">Услуги</li>
+          </ol>
+        </nav>
+      </div>
     </div>
   </div>
 
@@ -32,7 +108,7 @@
   <div class="container py-5">
     <div class="row g-4">
       <!-- Для каждой услуги создаем карточку -->
-      <div class="col-md-6 col-lg-4" th:each="service : ${services}" data-aos="fade-up"
+      <div class="col-md-6 col-lg-4" th:each="service, serviceStat : ${services}" data-aos="fade-up"
            th:data-aos-delay="${serviceStat.index * 100}">
         <div class="card service-card h-100">
           <!-- Если есть изображение, показываем его -->
@@ -52,10 +128,10 @@
             <div class="service-price mb-3">
               <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> ₽
               <span th:if="${service.durationMinutes}" class="duration">
-                                / <span th:text="${service.durationMinutes}">60</span> мин
-                            </span>
+                / <span th:text="${service.durationMinutes}">60</span> мин
+              </span>
             </div>
-            <a th:href="@{/services/{id}(id=${service.id})}" class="btn btn-primary stretched-link">
+            <a th:href="@{/services/{id}(id=${service.id})}" class="btn" style="background-color: #b69f7e; color: white; border: none;">
               Подробнее
             </a>
           </div>
@@ -68,6 +144,39 @@
       <p class="lead">В настоящее время нет доступных услуг</p>
     </div>
   </div>
+
 </section>
+<script>
+  // Параллакс-эффект для заголовка страницы
+  document.addEventListener('DOMContentLoaded', function() {
+    const parallaxBg = document.querySelector('.parallax-bg');
+
+    if (parallaxBg) {
+      window.addEventListener('scroll', function() {
+        // Получаем текущую позицию прокрутки
+        const scrollTop = window.pageYOffset;
+
+        // Создаем эффект параллакса (фон движется медленнее)
+        parallaxBg.style.transform = 'translateY(' + scrollTop * 0.4 + 'px)';
+      });
+    }
+
+    // Анимация при прокрутке для карточек услуг
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.service-card').forEach(card => {
+      observer.observe(card);
+    });
+  });
+</script>
 </body>
 </html>
