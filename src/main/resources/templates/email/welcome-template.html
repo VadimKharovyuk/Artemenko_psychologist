@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Ручна розсилка від психолога Артеменко</title>
+  <title>Дякуємо за підписку!</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,11 +22,17 @@
       padding: 20px;
       background-color: #f4f4f4;
     }
-    .footer {
-      text-align: center;
-      font-size: 0.8em;
-      color: #777;
-      padding: 20px;
+    .welcome-message {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .benefits {
+      margin: 20px 0;
+      padding-left: 20px;
+    }
+    .benefit-item {
+      margin-bottom: 10px;
     }
     .footer {
       text-align: center;
@@ -48,11 +54,25 @@
 <body>
 <div class="header">
   <h1>Психолог Артеменко</h1>
-  <p>Персональне повідомлення</p>
+  <p>Вітаємо у нашій спільноті!</p>
 </div>
 
 <div class="content">
-  <p th:text="${manualContent}">Текст вашого повідомлення</p>
+  <p class="welcome-message">Шановний(а) читач(ка),</p>
+
+  <p>Дякуємо за підписку на нашу розсилку! Ви тепер будете отримувати корисні матеріали з психології, поради щодо саморозвитку та інформацію про нові статті на нашому сайті.</p>
+
+  <p>Що Ви будете отримувати:</p>
+  <ul class="benefits">
+    <li class="benefit-item">Сповіщення про нові статті</li>
+    <li class="benefit-item">Корисні психологічні поради</li>
+    <li class="benefit-item">Ексклюзивні матеріали для підписників</li>
+    <li class="benefit-item">Запрошення на вебінари та онлайн-зустрічі</li>
+  </ul>
+
+  <p>Дякуємо, що Ви з нами!</p>
+
+  <p>З повагою,<br>Психолог Артеменко</p>
 </div>
 
 <div class="footer">
@@ -61,14 +81,6 @@
 <!--    <a th:href="@{http://localhost:2232/unsubscribe(email=${recipientEmail})}">-->
 <!--      Відписатися від розсилки-->
 <!--    </a>-->
-  </p>
-</div>
-<div class="footer">
-  <p>Ви отримали цей email, тому що підписані на розсилку.</p>
-  <p>
-    <!--    <a th:href="@{http://localhost:2232/unsubscribe(email=${recipientEmail})}">-->
-    <!--      Відписатися від розсилки-->
-    <!--    </a>-->
   </p>
 
   <div class="social-links">

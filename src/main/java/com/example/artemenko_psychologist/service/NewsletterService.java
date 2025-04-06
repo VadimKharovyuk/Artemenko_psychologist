@@ -1,5 +1,4 @@
 package com.example.artemenko_psychologist.service;
-
 import com.example.artemenko_psychologist.dto.blog.BlogPostListDto;
 import com.example.artemenko_psychologist.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
 
 @Slf4j
@@ -16,7 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class NewsletterService {
     private final SubscriptionRepository subscriptionRepository;
-    private final EmailService emailService;
+    private final EmailQueueService emailQueueService;
     private final BlogPostService blogPostService;
 
     public void sendNewsletterToAllSubscribers(String subject, Long blogPostId) {
@@ -40,7 +38,8 @@ public class NewsletterService {
         log.info("Начало рассылки новостного письма. Тема: {}, Количество получателей: {}",
                 subject, subscriberEmails.size());
 
-        emailService.sendBulkHtmlMessage(
+        // Изменяем метод на queueBulkEmail
+        emailQueueService.queueBulkEmail(
                 subscriberEmails,
                 subject,
                 "newsletter-template", // Убедитесь, что этот шаблон существует как "email/newsletter-template.html"
@@ -49,7 +48,7 @@ public class NewsletterService {
     }
 
     public long getSubscriberCount() {
-      return   subscriptionRepository.count();
+        return subscriptionRepository.count();
     }
 
     public void sendManualNewsletter(String subject, String content) {
@@ -61,9 +60,6 @@ public class NewsletterService {
             return;
         }
 
-        log.info("Начало ручной рассылки. Тема: {}, Количество получателей: {}",
-                subject, subscriberEmails.size());
-
         // Подготавливаем контекст для письма
         for (String email : subscriberEmails) {
             Map<String, Object> context = new HashMap<>();
@@ -71,8 +67,8 @@ public class NewsletterService {
             context.put("recipientEmail", email);
 
             try {
-                // Отправка письма с задержкой
-                emailService.sendHtmlMessage(
+                // Изменяем метод на queueEmail
+                emailQueueService.queueEmail(
                         email,
                         subject,
                         "manual-newsletter-template",
@@ -81,6 +77,33 @@ public class NewsletterService {
             } catch (Exception e) {
                 log.error("Ошибка при отправке ручной рассылки для {}: {}", email, e.getMessage());
             }
+        }
+    }
+
+    /**
+     * Отправляет приветственное письмо новому подписчику
+     * @param email Email подписчика
+     */
+    public void sendWelcomeEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            log.warn("Попытка отправки приветственного письма на пустой email");
+            return;
+        }
+
+//        log.info("Отправка приветственного письма новому подписчику: {}", email);
+
+        Map<String, Object> context = new HashMap<>();
+        context.put("recipientEmail", email);
+
+        try {
+            emailQueueService.queueEmail(
+                    email,
+                    "Дякуємо за підписку на розсилку психолога Артеменко",
+                    "welcome-template",
+                    context
+            );
+        } catch (Exception e) {
+            log.error("Ошибка при отправке приветственного письма для {}: {}", email, e.getMessage());
         }
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
+    private final NewsletterService newsletterService;
 
     @Transactional
     public boolean subscribe(SubscriptionDto subscriptionDto) {
@@ -23,6 +24,7 @@ public class SubscriptionService {
                 .build();
 
         subscriptionRepository.save(subscription);
+        newsletterService.sendWelcomeEmail(subscription.getEmail());
         return true;
     }
 
