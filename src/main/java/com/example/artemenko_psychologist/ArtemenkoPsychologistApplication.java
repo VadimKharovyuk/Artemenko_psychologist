@@ -9,5 +9,6 @@ public class ArtemenkoPsychologistApplication {
     public static void main(String[] args) {
         SpringApplication.run(ArtemenkoPsychologistApplication.class, args);
     }
+    // // Отправка рассылки для конкретного поста
 
 }
