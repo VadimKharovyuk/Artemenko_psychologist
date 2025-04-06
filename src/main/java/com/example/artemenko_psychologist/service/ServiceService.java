@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
@@ -28,15 +29,7 @@ public class ServiceService {
     private final ServiceMapper serviceMapper;
     private final ImgurService imgurService;
 
-    /**
-     * Получает список всех активных услуг для отображения на главной странице
-     * @return список DTO карточек услуг
-     */
-    public List<ServiceCardDTO> getAllActiveServiceCards() {
-        return serviceMapper.toCardDtoList(
-                serviceRepository.findByActiveTrueOrderByDisplayOrderAsc()
-        );
-    }
+
 
     /**
      * Получает список всех услуг
@@ -193,5 +186,18 @@ public class ServiceService {
             log.warn("Создание услуги без изображения: {}", service.getTitle());
         }
         // В остальных случаях оставляем текущее изображение без изменений
+    }
+
+    /**
+     * Получает первые N активных услуг для отображения на главной странице
+     * @param limit максимальное количество услуг для отображения
+     * @return список DTO карточек услуг, ограниченный указанным количеством
+     */
+    public List<ServiceCardDTO> getTopActiveServiceCards(int limit) {
+        return serviceRepository.findByActiveTrueOrderByDisplayOrderAsc()
+                .stream()
+                .limit(limit)
+                .map(serviceMapper::toCardDto)
+                .collect(Collectors.toList());
     }
 }
