@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Запросы на консультацию - Админ панель</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #333;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .card-body {
+      padding: 15px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      color: white;
+      font-size: 12px;
+    }
+    .bg-primary { background-color: #007bff; }
+    .bg-danger { background-color: #dc3545; }
+    .bg-warning { background-color: #ffc107; color: #333; }
+    .bg-success { background-color: #28a745; }
+    .bg-secondary { background-color: #6c757d; }
+
+    .btn {
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 2px;
+      border-radius: 3px;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    .btn-outline-secondary {
+      background-color: white;
+      color: #6c757d;
+      border-color: #6c757d;
+    }
+    .btn-outline-primary {
+      background-color: white;
+      color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-sm {
+      padding: 2px 5px;
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .alert {
+      padding: 10px;
+      border-radius: 3px;
+      margin-bottom: 15px;
+    }
+    .alert-info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+    }
+    .page-item {
+      margin: 0 2px;
+    }
+    .page-link {
+      display: block;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      color: #007bff;
+      text-decoration: none;
+    }
+    .page-item.active .page-link {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    .page-item.disabled .page-link {
+      color: #6c757d;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      display: none;
+      min-width: 160px;
+      padding: 5px 0;
+      margin: 2px 0 0;
+      background-color: white;
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 4px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-header {
+      display: block;
+      padding: 3px 20px;
+      font-size: 12px;
+      color: #6c757d;
+    }
+    .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 3px 20px;
+      clear: both;
+      text-align: inherit;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0;
+      text-decoration: none;
+      color: #212529;
+    }
+    .dropdown-item:hover {
+      background-color: #f8f9fa;
+    }
+    .dropdown-item-form {
+      padding: 0;
+    }
+    .dropdown-item:disabled {
+      color: #6c757d;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+<h1>Запросы на консультацию</h1>
+
+<div class="badge bg-primary" style="float: right;" id="newRequests" th:if="${newRequestsCount > 0}">
+  Новые запросы: <span th:text="${newRequestsCount}">0</span>
+</div>
+
+<!-- Фильтр по статусу -->
+<div class="card">
+  <div class="card-body">
+    <strong>Фильтр по статусу:</strong>
+    <div style="margin-top: 10px;">
+      <a th:href="@{/admin/consultations}" class="btn btn-sm"
+         th:classappend="${currentStatus == null} ? 'btn-primary' : 'btn-outline-secondary'">
+        Все
+      </a>
+      <a th:each="status : ${statuses}"
+         th:href="@{/admin/consultations(status=${status})}"
+         class="btn btn-sm"
+         th:classappend="${currentStatus == status} ? 'btn-primary' : 'btn-outline-secondary'">
+        <span th:text="${status.displayName}">Статус</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Таблица запросов -->
+<div class="card">
+  <div class="card-body">
+    <div th:if="${requests.empty}" class="alert alert-info">
+      Запросы не найдены
+    </div>
+
+    <table th:if="${!requests.empty}">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Имя клиента</th>
+        <th>Телефон</th>
+        <th>Услуга</th>
+        <th>Статус</th>
+        <th>Дата создания</th>
+        <th>Действия</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="request : ${requests.content}">
+        <td th:text="${request.id}">1</td>
+        <td th:text="${request.clientName}">Иван Петров</td>
+        <td th:text="${request.phoneNumber}">+380123456789</td>
+        <td th:text="${request.serviceName}">Индивидуальная консультация</td>
+        <td>
+              <span class="badge" th:text="${request.status.displayName}"
+                    th:classappend="${
+                      request.status.name() == 'NEW' ? 'bg-danger' :
+                      request.status.name() == 'CONTACTED' ? 'bg-warning' :
+                      request.status.name() == 'SCHEDULED' ? 'bg-primary' :
+                      request.status.name() == 'COMPLETED' ? 'bg-success' : 'bg-secondary'
+                    }">
+                Статус
+              </span>
+        </td>
+        <td th:text="${#temporals.format(request.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023 12:34</td>
+        <td>
+          <a th:href="@{/admin/consultations/{id}(id=${request.id})}"
+             class="btn btn-sm btn-outline-primary">
+            Просмотр
+          </a>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary">Статус ▼</button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header">Сменить статус</li>
+              <li th:each="status : ${statuses}">
+                <form th:action="@{/admin/consultations/{id}/status(id=${request.id})}"
+                      method="post" class="dropdown-item-form">
+                  <input type="hidden" name="status" th:value="${status}" />
+<!--                  <input type="hidden" name="returnUrl" th:value="${#httpServletRequest.requestURI + '?' + #httpServletRequest.queryString}" />-->
+                  <button type="submit" class="dropdown-item"
+                          th:disabled="${request.status == status}">
+                    <span th:text="${status.displayName}">Статус</span>
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div th:if="${requests.totalPages > 1}" style="text-align: center; margin-top: 20px;">
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${!requests.hasPrevious()} ? 'disabled'">
+          <a class="page-link" th:href="@{/admin/consultations(page=${requests.number - 1}, size=${requests.size}, status=${currentStatus})}">&laquo;</a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, requests.totalPages - 1)}"
+            th:classappend="${requests.number == i} ? 'active'">
+          <a class="page-link" th:href="@{/admin/consultations(page=${i}, size=${requests.size}, status=${currentStatus})}"
+             th:text="${i + 1}">1</a>
+        </li>
+        <li class="page-item" th:classappend="${!requests.hasNext()} ? 'disabled'">
+          <a class="page-link" th:href="@{/admin/consultations(page=${requests.number + 1}, size=${requests.size}, status=${currentStatus})}">&raquo;</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

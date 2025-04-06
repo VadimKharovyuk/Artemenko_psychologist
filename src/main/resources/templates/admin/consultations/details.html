@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Детали запроса - Админ панель</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #333;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      color: white;
+      font-size: 12px;
+    }
+    .bg-danger { background-color: #dc3545; }
+    .bg-warning { background-color: #ffc107; color: #333; }
+    .bg-primary { background-color: #007bff; }
+    .bg-success { background-color: #28a745; }
+    .bg-secondary { background-color: #6c757d; }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 15px;
+      margin: 2px;
+      border-radius: 3px;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    .btn-outline-secondary {
+      background-color: white;
+      color: #6c757d;
+      border-color: #6c757d;
+    }
+    .btn-outline-primary {
+      background-color: white;
+      color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+      border-color: #dc3545;
+    }
+
+    .alert {
+      padding: 10px;
+      border-radius: 3px;
+      margin-bottom: 15px;
+    }
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      padding: 10px 15px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-body {
+      padding: 15px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 120px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -10px;
+      margin-left: -10px;
+    }
+    .col-md-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding-right: 10px;
+      padding-left: 10px;
+      box-sizing: border-box;
+    }
+    @media (max-width: 768px) {
+      .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+
+    .bg-light {
+      background-color: #f8f9fa;
+    }
+    .rounded {
+      border-radius: 3px;
+    }
+    .p-3 {
+      padding: 15px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 5px;
+    }
+    .modal-header {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+    }
+    .modal-header h5 {
+      margin: 0;
+    }
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .modal-body {
+      padding: 15px 0;
+    }
+    .modal-footer {
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+<h1>
+  Запрос #<span th:text="${request.id}">1</span>
+  <span class="badge" th:text="${request.status.displayName}"
+        th:classappend="${
+            request.status.name() == 'NEW' ? 'bg-danger' :
+            request.status.name() == 'CONTACTED' ? 'bg-warning' :
+            request.status.name() == 'SCHEDULED' ? 'bg-primary' :
+            request.status.name() == 'COMPLETED' ? 'bg-success' : 'bg-secondary'
+          }">
+      Статус
+    </span>
+</h1>
+
+<div style="text-align: right; margin-bottom: 20px;">
+  <a th:href="@{/admin/consultations}" class="btn btn-outline-secondary">
+    &larr; Назад к списку
+  </a>
+</div>
+
+<!-- Сообщения об успехе/ошибке -->
+<div th:if="${successMessage}" class="alert alert-success">
+  <span th:text="${successMessage}">Запрос успешно обновлен</span>
+</div>
+<div th:if="${errorMessage}" class="alert alert-danger">
+  <span th:text="${errorMessage}">Произошла ошибка</span>
+</div>
+
+<div class="row">
+  <!-- Информация о запросе -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div>Информация о запросе</div>
+        <div style="font-size: 0.8em; color: #777;">
+          Создан: <span th:text="${#temporals.format(request.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023 12:34</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom: 10px;">
+          <strong>Имя клиента:</strong>
+          <div th:text="${request.clientName}">Иван Петров</div>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <strong>Телефон:</strong>
+          <div th:text="${request.phoneNumber}">+380123456789</div>
+        </div>
+
+        <div style="margin-bottom: 10px;" th:if="${request.clientEmail != null}">
+          <strong>Email:</strong>
+          <div th:text="${request.clientEmail}">client@example.com</div>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <strong>Услуга:</strong>
+          <div th:text="${request.serviceName}">Индивидуальная консультация</div>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <strong>Сообщение клиента:</strong>
+          <div class="p-3 bg-light rounded" th:text="${request.message ?: 'Сообщение отсутствует'}">
+            Сообщение от клиента...
+          </div>
+        </div>
+
+        <div style="margin-bottom: 10px;" th:if="${request.processedAt != null}">
+          <strong>Обработан:</strong>
+          <div th:text="${#temporals.format(request.processedAt, 'dd.MM.yyyy HH:mm')}">01.01.2023 13:45</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Форма управления запросом -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Управление запросом</div>
+      <div class="card-body">
+        <form th:action="@{/admin/consultations/{id}(id=${request.id})}" method="post" th:object="${request}">
+          <input type="hidden" th:field="*{id}" />
+          <input type="hidden" th:field="*{clientName}" />
+          <input type="hidden" th:field="*{phoneNumber}" />
+          <input type="hidden" th:field="*{message}" />
+
+          <label for="status" class="form-label">Статус:</label>
+          <select id="status" th:field="*{status}" required>
+            <option th:each="status : ${statuses}"
+                    th:value="${status}"
+                    th:text="${status.displayName}">
+              Статус
+            </option>
+          </select>
+
+          <label for="serviceId" class="form-label">Услуга:</label>
+          <select id="serviceId" th:field="*{serviceId}">
+            <option value="">Не выбрано</option>
+            <option th:each="service : ${services}"
+                    th:value="${service.id}"
+                    th:text="${service.title}">
+              Услуга
+            </option>
+          </select>
+
+          <label for="adminNotes" class="form-label">Заметки администратора:</label>
+          <textarea id="adminNotes" th:field="*{adminNotes}"
+                    placeholder="Добавьте заметки или комментарии к запросу..."></textarea>
+
+          <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+              Сохранить изменения
+            </button>
+
+            <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteModal').style.display='block'">
+              Удалить запрос
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Дополнительные действия -->
+    <div class="card" style="margin-top: 20px;">
+      <div class="card-header">Быстрые действия</div>
+      <div class="card-body">
+        <div style="display: grid; gap: 10px;">
+          <a th:href="'tel:' + ${request.phoneNumber}" class="btn btn-outline-primary">
+            Позвонить клиенту
+          </a>
+          <a th:if="${request.clientEmail != null}" th:href="'mailto:' + ${request.clientEmail}" class="btn btn-outline-primary">
+            Написать клиенту
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модальное окно подтверждения удаления -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5>Подтверждение удаления</h5>
+      <button type="button" class="btn-close" onclick="document.getElementById('deleteModal').style.display='none'">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Вы уверены, что хотите удалить запрос от <strong th:text="${request.clientName}">Иван Петров</strong>?</p>
+      <p style="color: #dc3545;">Это действие невозможно отменить!</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('deleteModal').style.display='none'">Отмена</button>
+      <form th:action="@{/admin/consultations/{id}/delete(id=${request.id})}" method="post">
+        <button type="submit" class="btn btn-danger">Удалить</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Закрыть модальное окно при клике вне его
+  window.onclick = function(event) {
+    var modal = document.getElementById('deleteModal');
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+</body>
+</html>

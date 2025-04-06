@@ -200,4 +200,18 @@ public class ServiceService {
                 .map(serviceMapper::toCardDto)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Получает список всех активных услуг
+     * @return список DTO активных услуг
+     */
+    public List<ServiceDTO> getAllActiveServices() {
+        // Получаем все услуги с фильтром по полю active = true
+        List<Service> activeServices = serviceRepository.findByActiveTrue();
+
+        // Преобразуем сущности в DTO
+        return activeServices.stream()
+                .map(serviceMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

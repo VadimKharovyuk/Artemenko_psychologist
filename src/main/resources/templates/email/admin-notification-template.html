@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Новый запрос на консультацию</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #b69f7e;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    .value {
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #ffffff;
+      border-left: 3px solid #b69f7e;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #777;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+    .button {
+      display: inline-block;
+      background-color: #b69f7e;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    .timestamp {
+      font-style: italic;
+      color: #666;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1>Новый запрос на консультацию</h1>
+  <p>Административное уведомление</p>
+</div>
+
+<div class="content">
+  <p>Поступил новый запрос на консультацию. Ниже представлена информация о запросе:</p>
+
+  <div>
+    <span class="label">ID запроса:</span>
+    <div class="value" th:text="${requestId}">12345</div>
+
+    <span class="label">Имя клиента:</span>
+    <div class="value" th:text="${clientName}">Иван Петров</div>
+
+    <span class="label">Телефон:</span>
+    <div class="value" th:text="${phoneNumber}">+380 12 345 6789</div>
+
+    <span class="label">Услуга:</span>
+    <div class="value" th:text="${serviceName}">Индивидуальная консультация</div>
+
+    <span class="label">Сообщение клиента:</span>
+    <div class="value" th:text="${message}">Хотел бы записаться на индивидуальную консультацию в ближайшее время.</div>
+
+    <span class="label">Дата и время создания:</span>
+    <div class="value timestamp" th:text="${#temporals.format(createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023 12:34</div>
+  </div>
+
+  <p>Пожалуйста, обработайте этот запрос в ближайшее время.</p>
+
+  <a class="button" th:href="@{'http://localhost:2232/admin/consultations/' + ${requestId}}">
+    Перейти к запросу в админ-панели
+  </a>
+</div>
+
+<div class="footer">
+  <p>Это автоматическое уведомление. Пожалуйста, не отвечайте на это письмо.</p>
+  <p>© Психолог Артеменко. Все права защищены.</p>
+</div>
+</body>
+</html>

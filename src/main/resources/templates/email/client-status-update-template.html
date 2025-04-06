@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Обновление статуса заявки на консультацию</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #b69f7e;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .status {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #eaeaea;
+      border-left: 5px solid #b69f7e;
+      text-align: center;
+    }
+    .info-block {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #777;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+    .button {
+      display: inline-block;
+      background-color: #b69f7e;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    .contact-info {
+      background-color: #f9f9f9;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1>Психолог Артеменко</h1>
+  <p>Информация о вашей заявке</p>
+</div>
+
+<div class="content">
+  <p>Шановний(а) <span th:text="${clientName}">Клієнт</span>,</p>
+
+  <p>Хочемо повідомити вас про зміну статусу вашої заявки на консультацію.</p>
+
+  <div class="status" th:text="${status}">Статус обновлен</div>
+
+  <div class="info-block">
+    <p><strong>Послуга:</strong> <span th:text="${serviceName}">Консультация</span></p>
+
+    <div th:if="${status == 'Зв\'язались'}">
+      <p>Психолог скоро зв'яжеться з вами для уточнення деталей та призначення зручного часу зустрічі.</p>
+    </div>
+
+    <div th:if="${status == 'Заплановано'}">
+      <p>Ваша консультація запланована. Деталі щодо дати та часу були обговорені з вами.</p>
+      <p>Якщо у вас виникли питання або вам потрібно змінити час, будь ласка, зв'яжіться з нами.</p>
+    </div>
+  </div>
+
+  <div class="contact-info">
+    <p><strong>Контактна інформація:</strong></p>
+    <p>Телефон: +380 XX XXX XXXX</p>
+    <p>Email: info@artemenko-psychologist.com</p>
+  </div>
+
+  <p>Дякуємо за ваш запит!</p>
+
+  <p>З повагою,<br>Психолог Артеменко</p>
+</div>
+
+<div class="footer">
+  <p>Якщо у вас виникли питання, будь ласка, зв'яжіться з нами напряму.</p>
+  <p>© Психолог Артеменко. Всі права захищені.</p>
+</div>
+</body>
+</html>

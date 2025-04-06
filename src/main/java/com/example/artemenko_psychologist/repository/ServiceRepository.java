@@ -9,4 +9,6 @@ import java.util.List;
 public interface ServiceRepository  extends JpaRepository<com.example.artemenko_psychologist.entity.Service, Long> {
     List<com.example.artemenko_psychologist.entity.Service> findByActiveTrueOrderByDisplayOrderAsc();
 
+    List<com.example.artemenko_psychologist.entity.Service> findByActiveTrue();
+
 }

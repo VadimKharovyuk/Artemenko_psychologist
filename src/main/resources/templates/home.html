@@ -565,32 +565,89 @@
             <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
                 <h2 class="section-title">Запис на консультацію</h2>
                 <p class="mb-4">Заповніть форму, і я зв'яжуся з вами найближчим часом для підтвердження запису.</p>
-                <form>
+
+                <form th:action="@{/services/consultation-request}" method="post" th:object="${consultationRequestDto}">
                     <div class="row g-3">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Ваше ім'я" required>
+                        <!-- Сообщения об ошибках, если они есть -->
+                        <div class="col-12" th:if="${#fields.hasErrors('*')}">
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                                </ul>
+                            </div>
                         </div>
+
                         <div class="col-md-6">
-                            <input type="tel" class="form-control" placeholder="Телефон" required>
+                            <input type="text" class="form-control" th:field="*{clientName}"
+                                   placeholder="Ваше ім'я" required
+                                   th:classappend="${#fields.hasErrors('clientName')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}"></div>
                         </div>
+
+                        <div class="col-md-6">
+                            <input type="tel" class="form-control" th:field="*{phoneNumber}"
+                                   placeholder="Телефон" required
+                                   th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <input type="email" class="form-control" th:field="*{clientEmail}"
+                                   placeholder="Email (опціонально)"
+                                   th:classappend="${#fields.hasErrors('clientEmail')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('clientEmail')}" th:errors="*{clientEmail}"></div>
+                        </div>
+
                         <div class="col-12">
-                            <select class="form-select" required>
+                            <select class="form-select" th:field="*{serviceId}" required
+                                    th:classappend="${#fields.hasErrors('serviceId')} ? 'is-invalid'">
                                 <option value="" selected disabled>Оберіть послугу</option>
-                                <option value="individual">Індивідуальна консультація</option>
-                                <option value="family">Сімейна терапія</option>
-                                <option value="online">Онлайн-консультація</option>
-                                <option value="relationships">Психологія стосунків</option>
+                                <option th:each="service : ${allServices}"
+                                        th:value="${service.id}"
+                                        th:text="${service.title}">Назва послуги</option>
                             </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('serviceId')}" th:errors="*{serviceId}"></div>
                         </div>
+
                         <div class="col-12">
-                            <textarea class="form-control" rows="4" placeholder="Ваше повідомлення"></textarea>
+            <textarea class="form-control" rows="4" th:field="*{message}"
+                      placeholder="Ваше повідомлення"
+                      th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></div>
                         </div>
+
                         <div class="col-12">
                             <button type="submit" class="btn btn-main">Відправити заявку</button>
                         </div>
                     </div>
                 </form>
+<!--                <form>-->
+<!--                    <div class="row g-3">-->
+<!--                        <div class="col-md-6">-->
+<!--                            <input type="text" class="form-control" placeholder="Ваше ім'я" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6">-->
+<!--                            <input type="tel" class="form-control" placeholder="Телефон" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-12">-->
+<!--                            <select class="form-select" required>-->
+<!--                                <option value="" selected disabled>Оберіть послугу</option>-->
+<!--                                <option value="individual">Індивідуальна консультація</option>-->
+<!--                                <option value="family">Сімейна терапія</option>-->
+<!--                                <option value="online">Онлайн-консультація</option>-->
+<!--                                <option value="relationships">Психологія стосунків</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="col-12">-->
+<!--                            <textarea class="form-control" rows="4" placeholder="Ваше повідомлення"></textarea>-->
+<!--                        </div>-->
+<!--                        <div class="col-12">-->
+<!--                            <button type="submit" class="btn btn-main">Відправити заявку</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
             </div>
+
             <div class="col-lg-6" data-aos="fade-left">
                 <h2 class="section-title">Контактна інформація</h2>
                 <p class="mb-4">Ви також можете зв'язатися зі мною безпосередньо за вказаними контактами або відвідати мій офіс.</p>
@@ -624,15 +681,6 @@
                         </div>
                     </div>
                 </div>
-<!--                <div class="social-media">-->
-<!--                    <h5 class="h6 mb-3">Соціальні мережі</h5>-->
-<!--                    <div>-->
-<!--                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>-->
-<!--                        <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>-->
-<!--                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>-->
-<!--                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
         </div>
     </div>
