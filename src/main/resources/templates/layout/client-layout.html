@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">Психолог Артеменко</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- AOS Animation Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <!-- Additional CSS for services -->
+  <link rel="stylesheet" th:href="@{/css/services.css}">
+</head>
+<body>
+<!-- Header -->
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" th:href="@{/}">
+        Психолог Артеменко
+      </a>
+
+      <!-- Mobile Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarMain" aria-controls="navbarMain"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navigation Menu -->
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/}">Главная</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/#about}">Обо мне</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/services}">Услуги</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/blog}">Блог</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/reviews}">Отзывы</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/contacts}">Контакты</a>
+          </li>
+        </ul>
+
+        <!-- Call to Action Button -->
+        <a href="#" class="btn btn-primary ms-lg-3">Записаться</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Main Content -->
+<main>
+  <div th:replace="${content}">
+    <!-- The content section will be inserted here -->
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Contact Information -->
+      <div class="col-lg-4">
+        <h5>Контакты</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <i class="bi bi-geo-alt me-2"></i> Москва, ул. Примерная, 123
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-telephone me-2"></i> +7 (999) 123-45-67
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-envelope me-2"></i> example@mail.com
+          </li>
+        </ul>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-4">
+        <h5>Быстрые ссылки</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a th:href="@{/}" class="text-white text-decoration-none">Главная</a>
+          </li>
+          <li class="mb-2">
+            <a th:href="@{/services}" class="text-white text-decoration-none">Услуги</a>
+          </li>
+          <li class="mb-2">
+            <a th:href="@{/blog}" class="text-white text-decoration-none">Блог</a>
+          </li>
+          <li class="mb-2">
+            <a th:href="@{/reviews}" class="text-white text-decoration-none">Отзывы</a>
+          </li>
+          <li class="mb-2">
+            <a th:href="@{/contacts}" class="text-white text-decoration-none">Контакты</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social Media & Newsletter -->
+      <div class="col-lg-4">
+        <h5>Подписаться на новости</h5>
+        <p>Будьте в курсе новых статей, специальных предложений и событий</p>
+        <form action="#" method="post" class="mb-3">
+          <div class="input-group">
+            <input type="email" class="form-control" placeholder="Ваш email" required>
+            <button class="btn btn-primary" type="submit">Подписаться</button>
+          </div>
+        </form>
+
+        <!-- Social Media Icons -->
+        <div class="social-links">
+          <a href="#" class="text-white me-2"><i class="bi bi-telegram"></i></a>
+          <a href="#" class="text-white me-2"><i class="bi bi-whatsapp"></i></a>
+          <a href="#" class="text-white me-2"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-white me-2"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-top border-secondary mt-4 pt-4 text-center">
+      <p class="mb-0">&copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2023</span>
+        Психолог Артеменко. Все права защищены.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS Animation Library -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Initialize AOS -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="${pageTitle}">Детали услуги</title>
+    <link rel="stylesheet" th:href="@{/css/services.css}">
+</head>
+<body>
+<section>
+    <!-- Заголовок страницы -->
+    <div class="page-header">
+        <div class="container">
+            <h1 class="display-4" th:text="${service.title}">Название услуги</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/services}">Услуги</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${service.title}">Название услуги</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Детали услуги -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- Левая колонка - изображение и ключевая информация -->
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <div class="card service-detail-card" data-aos="fade-right">
+                    <!-- Изображение услуги -->
+                    <div th:if="${service.imageUrl != null}" class="service-image-container">
+                        <img th:src="${service.imageUrl}" class="card-img-top service-detail-image"
+                             th:alt="${service.title}">
+                    </div>
+                    <div class="card-body">
+                        <!-- Иконка и заголовок -->
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="service-icon me-3">
+                                <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>
+                                <i th:unless="${service.iconClass != null}" class="bi bi-stars"></i>
+                            </div>
+                            <h3 class="h4 mb-0" th:text="${service.title}">Название услуги</h3>
+                        </div>
+
+                        <!-- Информация о цене и длительности -->
+                        <div class="service-info">
+                            <div class="service-price mb-3">
+                                <span class="price-label">Стоимость:</span>
+                                <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> ₽
+                            </div>
+                            <div class="service-duration mb-3" th:if="${service.durationMinutes}">
+                                <span class="duration-label">Длительность:</span>
+                                <span class="duration-value" th:text="${service.durationMinutes}">60</span> минут
+                            </div>
+                        </div>
+
+                        <!-- Кнопка действия -->
+                        <a href="#appointment-form" class="btn btn-primary w-100">Записаться</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка - полное описание -->
+            <div class="col-lg-8">
+                <div class="card" data-aos="fade-left">
+                    <div class="card-body">
+                        <h2 class="h3 mb-4">Описание услуги</h2>
+
+                        <!-- Краткое описание -->
+                        <p class="lead mb-4" th:text="${service.shortDescription}">
+                            Краткое описание услуги
+                        </p>
+
+                        <!-- Полное описание с сохранением форматирования -->
+                        <div class="service-description" th:utext="${#strings.replace(#strings.escapeXml(service.description), '&#10;', '<br>')}">
+                            Полное описание услуги
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Форма записи на консультацию -->
+                <div class="card mt-4" id="appointment-form" data-aos="fade-up">
+                    <div class="card-body">
+                        <h3 class="h4 mb-4">Запись на консультацию</h3>
+                        <form th:action="@{/appointments/book}" method="post">
+                            <input type="hidden" name="serviceId" th:value="${service.id}">
+
+                            <div class="mb-3">
+                                <label for="clientName" class="form-label">Ваше имя</label>
+                                <input type="text" class="form-control" id="clientName" name="clientName" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="clientPhone" class="form-label">Телефон</label>
+                                <input type="tel" class="form-control" id="clientPhone" name="clientPhone" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="clientEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="clientEmail" name="clientEmail">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Сообщение (опционально)</label>
+                                <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
