@@ -110,4 +110,8 @@ public class BlogPostService {
                 .toList();
         return blogPostMapper.toListDto(posts);
     }
+
+    public long countPublishedPosts() {
+      return   blogPostRepository.count();
+    }
 }

@@ -214,4 +214,8 @@ public class ServiceService {
                 .map(serviceMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public long countActiveServices() {
+        return serviceRepository.count();
+    }
 }

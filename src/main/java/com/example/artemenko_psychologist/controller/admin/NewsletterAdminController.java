@@ -1,4 +1,4 @@
-package com.example.artemenko_psychologist.controller;
+package com.example.artemenko_psychologist.controller.admin;
 
 import com.example.artemenko_psychologist.dto.blog.BlogPostListDto;
 import com.example.artemenko_psychologist.service.BlogPostService;
