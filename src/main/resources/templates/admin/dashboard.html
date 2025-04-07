@@ -90,6 +90,10 @@
             color: #6c757d;
             margin-bottom: 0;
         }
+        .bg-reviews {
+            background-color: #FFD700; /* Gold color for stars/reviews */
+            color: #212529;
+        }
     </style>
 </head>
 <body>
@@ -116,8 +120,14 @@
                 <a href="/admin/consultations" class="sidebar-link">
                     <i class="bi bi-calendar-check"></i> Консультации
                 </a>
+                <a href="/admin/reviews" class="sidebar-link">
+                    <i class="bi bi-star"></i> Отзывы
+                </a>
                 <a href="/admin/newsletter" class="sidebar-link">
                     <i class="bi bi-envelope"></i> Рассылка
+                </a>
+                <a href="/admin/profiles" class="sidebar-link">
+                    <i class="bi bi-person"></i> Профиль
                 </a>
                 <a href="/" class="sidebar-link mt-auto">
                     <i class="bi bi-box-arrow-left"></i> На сайт
@@ -244,6 +254,21 @@
                     </div>
                 </div>
 
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-icon bg-reviews">
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Отзывы</h5>
+                            <p class="card-text">Просмотр отзывов клиентов.</p>
+                            <div class="d-grid">
+                                <a href="/admin/reviews" class="btn btn-outline-success">Перейти к отзывам</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Рассылка -->
                 <div class="col-md-6 col-lg-4">
                     <div class="card dashboard-card h-100">

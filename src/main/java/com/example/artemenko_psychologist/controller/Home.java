@@ -39,6 +39,11 @@ public class Home {
         // DTO для формы записи на консультацию
         model.addAttribute("consultationRequestDto", new ConsultationRequestCreateDto());
 
+
+        //для футера серисы
+        List<ServiceDTO> allAServicesFoter = serviceService.getLatestServices(3);
+        model.addAttribute("footerServices",allAServicesFoter);
+
         return "home";
     }
 }

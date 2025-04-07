@@ -678,23 +678,27 @@
             <div class="col-md-2 mb-4 mb-md-0">
                 <h5 class="footer-title">Навігація</h5>
                 <div class="footer-links">
-                    <a href="#">Головна</a>
-                    <a href="#about">Про мене</a>
+                    <a href="/">Головна</a>
+                    <a href="/profiles">Про мене</a>
                     <a href="/services">Послуги</a>
-                    <a href="#blog">Блог</a>
-                    <a href="#contact">Контакти</a>
+                    <a href="/blog">Блог</a>
+                    <a href="/reviews">Відгуки</a>
                 </div>
             </div>
+
             <div class="col-md-3 mb-4 mb-md-0">
                 <h5 class="footer-title">Послуги</h5>
                 <div class="footer-links">
-                    <a href="#">Індивідуальні консультації</a>
-                    <a href="#">Сімейна терапія</a>
-                    <a href="#">Психологія стосунків</a>
-                    <a href="#">Онлайн-консультації</a>
-                    <a href="#">Навчальні програми</a>
+                    <!-- Loop through the latest services -->
+                    <th:block th:each="service : ${footerServices}">
+                        <a th:href="@{/services/{id}(id=${service.id})}" th:text="${service.title}">Назва послуги</a>
+                    </th:block>
+
+                    <!-- If you have fewer than 5 services, you can add a "view all" link -->
+                    <a th:href="@{/services}" class="mt-2">Усі послуги →</a>
                 </div>
             </div>
+
             <div class="col-lg-3">
                 <h5>Підписатися на новини</h5>
                 <!-- Флеш-сообщения -->
