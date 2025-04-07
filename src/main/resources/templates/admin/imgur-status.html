@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="${pageTitle}">Статус API Imgur</title>
+</head>
+<body>
+<section>
+  <div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Статус API Imgur</h1>
+      <a th:href="@{/admin/dashboard}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Назад к панели управления
+      </a>
+    </div>
+
+    <!-- Карточка с информацией о лимитах -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Лимиты запросов</h6>
+      </div>
+      <div class="card-body">
+        <!-- Проверка на наличие ошибки -->
+        <div th:if="${rateLimits.containsKey('error')}" class="alert alert-danger" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <span th:text="${rateLimits.error}">Ошибка</span>
+        </div>
+
+        <!-- Клиентские лимиты -->
+        <div class="mb-4" th:if="${rateLimits.containsKey('ClientRemaining') && rateLimits.containsKey('ClientLimit')}">
+          <h5 class="font-weight-bold">Клиентские лимиты</h5>
+          <div class="progress mb-2">
+            <div class="progress-bar" role="progressbar"
+                 th:style="'width: ' + (${rateLimits.ClientRemaining} * 100 / ${rateLimits.ClientLimit}) + '%'"
+                 th:aria-valuenow="${rateLimits.ClientRemaining}"
+                 aria-valuemin="0" th:aria-valuemax="${rateLimits.ClientLimit}">
+              <span th:text="${rateLimits.ClientRemaining} + ' из ' + ${rateLimits.ClientLimit}"></span>
+            </div>
+          </div>
+          <p class="text-sm">
+            Оставшиеся запросы: <strong th:text="${rateLimits.ClientRemaining}">0</strong> из
+            <span th:text="${rateLimits.ClientLimit}">0</span>
+          </p>
+        </div>
+
+        <!-- Пользовательские лимиты -->
+        <div class="mb-4" th:if="${rateLimits.containsKey('UserRemaining') && rateLimits.containsKey('UserLimit')}">
+          <h5 class="font-weight-bold">Пользовательские лимиты</h5>
+          <div class="progress mb-2">
+            <div class="progress-bar bg-info" role="progressbar"
+                 th:style="'width: ' + (${rateLimits.UserRemaining} * 100 / ${rateLimits.UserLimit}) + '%'"
+                 th:aria-valuenow="${rateLimits.UserRemaining}"
+                 aria-valuemin="0" th:aria-valuemax="${rateLimits.UserLimit}">
+              <span th:text="${rateLimits.UserRemaining} + ' из ' + ${rateLimits.UserLimit}"></span>
+            </div>
+          </div>
+          <p class="text-sm">
+            Оставшиеся запросы: <strong th:text="${rateLimits.UserRemaining}">0</strong> из
+            <span th:text="${rateLimits.UserLimit}">0</span>
+          </p>
+        </div>
+
+        <!-- Лимит загрузок (если доступен) -->
+        <div class="mb-4" th:if="${rateLimits.containsKey('UserUploadRemaining')}">
+          <h5 class="font-weight-bold">Лимит загрузок</h5>
+          <p class="text-sm">
+            Осталось загрузок: <strong th:text="${rateLimits.UserUploadRemaining}">0</strong>
+          </p>
+        </div>
+
+        <!-- Время до сброса -->
+        <div class="mb-4" th:if="${rateLimits.containsKey('ResetTimeSeconds') && rateLimits.containsKey('ResetTime')}">
+          <h5 class="font-weight-bold">Время до сброса лимитов</h5>
+          <p>
+            Сброс через: <strong th:text="${rateLimits.ResetTimeSeconds} + ' секунд'">0 секунд</strong>
+            <br>
+            Дата и время сброса: <span th:text="${rateLimits.ResetTime}">--</span>
+          </p>
+        </div>
+
+        <!-- Дополнительная информация из заголовков -->
+        <div class="mb-4">
+          <h5 class="font-weight-bold">Дополнительная информация из заголовков</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead>
+              <tr>
+                <th>Параметр</th>
+                <th>Значение</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="entry : ${rateLimits}" th:if="${entry.key.startsWith('X-')}">
+                <td th:text="${entry.key}">Параметр</td>
+                <td th:text="${entry.value != null ? entry.value : 'Н/Д'}">Значение</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Время обновления информации -->
+        <div class="mt-4 text-right">
+          <small class="text-muted">Информация обновлена: <span th:text="${#dates.format(#dates.createNow(), 'dd.MM.yyyy HH:mm:ss')}">01.01.2023 00:00:00</span></small>
+          <a th:href="@{/admin/imgur-status}" class="btn btn-sm btn-outline-primary ml-2">
+            <i class="bi bi-arrow-clockwise"></i> Обновить
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Рекомендации по использованию API -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Рекомендации по использованию Imgur API</h6>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Ограничение запросов:</strong> Бесплатный аккаунт Imgur ограничен 12,500 запросами в день.</li>
+          <li><strong>Пространство для загрузки:</strong> Бесплатный аккаунт имеет ограничения на количество загрузок в час.</li>
+          <li><strong>В случае превышения лимитов:</strong> API будет возвращать ошибку 429 (Too Many Requests).</li>
+          <li><strong>Рекомендации:</strong>
+            <ul>
+              <li>Используйте кэширование для уменьшения количества запросов</li>
+              <li>Оптимизируйте размер изображений перед загрузкой</li>
+              <li>Если ошибки 429 возникают регулярно, рассмотрите возможность перехода на платный план</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

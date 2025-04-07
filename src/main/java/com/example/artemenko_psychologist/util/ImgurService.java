@@ -1,13 +1,12 @@
 package com.example.artemenko_psychologist.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -15,7 +14,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -134,5 +136,80 @@ public class ImgurService {
         }
 
         return false;
+    }
+
+    /**
+     * Метод для проверки оставшихся лимитов запросов Imgur API
+     * @return Map с информацией о лимитах
+     */
+    public Map<String, Object> getRateLimitInfo() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Client-ID " + clientId);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        Map<String, Object> rateLimits = new HashMap<>();
+
+        try {
+            // Отправляем простой GET-запрос на конечную точку API
+            ResponseEntity<String> response = restTemplate.exchange(
+                    "https://api.imgur.com/3/credits",
+                    HttpMethod.GET,
+                    entity,
+                    String.class);
+
+            // Получаем заголовки лимитов
+            HttpHeaders responseHeaders = response.getHeaders();
+
+            // Извлекаем основную информацию из тела ответа
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode root = mapper.readTree(response.getBody());
+                if (root.has("data")) {
+                    JsonNode data = root.get("data");
+
+                    // Безопасное получение значений с проверкой на null
+                    if (data.has("ClientRemaining")) {
+                        rateLimits.put("ClientRemaining", data.get("ClientRemaining").asInt());
+                    }
+                    if (data.has("ClientLimit")) {
+                        rateLimits.put("ClientLimit", data.get("ClientLimit").asInt());
+                    }
+                    if (data.has("UserRemaining")) {
+                        rateLimits.put("UserRemaining", data.get("UserRemaining").asInt());
+                    }
+                    if (data.has("UserLimit")) {
+                        rateLimits.put("UserLimit", data.get("UserLimit").asInt());
+                    }
+                    if (data.has("UserUploadRemaining")) {
+                        rateLimits.put("UserUploadRemaining", data.get("UserUploadRemaining").asInt());
+                    }
+                    if (data.has("UserReset")) {
+                        long resetTime = data.get("UserReset").asLong();
+                        rateLimits.put("ResetTimeSeconds", resetTime - Instant.now().getEpochSecond());
+                        rateLimits.put("ResetTime", new Date(resetTime * 1000).toString());
+                    }
+                }
+            } catch (Exception e) {
+                rateLimits.put("error", "Ошибка при парсинге ответа: " + e.getMessage());
+            }
+
+            // Также собираем информацию из заголовков ответа
+            addHeaderToRateLimits(responseHeaders, rateLimits, "X-RateLimit-ClientLimit");
+            addHeaderToRateLimits(responseHeaders, rateLimits, "X-RateLimit-ClientRemaining");
+            addHeaderToRateLimits(responseHeaders, rateLimits, "X-RateLimit-UserLimit");
+            addHeaderToRateLimits(responseHeaders, rateLimits, "X-RateLimit-UserRemaining");
+            addHeaderToRateLimits(responseHeaders, rateLimits, "X-RateLimit-UserReset");
+        } catch (Exception e) {
+            rateLimits.put("error", "Ошибка при запросе к API: " + e.getMessage());
+        }
+
+        return rateLimits;
+    }
+
+    // Вспомогательный метод для безопасного добавления значений заголовков
+    private void addHeaderToRateLimits(HttpHeaders headers, Map<String, Object> rateLimits, String headerName) {
+        String value = headers.getFirst(headerName);
+        rateLimits.put(headerName, value);
     }
 }
