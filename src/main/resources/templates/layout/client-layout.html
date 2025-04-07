@@ -61,11 +61,9 @@
             <a class="nav-link" th:href="@{/reviews}">Відгуки</a>
           </li>
           <li class="nav-item">
-            <!--            <a class="nav-link" th:href="@{/#contacts}">Записатися</a>-->
           </li>
         </ul>
 
-        <!--        <a class="btn btn-primary ms-lg-3" th:href="@{/#contact}" style="margin-top: 15px;">Записатися</a>-->
       </div>
     </div>
   </nav>
@@ -77,7 +75,6 @@
     <!-- The content section will be inserted here -->
   </div>
 </main>
-
 <!-- Footer -->
 <footer class="bg-dark text-white py-5">
   <div class="container">
@@ -96,6 +93,17 @@
             <i class="bi bi-envelope me-2"></i> example@mail.com
           </li>
         </ul>
+
+        <!-- Social Media Icons -->
+        <div class="mt-3">
+          <h6 class="mb-2">Соціальні мережі:</h6>
+          <div class="social-links">
+            <a href="#" class="text-white me-2"><i class="bi bi-telegram"></i></a>
+            <a href="#" class="text-white me-2"><i class="bi bi-whatsapp"></i></a>
+            <a href="#" class="text-white me-2"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-white me-2"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
       </div>
 
       <!-- Quick Links -->
@@ -120,12 +128,23 @@
         </ul>
       </div>
 
-        <!-- Social Media Icons -->
-        <div class="social-links">
-          <a href="#" class="text-white me-2"><i class="bi bi-telegram"></i></a>
-          <a href="#" class="text-white me-2"><i class="bi bi-whatsapp"></i></a>
-          <a href="#" class="text-white me-2"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="text-white me-2"><i class="bi bi-youtube"></i></a>
+      <!-- Newsletter Subscription -->
+      <!-- Newsletter Subscription -->
+      <div class="col-lg-4">
+        <h5>Підписатися на новини</h5>
+        <p class="mb-3">Отримуйте корисні статті та поради психолога на вашу пошту</p>
+        <form th:action="@{/subscribe}" method="post" class="mb-3">
+          <div class="input-group mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Ваш email" aria-label="Email для підписки" required>
+            <button class="btn btn-primary" type="submit">Підписатися</button>
+          </div>
+        </form>
+
+        <!-- Working Hours -->
+        <div class="mt-4">
+          <h6>Графік роботи:</h6>
+          <p class="mb-1">Пн-Пт: 9:00 - 18:00</p>
+          <p class="mb-0">Сб: 10:00 - 15:00 (за попереднім записом)</p>
         </div>
       </div>
     </div>

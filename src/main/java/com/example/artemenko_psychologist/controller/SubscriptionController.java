@@ -18,35 +18,71 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
-    @PostMapping
-    public String subscribe(
-            @Valid SubscriptionDto subscriptionDto,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
-        // Проверка валидации
-        if (bindingResult.hasErrors()) {
-            // Сохраняем невалидный DTO для повторного отображения формы
-            redirectAttributes.addFlashAttribute("subscriptionDto", subscriptionDto);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.subscriptionDto", bindingResult);
-            redirectAttributes.addFlashAttribute("errorMessage", "Невірний формат електронної пошти");
-            return "redirect:/";
-        }
+//    @PostMapping
+//    public String subscribe(
+//            @Valid SubscriptionDto subscriptionDto,
+//            BindingResult bindingResult,
+//            RedirectAttributes redirectAttributes
+//    ) {
+//        // Проверка валидации
+//        if (bindingResult.hasErrors()) {
+//            // Сохраняем невалидный DTO для повторного отображения формы
+//            redirectAttributes.addFlashAttribute("subscriptionDto", subscriptionDto);
+//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.subscriptionDto", bindingResult);
+//            redirectAttributes.addFlashAttribute("errorMessage", "Невірний формат електронної пошти");
+//            return "redirect:/";
+//        }
+//
+//        try {
+//            // Попытка подписки
+//            boolean subscribed = subscriptionService.subscribe(subscriptionDto);
+//
+//            // Установка сообщения
+//            if (subscribed) {
+//                redirectAttributes.addFlashAttribute("successMessage", "Ви успішно підписалися на розсилку!");
+//            } else {
+//                redirectAttributes.addFlashAttribute("warningMessage", "Ця електронна пошта вже підписана.");
+//            }
+//        } catch (Exception e) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "Виникла помилка при підписці. Спробуйте пізніше.");
+//        }
+//
+//        return "redirect:/";
+//    }
 
-        try {
-            // Попытка подписки
-            boolean subscribed = subscriptionService.subscribe(subscriptionDto);
 
-            // Установка сообщения
-            if (subscribed) {
-                redirectAttributes.addFlashAttribute("successMessage", "Ви успішно підписалися на розсилку!");
-            } else {
-                redirectAttributes.addFlashAttribute("warningMessage", "Ця електронна пошта вже підписана.");
+        @PostMapping
+        public String subscribe(
+                @Valid SubscriptionDto subscriptionDto,
+                BindingResult bindingResult,
+                RedirectAttributes redirectAttributes
+        ) {
+            // Проверка валидации
+            if (bindingResult.hasErrors()) {
+                // Сохраняем невалидный DTO для повторного отображения формы
+                redirectAttributes.addFlashAttribute("subscriptionDto", subscriptionDto);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.subscriptionDto", bindingResult);
+                redirectAttributes.addFlashAttribute("errorMessage", "Невірний формат електронної пошти");
+                return "redirect:/";
             }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Виникла помилка при підписці. Спробуйте пізніше.");
-        }
 
-        return "redirect:/";
+            try {
+                // Попытка подписки
+                boolean subscribed = subscriptionService.subscribe(subscriptionDto);
+
+                // Установка сообщения
+                if (subscribed) {
+                    // Добавляем флеш-атрибут для страницы благодарности
+                    redirectAttributes.addFlashAttribute("subscriptionSuccess", true);
+                    redirectAttributes.addFlashAttribute("subscribedEmail", subscriptionDto.getEmail());
+                    return "redirect:/thank-you/subscription";
+                } else {
+                    redirectAttributes.addFlashAttribute("warningMessage", "Ця електронна пошта вже підписана.");
+                    return "redirect:/";
+                }
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Виникла помилка при підписці. Спробуйте пізніше.");
+                return "redirect:/";
+            }
+        }
     }
-}
