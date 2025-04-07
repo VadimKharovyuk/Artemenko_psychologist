@@ -17,6 +17,7 @@ public class BlogPostListDto {
     private String title;
     private String previewImageUrl;
     private String shortDescription;
+    private String content; // Добавленное поле для полного содержимого
     private String categoryName;
     private LocalDateTime publicationDate;
 }

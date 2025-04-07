@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="${post.title + ' - Блог психолога Артеменко'}">Название статьи - Блог психолога Артеменко</title>
+  <meta name="description" th:content="${post.shortDescription}">
+</head>
+<body>
+<section>
+  <article class="blog-post">
+    <!-- Основное содержимое статьи -->
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <!-- Хлебные крошки -->
+          <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">Главная</a></li>
+              <li class="breadcrumb-item"><a href="/blog">Блог</a></li>
+              <li class="breadcrumb-item active" aria-current="page" th:text="${post.title}">Название статьи</li>
+            </ol>
+          </nav>
+
+          <!-- Заголовок и метаданные -->
+          <header class="mb-4">
+            <h1 class="mb-3" th:text="${post.title}">Название статьи</h1>
+            <div class="d-flex align-items-center text-muted mb-4">
+              <div class="me-3" th:if="${post.categoryName != null}">
+                <span class="badge bg-secondary" th:text="${post.categoryName}">Категория</span>
+              </div>
+              <div>
+                <i class="bi bi-calendar-date me-1"></i>
+                <span th:text="${#temporals.format(post.publicationDate, 'dd.MM.yyyy')}">01.01.2023</span>
+              </div>
+            </div>
+          </header>
+
+          <!-- Основное изображение статьи -->
+          <div class="blog-featured-image mb-4">
+            <img th:if="${post.previewImageUrl}" th:src="${post.previewImageUrl}" class="img-fluid rounded" alt="Изображение статьи">
+          </div>
+
+          <!-- Содержимое статьи -->
+          <div class="blog-content" th:utext="${#strings.replace(#strings.escapeXml(post.content), '&#10;', '<br>')}">
+            Содержимое статьи...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Другие статьи -->
+    <div class="bg-light py-5">
+      <div class="container">
+        <h2 class="h4 mb-4 text-center">Вам также может быть интересно</h2>
+
+        <div class="row" id="relatedPosts">
+          <!-- Здесь будут подгружаться связанные статьи через AJAX -->
+          <div class="col-12 text-center">
+            <div class="spinner-border text-secondary" role="status">
+              <span class="visually-hidden">Загрузка...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- JavaScript для подгрузки связанных статей -->
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Текущий ID поста
+      const currentPostId = [[${post.id}]];
+
+      // Загрузка связанных статей
+      fetch(`/blog/latest?exclude=${currentPostId}`)
+              .then(response => response.text())
+              .then(html => {
+                document.getElementById('relatedPosts').innerHTML = html;
+              })
+              .catch(error => {
+                console.error('Ошибка при загрузке связанных статей:', error);
+              });
+    });
+  </script>
+</section>
+</body>
+</html>

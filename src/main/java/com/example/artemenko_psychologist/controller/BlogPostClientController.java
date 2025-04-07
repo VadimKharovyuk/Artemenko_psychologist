@@ -26,6 +26,7 @@ public class BlogPostClientController {
         return "client/blog/list";
     }
 
+
     // Детальный просмотр конкретного поста
     @GetMapping("/{id}")
     public String viewBlogPost(@PathVariable Long id, Model model) {

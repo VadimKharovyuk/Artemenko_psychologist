@@ -77,8 +77,15 @@ public class BlogPostMapper {
         dto.setTitle(blogPost.getTitle());
         dto.setPreviewImageUrl(blogPost.getPreviewImageUrl());
         dto.setShortDescription(blogPost.getShortDescription());
-        dto.setCategoryName(blogPost.getCategory() != null ? blogPost.getCategory().getName() : null);
+        dto.setContent(blogPost.getContent()); // Добавленная строка для нового поля
+
+        // Установка имени категории, если категория существует
+        if (blogPost.getCategory() != null) {
+            dto.setCategoryName(blogPost.getCategory().getName());
+        }
+
         dto.setPublicationDate(blogPost.getPublicationDate());
+
         return dto;
     }
 

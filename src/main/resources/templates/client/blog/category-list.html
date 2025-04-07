@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="${posts.size() > 0 ? posts[0].category.name + ' - Блог психолога Артеменко' : 'Категория - Блог психолога Артеменко'}">Категория - Блог психолога Артеменко</title>
+</head>
+<body>
+<section>
+  <!-- Заголовок страницы категории -->
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-4 mb-4" th:text="${posts.size() > 0 ? posts[0].categoryName : 'Категория'}">Категория</h1>
+        <p class="lead">Статьи по выбранной категории</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Список статей в категории -->
+  <div class="container pb-5">
+    <div class="row g-4">
+      <!-- Если постов нет -->
+      <div class="col-12" th:if="${posts.empty}">
+        <div class="alert alert-info">
+          В данной категории пока нет статей. Пожалуйста, выберите другую категорию или загляните позже.
+        </div>
+        <div class="text-center mt-4">
+          <a href="/blog" class="btn btn-outline-primary">Вернуться ко всем статьям</a>
+        </div>
+      </div>
+
+      <!-- Карточки постов -->
+      <div class="col-md-6 col-lg-4" th:each="post : ${posts}">
+        <div class="card h-100 shadow-sm" data-aos="fade-up">
+          <!-- Изображение поста -->
+          <div class="blog-image-container">
+            <img th:if="${post.previewImageUrl}" th:src="${post.previewImageUrl}" class="card-img-top" alt="Изображение статьи">
+            <img th:unless="${post.previewImageUrl}" src="/images/default-blog.jpg" class="card-img-top" alt="Изображение статьи">
+          </div>
+
+          <div class="card-body d-flex flex-column">
+            <!-- Метаданные поста -->
+            <div class="d-flex justify-content-between mb-2 text-muted small">
+              <span th:text="${#temporals.format(post.publicationDate, 'dd.MM.yyyy')}">01.01.2023</span>
+            </div>
+            <!-- Заголовок и краткое описание -->
+            <h3 class="h5 card-title" th:text="${post.title}">Заголовок статьи</h3>
+            <p class="card-text" th:text="${post.shortDescription}">Краткое описание статьи...</p>
+
+            <!-- Кнопка "Читать далее" -->
+            <a th:href="@{/blog/{id}(id=${post.id})}" class="btn btn-outline-secondary mt-auto">Читать далее</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ссылка для возврата ко всем статьям -->
+    <div class="text-center mt-5">
+      <a href="/blog" class="btn btn-outline-primary">Вернуться ко всем статьям</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>
