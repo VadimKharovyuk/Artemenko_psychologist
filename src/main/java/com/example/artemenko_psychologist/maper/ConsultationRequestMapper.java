@@ -3,9 +3,10 @@ package com.example.artemenko_psychologist.maper;
 import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestCreateDto;
 import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestDetailsDto;
 import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestListDto;
-import com.example.artemenko_psychologist.entity.Service;
+
 import com.example.artemenko_psychologist.enums.ConsultationStatus;
 import com.example.artemenko_psychologist.model.ConsultationRequest;
+import com.example.artemenko_psychologist.model.Service;
 import com.example.artemenko_psychologist.repository.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

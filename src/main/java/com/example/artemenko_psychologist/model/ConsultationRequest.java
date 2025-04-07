@@ -33,7 +33,7 @@ public class ConsultationRequest {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id")
-    private com.example.artemenko_psychologist.entity.Service service;
+    private Service service;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

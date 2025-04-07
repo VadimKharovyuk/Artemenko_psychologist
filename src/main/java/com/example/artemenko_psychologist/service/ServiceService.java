@@ -4,10 +4,11 @@ import com.example.artemenko_psychologist.dto.service.ServiceCardDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceCreateFormDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceUpdateFormDTO;
-import com.example.artemenko_psychologist.entity.Service;
+
 
 import com.example.artemenko_psychologist.exception.ResourceNotFoundException;
 import com.example.artemenko_psychologist.maper.ServiceMapper;
+import com.example.artemenko_psychologist.model.Service;
 import com.example.artemenko_psychologist.repository.ServiceRepository;
 import com.example.artemenko_psychologist.util.ImgurService;
 import lombok.RequiredArgsConstructor;

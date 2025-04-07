@@ -1,0 +1,77 @@
+/* Стили для секции отзывов */
+
+/* Контейнеры изображений отзывов */
+.review-image-container {
+    height: 200px;
+    overflow: hidden;
+}
+
+.review-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card:hover .review-image-container img {
+    transform: scale(1.05);
+}
+
+/* Стили для карточек отзывов */
+.reviews-section .card,
+.service-reviews-section .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.reviews-section .card:hover,
+.service-reviews-section .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Стили для детальной страницы отзыва */
+.review-details-section .review-image {
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.review-details-section .review-image img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.review-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* Секция с формой отзыва */
+.new-review-section .card,
+.service-reviews-section .card {
+    border-radius: 10px;
+}
+
+/* Карусель отзывов */
+#reviewsCarousel .carousel-control-prev,
+#reviewsCarousel .carousel-control-next {
+    width: 5%;
+}
+
+#reviewsCarousel .carousel-control-prev-icon,
+#reviewsCarousel .carousel-control-next-icon {
+    filter: none;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .review-details-section .review-image {
+        max-height: 250px;
+    }
+
+    .review-content {
+        font-size: 1rem;
+    }
+}

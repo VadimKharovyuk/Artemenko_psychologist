@@ -4,7 +4,8 @@ import com.example.artemenko_psychologist.dto.service.ServiceCardDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceCreateFormDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceUpdateFormDTO;
-import com.example.artemenko_psychologist.entity.Service;
+
+import com.example.artemenko_psychologist.model.Service;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

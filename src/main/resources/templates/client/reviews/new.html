@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Оставить отзыв | Психолог Артеменко</title>
+</head>
+<body>
+<section class="new-review-section py-5">
+  <div class="container">
+    <div class="mb-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/reviews}">Отзывы</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Новый отзыв</li>
+        </ol>
+      </nav>
+
+      <h2 class="section-title">Поделитесь своим опытом</h2>
+      <p class="section-subtitle">Ваш отзыв поможет другим людям сделать правильный выбор</p>
+    </div>
+
+    <!-- Alert Messages -->
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <span th:text="${errorMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-body p-4">
+            <form th:action="@{/reviews/new}" method="post" enctype="multipart/form-data" th:object="${review}">
+
+              <!-- Service Selection (if not pre-selected) -->
+              <div class="mb-4" th:if="${service == null}">
+                <label for="serviceId" class="form-label">Услуга*</label>
+                <select class="form-select" id="serviceId" th:field="*{serviceId}" required>
+                  <option value="" selected disabled>Выберите услугу</option>
+                  <option th:each="s : ${services}" th:value="${s.id}" th:text="${s.getTitle()}">Название услуги</option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('serviceId')}" th:errors="*{serviceId}"></div>
+              </div>
+
+              <!-- Hidden service ID (if pre-selected) -->
+              <input type="hidden" th:if="${service != null}" th:field="*{serviceId}" th:value="${service.id}" />
+
+              <!-- Service Info (if pre-selected) -->
+              <div class="mb-4" th:if="${service != null}">
+                <label class="form-label">Услуга</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                  <input type="text" class="form-control" th:value="${service.getTitle()}" readonly>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="username" class="form-label">Ваше имя*</label>
+                <input type="text" class="form-control" id="username" th:field="*{username}" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+              </div>
+
+              <div class="mb-4">
+                <label for="description" class="form-label">Ваш отзыв*</label>
+                <textarea class="form-control" id="description" th:field="*{description}" rows="6" required
+                          placeholder="Поделитесь своими впечатлениями, что вам помогло, что понравилось..."></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+              </div>
+
+              <div class="mb-4">
+                <label for="image" class="form-label">Фото (необязательно)</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <div class="form-text">Вы можете добавить фотографию к своему отзыву (макс. размер 5MB)</div>
+              </div>
+
+              <div class="text-end">
+                <a th:href="${service != null ? '/services/' + service.id : '/reviews'}" class="btn btn-outline-secondary me-2">Отмена</a>
+                <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

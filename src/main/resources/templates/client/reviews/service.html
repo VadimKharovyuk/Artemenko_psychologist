@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="${'Отзывы об услуге ' + service.getTitle() + ' | Психолог Артеменко'}">Отзывы об услуге | Психолог Артеменко</title>
+</head>
+<body>
+<section class="service-reviews-section py-5">
+  <div class="container">
+    <div class="mb-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/services}">Услуги</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/services/{id}(id=${service.id})}" th:text="${service.getTitle()}">Название услуги</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Отзывы</li>
+        </ol>
+      </nav>
+
+      <h2 class="section-title" th:text="${'Отзывы об услуге «' + service.getTitle() + '»'}">Отзывы об услуге</h2>
+      <p class="section-subtitle">Истории и впечатления клиентов</p>
+    </div>
+
+    <!-- Alert Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span th:text="${successMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <span th:text="${errorMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="row g-4 mb-5">
+      <div th:if="${#lists.isEmpty(reviews)}" class="col-12 text-center mb-4">
+        <p>Пока нет отзывов об этой услуге. Станьте первым, кто поделится своим опытом!</p>
+      </div>
+
+      <!-- Review Card -->
+      <div th:each="review : ${reviews}" class="col-md-6 col-lg-4" data-aos="fade-up">
+        <div class="card h-100 shadow-sm">
+          <div th:if="${review.previewImageUrl}" class="review-image-container">
+            <img th:src="${review.previewImageUrl}" class="card-img-top" alt="Фото к отзыву">
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title mb-0" th:text="${review.username}">Имя клиента</h5>
+              <small class="text-muted" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy')}">Дата</small>
+            </div>
+            <p class="card-text" th:text="${#strings.abbreviate(review.description, 150)}">Текст отзыва...</p>
+            <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-outline-primary mt-2">Читать полностью</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Review Form -->
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Оставить отзыв</h5>
+          </div>
+          <div class="card-body">
+            <form th:action="@{/reviews/new}" method="post" enctype="multipart/form-data" th:object="${newReview}">
+              <input type="hidden" th:field="*{serviceId}" th:value="${service.id}" />
+
+              <div class="mb-3">
+                <label for="username" class="form-label">Ваше имя*</label>
+                <input type="text" class="form-control" id="username" th:field="*{username}" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+              </div>
+
+              <div class="mb-3">
+                <label for="description" class="form-label">Ваш отзыв*</label>
+                <textarea class="form-control" id="description" th:field="*{description}" rows="5" required></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+              </div>
+
+              <div class="mb-3">
+                <label for="image" class="form-label">Фото (необязательно)</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <div class="form-text">Вы можете добавить фотографию к своему отзыву (макс. размер 5MB)</div>
+              </div>
+
+              <div class="text-end">
+                <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

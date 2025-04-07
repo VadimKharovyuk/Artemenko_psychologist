@@ -1,4 +1,4 @@
-package com.example.artemenko_psychologist.entity;
+package com.example.artemenko_psychologist.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -63,6 +63,5 @@ public class Service {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<com.example.yourproject.entity.Review> reviews = new ArrayList<>();
+
 }

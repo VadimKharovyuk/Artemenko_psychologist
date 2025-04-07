@@ -1,4 +1,4 @@
-package com.example.yourproject.entity;
+package com.example.artemenko_psychologist.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,7 +34,8 @@ public class Review {
     @Column(name = "username")
     private String username;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
-    private com.example.artemenko_psychologist.entity.Service service;
+    private Service service;
 }
