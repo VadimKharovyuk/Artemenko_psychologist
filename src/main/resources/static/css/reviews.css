@@ -2,56 +2,87 @@
 
 /* Контейнеры изображений отзывов */
 .review-image-container {
-    height: 200px;
+    height: 220px; /* Фиксированная высота для всех картинок */
     overflow: hidden;
+    position: relative;
 }
 
 .review-image-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Важно: это свойство предотвращает искажение изображений */
     transition: transform 0.3s ease;
 }
 
-.card:hover .review-image-container img {
-    transform: scale(1.05);
-}
-
-/* Стили для карточек отзывов */
-.reviews-section .card,
-.service-reviews-section .card {
+/* Общие стили для карточек */
+.card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
     border-radius: 8px;
     overflow: hidden;
+    height: 100%;
 }
 
+/* Стили для карточек в секциях отзывов */
+.reviews-section .card,
+.service-reviews-section .card {
+    border-radius: 10px;
+}
+
+/* Эффекты при наведении */
 .reviews-section .card:hover,
 .service-reviews-section .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
+.card:hover .review-image-container img {
+    transform: scale(1.05);
+}
+
+/* Структура карточки для выравнивания кнопки внизу */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-text {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
 /* Стили для детальной страницы отзыва */
 .review-details-section .review-image {
-    max-height: 400px;
+    max-height: 500px; /* Увеличенная максимальная высота */
     overflow: hidden;
+    position: relative;
 }
 
 .review-details-section .review-image img {
     width: 100%;
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain; /* Показывает всё изображение целиком */
+    object-position: center;
+    background-color: #f8f9fa; /* Фон для изображений с прозрачностью */
+    max-height: 500px;
 }
 
+/* Альтернативный вариант для полного изображения */
+.review-details-section .review-image.full-image {
+    height: auto;
+    max-height: none;
+}
+
+.review-details-section .review-image.full-image img {
+    height: auto;
+    max-height: none;
+}
+
+/* Содержимое отзыва */
 .review-content {
     font-size: 1.1rem;
     line-height: 1.8;
-}
-
-/* Секция с формой отзыва */
-.new-review-section .card,
-.service-reviews-section .card {
-    border-radius: 10px;
 }
 
 /* Карусель отзывов */
@@ -68,10 +99,14 @@
 /* Адаптивный дизайн */
 @media (max-width: 768px) {
     .review-details-section .review-image {
-        max-height: 250px;
+        max-height: 300px; /* Увеличил для мобильных */
     }
 
     .review-content {
         font-size: 1rem;
+    }
+
+    .review-image-container {
+        height: 180px; /* Меньшая высота для мобильных */
     }
 }

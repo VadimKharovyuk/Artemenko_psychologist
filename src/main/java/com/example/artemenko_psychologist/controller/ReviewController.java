@@ -47,6 +47,7 @@ public class ReviewController {
         return "client/reviews/latest";
     }
 
+
     /**
      * Показать отзывы для конкретной услуги
      */
@@ -56,9 +57,13 @@ public class ReviewController {
         Service service = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new IllegalArgumentException("Услуга не найдена"));
 
+        // Создаем DTO с правильным serviceId
+        ReviewCreateDTO newReview = new ReviewCreateDTO();
+        newReview.setServiceId(serviceId);
+
         model.addAttribute("reviews", reviews);
         model.addAttribute("service", service);
-        model.addAttribute("newReview", new ReviewCreateDTO());
+        model.addAttribute("newReview", newReview);
         return "client/reviews/service";
     }
 
@@ -95,12 +100,14 @@ public class ReviewController {
     /**
      * Обработка создания нового отзыва
      */
+
     @PostMapping("/new")
     public String createReview(@Valid @ModelAttribute("review") ReviewCreateDTO reviewDTO,
                                BindingResult bindingResult,
                                @RequestParam(value = "image", required = false) MultipartFile image,
                                RedirectAttributes redirectAttributes,
                                Model model) {
+        System.out.println("ServiceId в контроллере: " + reviewDTO.getServiceId());
 
         if (bindingResult.hasErrors()) {
             // Загружаем данные для формы в случае ошибки
