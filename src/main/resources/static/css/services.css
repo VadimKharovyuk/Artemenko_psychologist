@@ -1,149 +1,268 @@
-/* Параллакс заголовок */
-.parallax-header {
-    position: relative;
-    height: 450px;
+/*!* Параллакс заголовок *!*/
+/*.parallax-header {*/
+/*    position: relative;*/
+/*    height: 450px;*/
+/*    overflow: hidden;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    margin-bottom: 2rem;*/
+/*}*/
+
+/*.parallax-bg {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background-image: url('/img/seriosle.jpg'); !* Замените на вашу фоновую картинку *!*/
+/*    background-size: cover;*/
+/*    background-position: center;*/
+/*    background-attachment: fixed;*/
+/*    filter: brightness(0.7);*/
+/*    z-index: 1;*/
+/*}*/
+
+/*!* Для мобильных устройств, где fixed не работает корректно *!*/
+/*@media (max-width: 768px) {*/
+/*    .parallax-bg {*/
+/*        background-attachment: scroll;*/
+/*    }*/
+/*}*/
+
+/*!* Создаем градиентный оверлей *!*/
+/*.parallax-bg::after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background: linear-gradient(to right, rgba(90, 113, 127, 0.9), rgba(90, 113, 127, 0.7));*/
+/*    z-index: 2;*/
+/*}*/
+
+/*.parallax-content {*/
+/*    position: relative;*/
+/*    width: 100%;*/
+/*    z-index: 3;*/
+/*    padding: 2rem 0;*/
+/*}*/
+
+/*!* Стилизация хлебных крошек в параллакс-заголовке *!*/
+/*.parallax-content .breadcrumb {*/
+/*    background-color: transparent;*/
+/*    padding: 0.5rem 0;*/
+/*}*/
+
+/*.parallax-content .breadcrumb-item + .breadcrumb-item::before {*/
+/*    color: rgba(255, 255, 255, 0.5);*/
+/*}*/
+
+/*!* Анимация для заголовка при прокрутке *!*/
+/*@keyframes fadeInUp {*/
+/*    from {*/
+/*        opacity: 0;*/
+/*        transform: translate3d(0, 30px, 0);*/
+/*    }*/
+/*    to {*/
+/*        opacity: 1;*/
+/*        transform: translate3d(0, 0, 0);*/
+/*    }*/
+/*}*/
+
+/*.parallax-content h1 {*/
+/*    animation: fadeInUp 1s ease-out;*/
+/*}*/
+
+/*.parallax-content .breadcrumb {*/
+/*    animation: fadeInUp 1s ease-out 0.3s forwards;*/
+/*    opacity: 0;*/
+/*    animation-fill-mode: forwards;*/
+/*}*/
+/*!* Фиксированная высота для контейнера изображения *!*/
+/*.service-image-container {*/
+/*    height: 300px;*/
+/*    overflow: hidden;*/
+/*    position: relative;*/
+/*}*/
+
+/*!* Стили для изображения внутри контейнера *!*/
+/*.service-image {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    object-fit: cover;*/
+/*    transition: transform 0.5s ease;*/
+/*}*/
+
+/*!* Заполнитель для карточек без изображения *!*/
+/*.no-image-placeholder {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background-color: #f0f0f0;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*!* Контейнер для описания с фиксированной высотой *!*/
+/*.description-container {*/
+/*    height: 4.5em; !* Примерно 3 строки текста *!*/
+/*    overflow: hidden;*/
+/*    display: -webkit-box;*/
+/*    -webkit-line-clamp: 3;*/
+/*    -webkit-box-orient: vertical;*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+
+/*!* Flex-контейнер для выравнивания кнопки внизу *!*/
+/*.card-body {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*!* Отступ перед ценой, который будет расширяться *!*/
+/*.service-price {*/
+/*    margin-top: auto;*/
+/*}*/
+/*!* Специальные стили для детальной страницы услуги *!*/
+/*.service-detail-header .parallax-bg::after {*/
+/*    background: linear-gradient(135deg, rgba(90, 113, 127, 0.9) 0%, rgba(182, 159, 126, 0.8) 100%);*/
+/*}*/
+
+/*.service-detail-header {*/
+/*    height: 380px; !* Немного выше, чем на странице списка *!*/
+/*}*/
+
+/*!* Улучшенные стили для описания услуги *!*/
+/*.service-description {*/
+/*    line-height: 1.8;*/
+/*    color: #333;*/
+/*}*/
+
+/*.service-description p {*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+
+/*!* Стилизация ключевой информации о услуге *!*/
+/*.service-info {*/
+/*    background-color: #f9f7f5;*/
+/*    border-radius: 8px;*/
+/*    padding: 1.25rem;*/
+/*    margin-bottom: 1.5rem;*/
+/*    border-left: 4px solid #b69f7e;*/
+/*}*/
+
+/*.price-label, .duration-label {*/
+/*    display: block;*/
+/*    font-size: 0.9rem;*/
+/*    color: #5a717f;*/
+/*    margin-bottom: 0.25rem;*/
+/*}*/
+
+/*.price-amount {*/
+/*    font-weight: 700;*/
+/*    font-size: 1.5rem;*/
+/*    color: #b69f7e;*/
+/*}*/
+
+/*.duration-value {*/
+/*    font-weight: 600;*/
+/*}*/
+
+/*!* Стилизация формы записи *!*/
+/*#appointment-form {*/
+/*    border-top: 3px solid #b69f7e;*/
+/*    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);*/
+/*}*/
+
+/*!* Анимация при прокрутке *!*/
+/*@keyframes slideInRight {*/
+/*    from {*/
+/*        transform: translateX(50px);*/
+/*        opacity: 0;*/
+/*    }*/
+/*    to {*/
+/*        transform: translateX(0);*/
+/*        opacity: 1;*/
+/*    }*/
+/*}*/
+
+/*@keyframes slideInLeft {*/
+/*    from {*/
+/*        transform: translateX(-50px);*/
+/*        opacity: 0;*/
+/*    }*/
+/*    to {*/
+/*        transform: translateX(0);*/
+/*        opacity: 1;*/
+/*    }*/
+/*}*/
+
+/*!* Применяем анимации к карточкам *!*/
+/*[data-aos="fade-right"] {*/
+/*    animation: slideInLeft 0.8s ease-out forwards;*/
+/*    opacity: 0;*/
+/*}*/
+
+/*[data-aos="fade-left"] {*/
+/*    animation: slideInRight 0.8s ease-out forwards;*/
+/*    opacity: 0;*/
+/*}*/
+
+/*[data-aos="fade-up"] {*/
+/*    animation: fadeInUp 0.8s ease-out 0.3s forwards;*/
+/*    opacity: 0;*/
+/*}*/
+/*.service-reviews a {*/
+/*    color: var(--secondary-color);*/
+/*    transition: color 0.3s ease;*/
+/*}*/
+
+/*.service-reviews a:hover {*/
+/*    color: var(--primary-color);*/
+/*}*/
+/* Улучшенные стили для детальной страницы услуги */
+
+/* Улучшенный параллакс-заголовок */
+.service-detail-header .parallax-bg::after {
+    background: linear-gradient(135deg, rgba(90, 113, 127, 0.9) 0%, rgba(182, 159, 126, 0.8) 100%);
+}
+
+.service-detail-header {
+    height: 380px;
+}
+
+/* Стили для карточек */
+.service-detail-card {
+    border: none;
+    border-radius: 10px;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.parallax-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('/img/seriosle.jpg'); /* Замените на вашу фоновую картинку */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    filter: brightness(0.7);
-    z-index: 1;
+.service-detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Для мобильных устройств, где fixed не работает корректно */
-@media (max-width: 768px) {
-    .parallax-bg {
-        background-attachment: scroll;
-    }
+/* Улучшенные стили для контейнера изображения */
+.service-detail-card .service-image-container {
+    height: 250px;
 }
 
-/* Создаем градиентный оверлей */
-.parallax-bg::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(90, 113, 127, 0.9), rgba(90, 113, 127, 0.7));
-    z-index: 2;
-}
-
-.parallax-content {
-    position: relative;
-    width: 100%;
-    z-index: 3;
-    padding: 2rem 0;
-}
-
-/* Стилизация хлебных крошек в параллакс-заголовке */
-.parallax-content .breadcrumb {
-    background-color: transparent;
-    padding: 0.5rem 0;
-}
-
-.parallax-content .breadcrumb-item + .breadcrumb-item::before {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-/* Анимация для заголовка при прокрутке */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 30px, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-}
-
-.parallax-content h1 {
-    animation: fadeInUp 1s ease-out;
-}
-
-.parallax-content .breadcrumb {
-    animation: fadeInUp 1s ease-out 0.3s forwards;
-    opacity: 0;
-    animation-fill-mode: forwards;
-}
-/* Фиксированная высота для контейнера изображения */
-.service-image-container {
-    height: 300px;
-    overflow: hidden;
-    position: relative;
-}
-
-/* Стили для изображения внутри контейнера */
-.service-image {
+.service-detail-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
 
-/* Заполнитель для карточек без изображения */
-.no-image-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.service-detail-card:hover .service-detail-image {
+    transform: scale(1.05);
 }
 
-/* Контейнер для описания с фиксированной высотой */
-.description-container {
-    height: 4.5em; /* Примерно 3 строки текста */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    margin-bottom: 1rem;
-}
-
-/* Flex-контейнер для выравнивания кнопки внизу */
-.card-body {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Отступ перед ценой, который будет расширяться */
-.service-price {
-    margin-top: auto;
-}
-/* Специальные стили для детальной страницы услуги */
-.service-detail-header .parallax-bg::after {
-    background: linear-gradient(135deg, rgba(90, 113, 127, 0.9) 0%, rgba(182, 159, 126, 0.8) 100%);
-}
-
-.service-detail-header {
-    height: 380px; /* Немного выше, чем на странице списка */
-}
-
-/* Улучшенные стили для описания услуги */
-.service-description {
-    line-height: 1.8;
-    color: #333;
-}
-
-.service-description p {
-    margin-bottom: 1rem;
-}
-
-/* Стилизация ключевой информации о услуге */
+/* Стили для информационного блока услуги */
 .service-info {
     background-color: #f9f7f5;
     border-radius: 8px;
@@ -152,11 +271,12 @@
     border-left: 4px solid #b69f7e;
 }
 
-.price-label, .duration-label {
+.price-label, .duration-label, .review-label {
     display: block;
     font-size: 0.9rem;
     color: #5a717f;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
 .price-amount {
@@ -167,6 +287,47 @@
 
 .duration-value {
     font-weight: 600;
+    color: #333;
+}
+
+/* Стили для блока с отзывами */
+.service-reviews {
+    position: relative;
+}
+
+.review-count {
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+}
+
+/* Стили для описания услуги */
+.service-description {
+    line-height: 1.8;
+    color: #333;
+    font-size: 1.05rem;
+}
+
+.service-description p {
+    margin-bottom: 1.25rem;
+}
+
+.service-description ul, .service-description ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.service-description ul li, .service-description ol li {
+    margin-bottom: 0.5rem;
+}
+
+/* Стилизация блока преимуществ */
+.benefit-icon {
+    font-size: 1.5rem;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Стилизация формы записи */
@@ -175,7 +336,31 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
-/* Анимация при прокрутке */
+#appointment-form .input-group-text {
+    background-color: #f9f7f5;
+    border-color: #e0e0e0;
+}
+
+#appointment-form .form-control:focus {
+    border-color: #b69f7e;
+    box-shadow: 0 0 0 0.25rem rgba(182, 159, 126, 0.25);
+}
+
+#appointment-form .btn:hover {
+    background-color: #a68f6e !important;
+}
+
+/* Стили для контактного блока */
+.contact-info {
+    font-size: 0.95rem;
+}
+
+.contact-info i {
+    font-size: 1.2rem;
+    min-width: 30px;
+}
+
+/* Улучшенные анимации при прокрутке */
 @keyframes slideInRight {
     from {
         transform: translateX(50px);
@@ -198,6 +383,17 @@
     }
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 30px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 /* Применяем анимации к карточкам */
 [data-aos="fade-right"] {
     animation: slideInLeft 0.8s ease-out forwards;
@@ -213,11 +409,28 @@
     animation: fadeInUp 0.8s ease-out 0.3s forwards;
     opacity: 0;
 }
-.service-reviews a {
-    color: var(--secondary-color);
-    transition: color 0.3s ease;
+
+/* Адаптивные стили */
+@media (max-width: 992px) {
+    .service-detail-header {
+        height: 300px;
+    }
+
+    .service-detail-header h1 {
+        font-size: 2.5rem;
+    }
 }
 
-.service-reviews a:hover {
-    color: var(--primary-color);
+@media (max-width: 768px) {
+    .service-detail-header {
+        height: 250px;
+    }
+
+    .service-detail-header h1 {
+        font-size: 2rem;
+    }
+
+    .service-detail-card .service-image-container {
+        height: 200px;
+    }
 }

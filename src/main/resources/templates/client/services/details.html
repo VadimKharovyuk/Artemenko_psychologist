@@ -1,123 +1,364 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">-->
+<!--<head>-->
+<!--  <title th:text="${pageTitle}">Детали услуги</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<section>-->
+<!--  &lt;!&ndash; Параллакс заголовок страницы &ndash;&gt;-->
+<!--  <div class="parallax-header service-detail-header">-->
+<!--    <div class="parallax-bg"></div>-->
+<!--    <div class="parallax-content">-->
+<!--      <div class="container">-->
+<!--        <h1 class="display-4 text-white" th:text="${service.title}">Название услуги</h1>-->
+<!--        <nav aria-label="breadcrumb">-->
+<!--          <ol class="breadcrumb bg-transparent mb-0">-->
+<!--            <li class="breadcrumb-item"><a th:href="@{/}" class="text-white">Главная</a></li>-->
+<!--            <li class="breadcrumb-item"><a th:href="@{/services}" class="text-white">Услуги</a></li>-->
+<!--            <li class="breadcrumb-item active text-white-50" aria-current="page" th:text="${service.title}">Название услуги</li>-->
+<!--          </ol>-->
+<!--        </nav>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Детали услуги &ndash;&gt;-->
+<!--  <div class="container py-5">-->
+<!--    <div class="row">-->
+<!--      &lt;!&ndash; Левая колонка - изображение и ключевая информация &ndash;&gt;-->
+<!--      <div class="col-lg-4 mb-4 mb-lg-0">-->
+<!--        <div class="card service-detail-card" data-aos="fade-right">-->
+<!--          &lt;!&ndash; Изображение услуги &ndash;&gt;-->
+<!--          <div th:if="${service.imageUrl != null}" class="service-image-container">-->
+<!--            <img th:src="${service.imageUrl}" class="card-img-top service-detail-image"-->
+<!--                 th:alt="${service.title}">-->
+<!--          </div>-->
+<!--          <div class="card-body">-->
+<!--            &lt;!&ndash; Иконка и заголовок &ndash;&gt;-->
+<!--            <div class="d-flex align-items-center mb-3">-->
+<!--              <div class="service-icon me-3">-->
+<!--                <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>-->
+<!--                <i th:unless="${service.iconClass != null}" class="bi bi-stars"></i>-->
+<!--              </div>-->
+<!--              <h3 class="h4 mb-0" th:text="${service.title}">Название услуги</h3>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Информация о цене и длительности &ndash;&gt;-->
+<!--            <div class="service-info">-->
+<!--              <div class="service-price mb-3">-->
+<!--                <span class="price-label">Стоимость:</span>-->
+<!--                <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> UAH-->
+<!--              </div>-->
+<!--              <div class="service-duration mb-3">-->
+
+<!--                <a th:href="@{/reviews/service/{id}(id=${service.id})}" class="btn w-100" style="background-color: #b69f7e; color: white; border: none;">-->
+<!--                  <i class="bi bi-chat-quote"></i> Посмотреть отзывы-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Кнопка действия &ndash;&gt;-->
+<!--            <a href="#appointment-form" class="btn w-100" style="background-color: #b69f7e; color: white; border: none;">Записаться</a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Форма записи на консультацию &ndash;&gt;-->
+<!--      <div class="card mt-4" id="appointment-form" data-aos="fade-up">-->
+<!--        <div class="card-body">-->
+<!--          <h3 class="h4 mb-4">Запись на консультацию</h3>-->
+
+<!--          &lt;!&ndash; Сообщения об ошибках валидации &ndash;&gt;-->
+<!--          <div th:if="${#fields.hasErrors('${consultationRequestDto}')}" class="alert alert-danger mb-3">-->
+<!--            <ul>-->
+<!--              <li th:each="err : ${#fields.errors('${consultationRequestDto}')}" th:text="${err}"></li>-->
+<!--            </ul>-->
+<!--          </div>-->
+
+<!--          <form th:action="@{/services/consultation-request}" method="post" th:object="${consultationRequestDto}">-->
+<!--            <input type="hidden" th:field="*{serviceId}" th:value="${service.id}">-->
+
+<!--            <div class="mb-3">-->
+<!--              <label for="clientName" class="form-label">Ваше имя *</label>-->
+<!--              <input type="text" class="form-control" id="clientName" th:field="*{clientName}"-->
+<!--                     th:classappend="${#fields.hasErrors('clientName')} ? 'is-invalid'" required>-->
+<!--              <div class="invalid-feedback" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}">-->
+<!--                Ім'я обов'язкове-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            <div class="mb-3">-->
+<!--              <label for="phoneNumber" class="form-label">Телефон *</label>-->
+<!--              <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"-->
+<!--                     th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'" required>-->
+<!--              <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">-->
+<!--                Некоректний формат телефону-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            <div class="mb-3">-->
+<!--              <label for="clientEmail" class="form-label">Email</label>-->
+<!--              <input type="email" class="form-control" id="clientEmail" th:field="*{clientEmail}">-->
+<!--            </div>-->
+
+<!--            <div class="mb-3">-->
+<!--              <label for="message" class="form-label">Сообщение (опционально)</label>-->
+<!--              <textarea class="form-control" id="message" th:field="*{message}" rows="3"-->
+<!--                        th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"></textarea>-->
+<!--              <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">-->
+<!--                Повідомлення не може бути довшим за 1000 символів-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            <button type="submit" class="btn" style="background-color: #b69f7e; color: white; border: none;">-->
+<!--              Отправить заявку-->
+<!--            </button>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
 <head>
-  <title th:text="${pageTitle}">Детали услуги</title>
+    <title th:text="${pageTitle}">Детали услуги</title>
 </head>
 <body>
 <section>
-  <!-- Параллакс заголовок страницы -->
-  <div class="parallax-header service-detail-header">
-    <div class="parallax-bg"></div>
-    <div class="parallax-content">
-      <div class="container">
-        <h1 class="display-4 text-white" th:text="${service.title}">Название услуги</h1>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-0">
-            <li class="breadcrumb-item"><a th:href="@{/}" class="text-white">Главная</a></li>
-            <li class="breadcrumb-item"><a th:href="@{/services}" class="text-white">Услуги</a></li>
-            <li class="breadcrumb-item active text-white-50" aria-current="page" th:text="${service.title}">Название услуги</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-  </div>
-
-  <!-- Детали услуги -->
-  <div class="container py-5">
-    <div class="row">
-      <!-- Левая колонка - изображение и ключевая информация -->
-      <div class="col-lg-4 mb-4 mb-lg-0">
-        <div class="card service-detail-card" data-aos="fade-right">
-          <!-- Изображение услуги -->
-          <div th:if="${service.imageUrl != null}" class="service-image-container">
-            <img th:src="${service.imageUrl}" class="card-img-top service-detail-image"
-                 th:alt="${service.title}">
-          </div>
-          <div class="card-body">
-            <!-- Иконка и заголовок -->
-            <div class="d-flex align-items-center mb-3">
-              <div class="service-icon me-3">
-                <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>
-                <i th:unless="${service.iconClass != null}" class="bi bi-stars"></i>
-              </div>
-              <h3 class="h4 mb-0" th:text="${service.title}">Название услуги</h3>
+    <!-- Паралакс заголовок сторінки -->
+    <div class="parallax-header service-detail-header">
+        <div class="parallax-bg"></div>
+        <div class="parallax-content">
+            <div class="container">
+                <h1 class="display-4 text-white" th:text="${service.title}">Назва послуги</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent mb-0">
+                        <li class="breadcrumb-item"><a th:href="@{/}" class="text-white">Головна</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/services}" class="text-white">Послуги</a></li>
+                        <li class="breadcrumb-item active text-white-50" aria-current="page" th:text="${service.title}">
+                            Назва послуги
+                        </li>
+                    </ol>
+                </nav>
             </div>
-
-            <!-- Информация о цене и длительности -->
-            <div class="service-info">
-              <div class="service-price mb-3">
-                <span class="price-label">Стоимость:</span>
-                <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> UAH
-              </div>
-              <div class="service-duration mb-3">
-
-                <a th:href="@{/reviews/service/{id}(id=${service.id})}" class="btn w-100" style="background-color: #b69f7e; color: white; border: none;">
-                  <i class="bi bi-chat-quote"></i> Посмотреть отзывы
-                </a>
-              </div>
-            </div>
-
-            <!-- Кнопка действия -->
-            <a href="#appointment-form" class="btn w-100" style="background-color: #b69f7e; color: white; border: none;">Записаться</a>
-          </div>
         </div>
-      </div>
-      <!-- Форма записи на консультацию -->
-      <div class="card mt-4" id="appointment-form" data-aos="fade-up">
-        <div class="card-body">
-          <h3 class="h4 mb-4">Запись на консультацию</h3>
-
-          <!-- Сообщения об ошибках валидации -->
-          <div th:if="${#fields.hasErrors('${consultationRequestDto}')}" class="alert alert-danger mb-3">
-            <ul>
-              <li th:each="err : ${#fields.errors('${consultationRequestDto}')}" th:text="${err}"></li>
-            </ul>
-          </div>
-
-          <form th:action="@{/services/consultation-request}" method="post" th:object="${consultationRequestDto}">
-            <input type="hidden" th:field="*{serviceId}" th:value="${service.id}">
-
-            <div class="mb-3">
-              <label for="clientName" class="form-label">Ваше имя *</label>
-              <input type="text" class="form-control" id="clientName" th:field="*{clientName}"
-                     th:classappend="${#fields.hasErrors('clientName')} ? 'is-invalid'" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}">
-                Ім'я обов'язкове
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="phoneNumber" class="form-label">Телефон *</label>
-              <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
-                     th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">
-                Некоректний формат телефону
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="clientEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="clientEmail" th:field="*{clientEmail}">
-            </div>
-
-            <div class="mb-3">
-              <label for="message" class="form-label">Сообщение (опционально)</label>
-              <textarea class="form-control" id="message" th:field="*{message}" rows="3"
-                        th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"></textarea>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">
-                Повідомлення не може бути довшим за 1000 символів
-              </div>
-            </div>
-
-            <button type="submit" class="btn" style="background-color: #b69f7e; color: white; border: none;">
-              Отправить заявку
-            </button>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
+
+    <!-- Детали услуги -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- Левая колонка - изображение и ключевая информация -->
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <div class="card service-detail-card" data-aos="fade-right">
+                    <!-- Изображение услуги -->
+                    <div th:if="${service.imageUrl != null}" class="service-image-container">
+                        <img th:src="${service.imageUrl}" class="card-img-top service-detail-image"
+                             th:alt="${service.title}">
+                    </div>
+                    <div class="card-body">
+                        <!-- Иконка и заголовок -->
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="service-icon me-3">
+                                <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>
+                                <i th:unless="${service.iconClass != null}" class="bi bi-stars"></i>
+                            </div>
+                            <h3 class="h4 mb-0" th:text="${service.title}">Назва послуги</h3>
+                        </div>
+
+                        <!-- Информация о цене и длительности -->
+                        <div class="service-info">
+                            <div class="service-price mb-3">
+                                <span class="price-label">Стоимость:</span>
+                                <span class="price-amount"
+                                      th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span>
+                                UAH
+                            </div>
+
+                            <!-- Інформація про тривалість -->
+                            <div class="service-duration mb-3" th:if="${service.durationMinutes}">
+                                <span class="duration-label">Тривалість:</span>
+                                <span class="duration-value">
+    <i class="bi bi-clock me-1"></i>
+    <span th:text="${service.durationMinutes}">60</span> хвилин
+  </span>
+                            </div>
+
+
+                            <!-- Информация об отзывах -->
+                            <div class="service-reviews mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="review-label">Отзывы:</span>
+                                    <span class="review-count badge bg-primary" th:if="${reviewsCount != null}"
+                                          th:text="${reviewsCount}">12</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Кнопки дій -->
+                        <a th:href="@{/reviews/service/{id}(id=${service.id})}" class="btn w-100 mb-3"
+                           style="background-color: #5a717f; color: white; border: none;">
+                            <i class="bi bi-chat-quote me-2"></i> Переглянути відгуки
+                        </a>
+
+                        <a href="#appointment-form" class="btn w-100"
+                           style="background-color: #b69f7e; color: white; border: none;">
+                            <i class="bi bi-calendar-check me-2"></i> Записатися
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Блок контактної інформації -->
+                <div class="card mt-4" data-aos="fade-right" data-aos-delay="100">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">Є запитання?</h4>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-telephone-fill me-3 text-primary"></i>
+                                <span>+7 (999) 123-45-67</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-envelope-fill me-3 text-primary"></i>
+                                <span>example@mail.com</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-geo-alt-fill me-3 text-primary"></i>
+                                <span>Харків, вул. Прикладна, 123</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка - описание и форма -->
+            <div class="col-lg-8">
+                <!-- Опис послуги -->
+                <div class="card mb-4" data-aos="fade-left">
+                    <div class="card-body">
+                        <h3 class="h4 mb-4">Опис послуги</h3>
+                        <div class="service-description" th:utext="${service.description}">
+                            Повний опис послуги...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Переваги послуги (якщо є) -->
+                <div class="card mb-4" data-aos="fade-up">
+                    <div class="card-body">
+                        <h3 class="h4 mb-4">Переваги</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="benefit-icon me-3">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    </div>
+                                    <div>Індивідуальний підхід</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="benefit-icon me-3">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    </div>
+                                    <div>Конфіденційність</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="benefit-icon me-3">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    </div>
+                                    <div>Досвід роботи понад 10 років</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="benefit-icon me-3">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    </div>
+                                    <div>Сучасні методики</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Форма записи на консультацию -->
+                <div class="card" id="appointment-form" data-aos="fade-up">
+                    <div class="card-body">
+                        <h3 class="h4 mb-4">Запись на консультацию</h3>
+
+                        <!-- Сообщения об ошибках валидации -->
+                        <div th:if="${#fields.hasErrors('${consultationRequestDto}')}" class="alert alert-danger mb-3">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('${consultationRequestDto}')}"
+                                    th:text="${err}"></li>
+                            </ul>
+                        </div>
+
+                        <form th:action="@{/services/consultation-request}" method="post"
+                              th:object="${consultationRequestDto}">
+                            <input type="hidden" th:field="*{serviceId}" th:value="${service.id}">
+
+                            <div class="mb-3">
+                                <label for="clientName" class="form-label">Ваше имя *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="clientName" th:field="*{clientName}"
+                                           th:classappend="${#fields.hasErrors('clientName')} ? 'is-invalid'" required>
+                                </div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('clientName')}"
+                                     th:errors="*{clientName}">
+                                    Имя обязательно
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Телефон *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                    <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
+                                           th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'" required>
+                                </div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}"
+                                     th:errors="*{phoneNumber}">
+                                    Некорректный формат телефона
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="clientEmail" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" class="form-control" id="clientEmail" th:field="*{clientEmail}">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Сообщение (опционально)</label>
+                                <textarea class="form-control" id="message" th:field="*{message}" rows="3"
+                                          th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}"
+                                     th:errors="*{message}">
+                                    Сообщение не может быть длиннее 1000 символов
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-lg"
+                                    style="background-color: #b69f7e; color: white; border: none;">
+                                <i class="bi bi-send me-2"></i> Отправить заявку
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 </body>
 </html>
