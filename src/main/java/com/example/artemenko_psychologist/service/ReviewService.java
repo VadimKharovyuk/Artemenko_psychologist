@@ -29,6 +29,7 @@ public class ReviewService {
     private final ReviewMapper reviewMapper;
     private final ImgurService imgurService;
 
+
     /**
      * Получение всех отзывов
      */
@@ -39,6 +40,7 @@ public class ReviewService {
 
     /**
      * Получение последних отзывов с указанным лимитом (через stream API)
+     *
      * @param limit количество отзывов для получения
      */
     public List<ReviewListDTO> getLatestReviews(int limit) {
@@ -51,8 +53,9 @@ public class ReviewService {
 
     /**
      * Получение последних отзывов для конкретной услуги с указанным лимитом (через stream API)
+     *
      * @param serviceId ID услуги
-     * @param limit количество отзывов для получения
+     * @param limit     количество отзывов для получения
      */
     public List<ReviewListDTO> getLatestReviewsByServiceId(Long serviceId, int limit) {
         return reviewRepository.findByServiceId(serviceId, Sort.by("createdAt").descending())
@@ -149,5 +152,10 @@ public class ReviewService {
         }
 
         reviewRepository.delete(review);
+    }
+
+
+    public long countReviewsByServiceId(Long serviceId) {
+        return reviewRepository.countByServiceId(serviceId);
     }
 }

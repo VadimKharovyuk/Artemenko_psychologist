@@ -4,6 +4,7 @@ import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestCr
 import com.example.artemenko_psychologist.dto.service.ServiceDTO;
 import com.example.artemenko_psychologist.exception.ResourceNotFoundException;
 import com.example.artemenko_psychologist.service.ConsultationRequestService;
+import com.example.artemenko_psychologist.service.ReviewService;
 import com.example.artemenko_psychologist.service.ServiceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/services")
@@ -22,6 +25,7 @@ public class ClientServicesController {
 
     private final ServiceService serviceService;
     private final ConsultationRequestService consultationRequestService;
+    private final ReviewService reviewService;
 
     /**
      * Отображает список всех услуг
@@ -32,9 +36,16 @@ public class ClientServicesController {
                 .filter(ServiceDTO::isActive)
                 .toList();
 
+        // Добавляем количество отзывов для каждой услуги
+        Map<Long, Long> reviewsCountMap = new HashMap<>();
+        for (ServiceDTO service : services) {
+            long count = reviewService.countReviewsByServiceId(service.getId());
+            reviewsCountMap.put(service.getId(), count);
+        }
+
         model.addAttribute("services", services);
         model.addAttribute("pageTitle", "Услуги психолога");
-
+        model.addAttribute("reviewsCountMap", reviewsCountMap);
         return "client/services/list";
     }
 

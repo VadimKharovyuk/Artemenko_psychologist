@@ -48,11 +48,13 @@
             <div class="service-info">
               <div class="service-price mb-3">
                 <span class="price-label">Стоимость:</span>
-                <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> ₽
+                <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> UAH
               </div>
-              <div class="service-duration mb-3" th:if="${service.durationMinutes}">
-                <span class="duration-label">Длительность:</span>
-                <span class="duration-value" th:text="${service.durationMinutes}">60</span> минут
+              <div class="service-duration mb-3">
+
+                <a th:href="@{/reviews/service/{id}(id=${service.id})}" class="btn w-100" style="background-color: #b69f7e; color: white; border: none;">
+                  <i class="bi bi-chat-quote"></i> Посмотреть отзывы
+                </a>
               </div>
             </div>
 

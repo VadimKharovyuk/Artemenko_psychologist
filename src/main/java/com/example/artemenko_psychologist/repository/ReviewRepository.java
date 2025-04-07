@@ -26,4 +26,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
      * Находит все отзывы, созданные пользователем с определенным именем
      */
     List<Review> findByUsername(String username);
+
+    long countByServiceId(Long serviceId);
+
 }
