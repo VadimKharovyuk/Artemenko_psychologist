@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14-alpine
+    container_name: artemenko-psych-db
+    environment:
+      POSTGRES_DB: Artemenko_psychologist
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 19111993
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot Application
+  app:
+    build:
+      context: /Users/vadim/Desktop/MicroService/Artemenko_psychologist
+      dockerfile: Dockerfile
+    container_name: artemenko-psych-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "2232:2232"
+    environment:
+      # Database configuration
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/Artemenko_psychologist
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=19111993
+
+      # Imgur API credentials
+      - IMGUR_CLIENT_ID=9a20435fe3d92ba
+      - IMGUR_ACCESS_TOKEN=1d2936032980eea70b010f5e8ad63326d19649a3
+
+      # Admin credentials
+      - ADMIN_USERNAME=q
+      - ADMIN_PASSWORD=q
+
+      # Email configuration
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=vadimkh17@gmail.com
+      - SPRING_MAIL_PASSWORD=vhif kghh ijvs duhz
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_CONNECTIONTIMEOUT=5000
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_TIMEOUT=5000
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_WRITETIMEOUT=5000
+    volumes:
+      - app_data:/app/data
+      - app_logs:/app/logs
+
+volumes:
+  postgres_data:
+  app_data:
+  app_logs:

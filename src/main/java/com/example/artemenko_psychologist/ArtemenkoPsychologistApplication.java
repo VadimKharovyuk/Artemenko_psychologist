@@ -10,5 +10,6 @@ public class ArtemenkoPsychologistApplication {
         SpringApplication.run(ArtemenkoPsychologistApplication.class, args);
     }
     // // после записи редирект на старницу с поздравлением
+    //    docker-compose up -d --build
 
 }
