@@ -52,8 +52,9 @@
                             Краткое описание услуги
                         </p>
                         <div class="service-price mb-3">
-                            <span class="price-amount"
-                                  th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span>
+              <span class="price-amount"
+                    th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')} + ' UAH'">2000 UAH</span>
+
 
                             <!-- Добавляем количество отзывов -->
                             <div class="service-reviews mb-3">

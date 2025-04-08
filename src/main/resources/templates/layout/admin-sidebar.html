@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Объявляем фрагмент sidebarmenu -->
+<div th:fragment="sidebarmenu" class="col-md-3 col-lg-2 px-0 sidebar">
+    <div class="sidebar-header">
+        <h4 class="mb-0">Админ-панель</h4>
+    </div>
+    <div class="d-flex flex-column">
+        <a href="/admin/dashboard" class="sidebar-link active">
+            <i class="bi bi-speedometer2"></i> Главная
+        </a>
+        <a href="/admin/services" class="sidebar-link">
+            <i class="bi bi-grid"></i> Услуги
+        </a>
+        <a href="/admin/blog-posts" class="sidebar-link">
+            <i class="bi bi-file-earmark-text"></i> Блог
+        </a>
+        <a href="/admin/blog-categories" class="sidebar-link">
+            <i class="bi bi-folder"></i> Категории блога
+        </a>
+        <a href="/admin/consultations" class="sidebar-link">
+            <i class="bi bi-calendar-check"></i> Консультации
+        </a>
+        <a href="/admin/reviews" class="sidebar-link">
+            <i class="bi bi-star"></i> Отзывы
+        </a>
+        <a href="/admin/newsletter" class="sidebar-link">
+            <i class="bi bi-envelope"></i> Рассылка
+        </a>
+        <a href="/admin/profiles" class="sidebar-link">
+            <i class="bi bi-person"></i> Профиль
+        </a>
+        <a href="/admin/imgur-status" class="sidebar-link">
+            <i class="bi bi-cloud-upload"></i> Imgur-status
+        </a>
+        <a href="/" class="sidebar-link mt-auto">
+            <i class="bi bi-box-arrow-left"></i> На сайт
+        </a>
+    </div>
+</div>
+</html>

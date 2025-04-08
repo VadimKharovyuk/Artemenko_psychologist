@@ -1,156 +1,326 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Управление услугами</title>-->
+
+<!--  &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">-->
+
+<!--  &lt;!&ndash; Font Awesome &ndash;&gt;-->
+<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+
+<!--  &lt;!&ndash; Bootstrap Icons &ndash;&gt;-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">-->
+
+<!--</head>-->
+
+<!--<body>-->
+<!--<section>-->
+<!--  <div class="container-fluid px-4">-->
+<!--    <style>-->
+<!--      .services-table img {-->
+<!--        max-height: 80px;-->
+<!--        width: auto;-->
+<!--      }-->
+
+<!--      .service-title {-->
+<!--        font-weight: bold;-->
+<!--      }-->
+
+<!--      .service-inactive {-->
+<!--        opacity: 0.6;-->
+<!--      }-->
+
+<!--      .price-column {-->
+<!--        white-space: nowrap;-->
+<!--      }-->
+
+<!--      .actions-column {-->
+<!--        min-width: 200px;-->
+<!--      }-->
+<!--    </style>-->
+
+<!--    <h1 class="mt-4">Управление услугами</h1>-->
+
+<!--    &lt;!&ndash; Alerts &ndash;&gt;-->
+<!--    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">-->
+<!--      <span th:text="${successMessage}"></span>-->
+<!--      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--    </div>-->
+<!--    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">-->
+<!--      <span th:text="${errorMessage}"></span>-->
+<!--      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Actions &ndash;&gt;-->
+<!--    <div class="mb-4">-->
+<!--      <a th:href="@{/admin/services/create}" class="btn btn-primary">-->
+<!--        <i class="bi bi-plus-lg"></i> Добавить новую услугу-->
+<!--      </a>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Services Table &ndash;&gt;-->
+<!--    <div class="card mb-4">-->
+<!--      <div class="card-header">-->
+<!--        <i class="bi bi-table me-1"></i>-->
+<!--        Список услуг-->
+<!--      </div>-->
+<!--      <div class="card-body">-->
+<!--        <div class="table-responsive">-->
+<!--          <table class="table table-bordered table-hover services-table" id="servicesTable">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th>ID</th>-->
+<!--              <th>Изображение</th>-->
+<!--              <th>Услуга</th>-->
+<!--              <th>Цена</th>-->
+<!--              <th>Длительность</th>-->
+<!--              <th>Порядок</th>-->
+<!--              <th>Статус</th>-->
+<!--              <th>Действия</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="service : ${services}" th:class="${!service.active ? 'service-inactive' : ''}">-->
+<!--              <td th:text="${service.id}"></td>-->
+<!--              <td>-->
+<!--                <img th:if="${service.imageUrl}" th:src="${service.imageUrl}" alt="Изображение услуги" class="img-thumbnail">-->
+<!--                <span th:unless="${service.imageUrl}" class="text-muted">Нет изображения</span>-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                <div class="service-title" th:text="${service.title}"></div>-->
+<!--                <div class="small text-muted" th:text="${service.shortDescription}"></div>-->
+<!--                <div th:if="${service.iconClass}" class="mt-1">-->
+<!--                  <i th:class="${service.iconClass}"></i>-->
+<!--                  <small class="text-muted" th:text="${service.iconClass}"></small>-->
+<!--                </div>-->
+<!--              </td>-->
+<!--              <td class="price-column">-->
+<!--                <span th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}"></span> ₽-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                <span th:if="${service.durationMinutes}" th:text="${service.durationMinutes + ' мин.'}"></span>-->
+<!--                <span th:unless="${service.durationMinutes}" class="text-muted">Не указано</span>-->
+<!--              </td>-->
+<!--              <td th:text="${service.displayOrder}"></td>-->
+<!--              <td>-->
+<!--                <span th:if="${service.active}" class="badge bg-success">Активна</span>-->
+<!--                <span th:unless="${service.active}" class="badge bg-secondary">Неактивна</span>-->
+<!--              </td>-->
+<!--              <td class="actions-column">-->
+<!--                <div class="d-flex gap-2">-->
+<!--                  <a th:href="@{/admin/services/{id}/edit(id=${service.id})}" class="btn btn-sm btn-primary">-->
+<!--                    <i class="bi bi-pencil-square"></i> Редактировать-->
+<!--                  </a>-->
+
+<!--                  <form th:action="@{/admin/services/{id}/toggle-active(id=${service.id})}" method="post" class="d-inline">-->
+<!--                    <button type="submit" class="btn btn-sm" th:classappend="${service.active ? 'btn-warning' : 'btn-success'}">-->
+<!--                      <i class="bi" th:classappend="${service.active ? 'bi-eye-slash' : 'bi-eye'}"></i>-->
+<!--                      <span th:text="${service.active ? 'Скрыть' : 'Показать'}"></span>-->
+<!--                    </button>-->
+<!--                  </form>-->
+
+<!--                  <form th:action="@{/admin/services/{id}/delete(id=${service.id})}" method="post" class="d-inline delete-form">-->
+<!--                    <button type="submit" class="btn btn-sm btn-danger">-->
+<!--                      <i class="bi bi-trash"></i> Удалить-->
+<!--                    </button>-->
+<!--                  </form>-->
+<!--                </div>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Optional: jQuery for confirmation dialog &ndash;&gt;-->
+<!--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+<!--  <script>-->
+<!--    $(document).ready(function () {-->
+<!--      // Confirmation dialog for delete-->
+<!--      $('.delete-form').on('submit', function (e) {-->
+<!--        if (!confirm('Вы уверены, что хотите удалить эту услугу? Это действие нельзя отменить.')) {-->
+<!--          e.preventDefault();-->
+<!--        }-->
+<!--      });-->
+<!--    });-->
+<!--  </script>-->
+<!--</section>-->
+<!--</body>-->
+
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
-  <title>Управление услугами</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Управление услугами | Администратор</title>
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
+  <!-- Font Awesome (если нужно) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+  <style>
+    /* Дополнительные стили для конкретной страницы (при необходимости) */
+    .services-table img {
+      max-height: 80px;
+      width: auto;
+    }
+
+    .service-title {
+      font-weight: bold;
+    }
+
+    .service-inactive {
+      opacity: 0.6;
+    }
+
+    .price-column {
+      white-space: nowrap;
+    }
+
+    .actions-column {
+      min-width: 200px;
+    }
+  </style>
 </head>
 
 <body>
-<section>
-  <div class="container-fluid px-4">
-    <style>
-      .services-table img {
-        max-height: 80px;
-        width: auto;
-      }
+<div class="container-fluid">
+  <div class="row">
+    <!-- Подключаем боковую панель и передаем activePage -->
+    <th:block th:replace="~{layout/admin-sidebar :: sidebarmenu}" th:with="activePage='services'"></th:block>
 
-      .service-title {
-        font-weight: bold;
-      }
+    <!-- Основной контент -->
+    <div class="col-md-9 col-lg-10 px-4 py-3">
+      <h1 class="mt-4">Управление услугами</h1>
 
-      .service-inactive {
-        opacity: 0.6;
-      }
-
-      .price-column {
-        white-space: nowrap;
-      }
-
-      .actions-column {
-        min-width: 200px;
-      }
-    </style>
-
-    <h1 class="mt-4">Управление услугами</h1>
-
-    <!-- Alerts -->
-    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-      <span th:text="${successMessage}"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <span th:text="${errorMessage}"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <!-- Actions -->
-    <div class="mb-4">
-      <a th:href="@{/admin/services/create}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Добавить новую услугу
-      </a>
-    </div>
-
-    <!-- Services Table -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <i class="bi bi-table me-1"></i>
-        Список услуг
+      <!-- Alerts -->
+      <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover services-table" id="servicesTable">
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>Изображение</th>
-              <th>Услуга</th>
-              <th>Цена</th>
-              <th>Длительность</th>
-              <th>Порядок</th>
-              <th>Статус</th>
-              <th>Действия</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="service : ${services}" th:class="${!service.active ? 'service-inactive' : ''}">
-              <td th:text="${service.id}"></td>
-              <td>
-                <img th:if="${service.imageUrl}" th:src="${service.imageUrl}" alt="Изображение услуги" class="img-thumbnail">
-                <span th:unless="${service.imageUrl}" class="text-muted">Нет изображения</span>
-              </td>
-              <td>
-                <div class="service-title" th:text="${service.title}"></div>
-                <div class="small text-muted" th:text="${service.shortDescription}"></div>
-                <div th:if="${service.iconClass}" class="mt-1">
-                  <i th:class="${service.iconClass}"></i>
-                  <small class="text-muted" th:text="${service.iconClass}"></small>
-                </div>
-              </td>
-              <td class="price-column">
-                <span th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}"></span> ₽
-              </td>
-              <td>
-                <span th:if="${service.durationMinutes}" th:text="${service.durationMinutes + ' мин.'}"></span>
-                <span th:unless="${service.durationMinutes}" class="text-muted">Не указано</span>
-              </td>
-              <td th:text="${service.displayOrder}"></td>
-              <td>
-                <span th:if="${service.active}" class="badge bg-success">Активна</span>
-                <span th:unless="${service.active}" class="badge bg-secondary">Неактивна</span>
-              </td>
-              <td class="actions-column">
-                <div class="d-flex gap-2">
-                  <a th:href="@{/admin/services/{id}/edit(id=${service.id})}" class="btn btn-sm btn-primary">
-                    <i class="bi bi-pencil-square"></i> Редактировать
-                  </a>
+      <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
 
-                  <form th:action="@{/admin/services/{id}/toggle-active(id=${service.id})}" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-sm" th:classappend="${service.active ? 'btn-warning' : 'btn-success'}">
-                      <i class="bi" th:classappend="${service.active ? 'bi-eye-slash' : 'bi-eye'}"></i>
-                      <span th:text="${service.active ? 'Скрыть' : 'Показать'}"></span>
-                    </button>
-                  </form>
+      <!-- Actions -->
+      <div class="mb-4">
+        <a th:href="@{/admin/services/create}" class="btn btn-primary">
+          <i class="bi bi-plus-lg"></i> Добавить новую услугу
+        </a>
+      </div>
 
-                  <form th:action="@{/admin/services/{id}/delete(id=${service.id})}" method="post" class="d-inline delete-form">
-                    <button type="submit" class="btn btn-sm btn-danger">
-                      <i class="bi bi-trash"></i> Удалить
-                    </button>
-                  </form>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+      <!-- Services Table -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="bi bi-table me-1"></i>
+          Список услуг
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover services-table" id="servicesTable">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Изображение</th>
+                <th>Услуга</th>
+                <th>Цена</th>
+                <th>Длительность</th>
+                <th>Порядок</th>
+                <th>Статус</th>
+                <th>Действия</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="service : ${services}" th:class="${!service.active ? 'service-inactive' : ''}">
+                <td th:text="${service.id}"></td>
+                <td>
+                  <img th:if="${service.imageUrl}" th:src="${service.imageUrl}" alt="Изображение услуги" class="img-thumbnail">
+                  <span th:unless="${service.imageUrl}" class="text-muted">Нет изображения</span>
+                </td>
+                <td>
+                  <div class="service-title" th:text="${service.title}"></div>
+                  <div class="small text-muted" th:text="${service.shortDescription}"></div>
+                  <div th:if="${service.iconClass}" class="mt-1">
+                    <i th:class="${service.iconClass}"></i>
+                    <small class="text-muted" th:text="${service.iconClass}"></small>
+                  </div>
+                </td>
+                <td class="price-column">
+                  <span th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}"></span> ₽
+                </td>
+                <td>
+                  <span th:if="${service.durationMinutes}" th:text="${service.durationMinutes + ' мин.'}"></span>
+                  <span th:unless="${service.durationMinutes}" class="text-muted">Не указано</span>
+                </td>
+                <td th:text="${service.displayOrder}"></td>
+                <td>
+                  <span th:if="${service.active}" class="badge bg-success">Активна</span>
+                  <span th:unless="${service.active}" class="badge bg-secondary">Неактивна</span>
+                </td>
+                <td class="actions-column">
+                  <div class="d-flex gap-2">
+                    <a th:href="@{/admin/services/{id}/edit(id=${service.id})}" class="btn btn-sm btn-primary">
+                      <i class="bi bi-pencil-square"></i> Редактировать
+                    </a>
+
+                    <form th:action="@{/admin/services/{id}/toggle-active(id=${service.id})}" method="post" class="d-inline">
+                      <button type="submit" class="btn btn-sm" th:classappend="${service.active ? 'btn-warning' : 'btn-success'}">
+                        <i class="bi" th:classappend="${service.active ? 'bi-eye-slash' : 'bi-eye'}"></i>
+                        <span th:text="${service.active ? 'Скрыть' : 'Показать'}"></span>
+                      </button>
+                    </form>
+
+                    <form th:action="@{/admin/services/{id}/delete(id=${service.id})}" method="post" class="d-inline delete-form">
+                      <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="bi bi-trash"></i> Удалить
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Optional: jQuery for confirmation dialog -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    $(document).ready(function () {
-      // Confirmation dialog for delete
-      $('.delete-form').on('submit', function (e) {
-        if (!confirm('Вы уверены, что хотите удалить эту услугу? Это действие нельзя отменить.')) {
-          e.preventDefault();
-        }
-      });
+<!-- jQuery для диалога подтверждения -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // Confirmation dialog for delete
+    $('.delete-form').on('submit', function (e) {
+      if (!confirm('Вы уверены, что хотите удалить эту услугу? Это действие нельзя отменить.')) {
+        e.preventDefault();
+      }
     });
-  </script>
-</section>
+  });
+</script>
 </body>
 
 </html>
