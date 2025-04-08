@@ -25,6 +25,7 @@ public class Review {
     @Column(name = "delete_hash")
     private String deleteHash;
 
+
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 

@@ -43,7 +43,6 @@ public class DocumentPhotoServiceImpl implements DocumentPhotoService {
             documentPhoto.setActive(true);
 
             DocumentPhoto savedPhoto = documentPhotoRepository.save(documentPhoto);
-            log.info("Фотография успешно загружена и сохранена с ID: {}", savedPhoto.getId());
 
             return savedPhoto;
         } catch (IOException e) {
@@ -116,7 +115,6 @@ public class DocumentPhotoServiceImpl implements DocumentPhotoService {
     public DocumentPhoto activatePhoto(Long id) {
         DocumentPhoto photo = documentPhotoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Фотография с ID " + id + " не найдена"));
-
         photo.setActive(true);
         DocumentPhoto savedPhoto = documentPhotoRepository.save(photo);
         return savedPhoto;
