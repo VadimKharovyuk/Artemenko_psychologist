@@ -4,9 +4,11 @@ import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestCr
 import com.example.artemenko_psychologist.dto.service.ServiceCardDTO;
 import com.example.artemenko_psychologist.dto.blog.BlogPostListDto;
 import com.example.artemenko_psychologist.dto.service.ServiceDTO;
+import com.example.artemenko_psychologist.model.DocumentPhoto;
 import com.example.artemenko_psychologist.service.BlogPostService;
 import com.example.artemenko_psychologist.service.ConsultationRequestService;
 import com.example.artemenko_psychologist.service.ServiceService;
+import com.example.artemenko_psychologist.service.impl.DocumentPhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import java.util.List;
 public class Home {
     private final ServiceService serviceService ;
     private final BlogPostService blogPostService ;
+    private final DocumentPhotoService documentPhotoService;
 
 
 
@@ -43,6 +46,10 @@ public class Home {
         //для футера серисы
         List<ServiceDTO> allAServicesFoter = serviceService.getLatestServices(3);
         model.addAttribute("footerServices",allAServicesFoter);
+
+        //для отображения документа
+        List<DocumentPhoto> photoList = documentPhotoService.getAllActivePhotos();
+        model.addAttribute("photoList", photoList);
 
         return "home";
     }

@@ -17,6 +17,7 @@
 
     <!-- AOS CSS (для анимаций при прокрутке) -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/DocumentMainPage.css}">
 
     <!-- Пользовательские стили -->
     <style>
@@ -372,6 +373,222 @@
         </div>
     </div>
 </section>
+
+
+
+<!-- Фото-документи -->
+<section class="py-5 py-md-7 bg-white" id="documents">
+    <div class="container">
+        <div class="text-center mb-4 mb-md-5" data-aos="fade-up">
+            <h2 class="section-title mx-auto position-relative" style="width: fit-content;">
+                Мої документи
+                <span class="position-absolute bottom-0 start-50 translate-middle-x"
+                      style="width: 80px; height: 3px; background-color: #b69f7e;"></span>
+            </h2>
+            <p class="section-subtitle text-center mt-3 mt-md-4">Сертифікати та дипломи професійної кваліфікації</p>
+        </div>
+
+        <!-- Сетка для документов с адаптивными классами -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2 g-md-3 g-lg-4">
+            <!-- Динамічний список фото-документів -->
+            <div th:each="photo, stat : ${photoList}"
+                 class="col"
+                 th:data-aos="fade-up"
+                 th:data-aos-delay="${100 + stat.index * 100}">
+                <div class="card document-card h-100 d-flex flex-column">
+                    <div class="card-img-top position-relative" data-bs-toggle="modal" data-bs-target="#documentModal" th:data-document-url="${photo.photoUrl}">
+                        <!-- Фото документу -->
+                        <img th:src="${photo.photoUrl}" alt="Документ">
+                        <!-- Дата в правому верхньому куті -->
+                        <div class="position-absolute top-0 end-0 bg-light px-2 py-1 m-2 rounded-pill small d-none d-sm-block">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            <span th:text="${#temporals.format(photo.uploadedAt, 'dd.MM.yyyy')}">Дата</span>
+                        </div>
+                        <!-- Оверлей при наведении, скрыт на мобильных -->
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-none d-md-flex align-items-center justify-content-center"
+                             style="background-color: rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s ease; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                            <span class="btn btn-light rounded-circle p-2">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body text-center p-2 p-md-3">
+                        <!-- Дата только для мобильных -->
+                        <div class="d-block d-sm-none mb-2 small text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            <span th:text="${#temporals.format(photo.uploadedAt, 'dd.MM.yyyy')}">Дата</span>
+                        </div>
+                        <!-- Кнопка для перегляду документу -->
+                        <a th:href="${photo.photoUrl}" target="_blank"
+                           class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-external-link-alt me-1 me-md-2"></i>
+                            <span class="d-none d-sm-inline">Відкрити в новому вікні</span>
+                            <span class="d-inline d-sm-none">Відкрити</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Повідомлення, якщо документи відсутні -->
+        <div th:if="${#lists.isEmpty(photoList)}" class="text-center py-4 py-md-5">
+            <i class="fas fa-file-image fa-3x mb-3 text-secondary"></i>
+            <p class="text-muted">Документи скоро будуть додані</p>
+        </div>
+
+        <!-- Кнопка "Переглянути всі документи" -->
+        <div th:if="${!#lists.isEmpty(photoList) && photoList.size() > 8}" class="text-center mt-3 mt-md-4" data-aos="fade-up">
+            <a th:href="@{/documents}"
+               class="btn d-inline-flex align-items-center"
+               style="background-color: #b69f7e; color: white; border: none;">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                <span>Переглянути всі документи</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Модальное окно для просмотра документов (оптимизировано для мобильных) -->
+    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-sm-down modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="documentModalLabel">Документ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 text-center" style="background-color: #f8f9fa;">
+                    <!-- Контейнер для изображения с возможностью увеличения на мобильных -->
+                    <div class="position-relative" id="imageZoomContainer" style="min-height: 200px;">
+                        <img id="modalDocumentImage" src="" class="img-fluid" alt="Документ в полном размере"
+                             style="max-height: 70vh; width: auto; max-width: 100%;">
+                    </div>
+                </div>
+                <div class="modal-footer flex-wrap justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Закрити
+                        </button>
+                    </div>
+                    <div>
+
+                        <a id="openDocumentLink" href="#" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-external-link-alt me-1"></i>У новому вікні
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript для работы с модальным окном документов и мобильным зумом -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Настраиваем модальное окно для просмотра документов
+        const documentModal = document.getElementById('documentModal');
+        if (documentModal) {
+            documentModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const imageUrl = button.getAttribute('data-document-url');
+                const modalImage = document.getElementById('modalDocumentImage');
+                const downloadLink = document.getElementById('downloadDocumentLink');
+                const openLink = document.getElementById('openDocumentLink');
+
+                if (modalImage) modalImage.src = imageUrl;
+                if (downloadLink) downloadLink.href = imageUrl;
+                if (openLink) openLink.href = imageUrl;
+            });
+        }
+
+        // Добавляем функциональность зума для мобильных устройств
+        const modalImage = document.getElementById('modalDocumentImage');
+        const zoomContainer = document.getElementById('imageZoomContainer');
+
+        if (modalImage && zoomContainer && window.innerWidth < 768) {
+            let isZoomed = false;
+            let scale = 1;
+
+            modalImage.addEventListener('click', function() {
+                if (!isZoomed) {
+                    // Увеличиваем изображение
+                    scale = 2;
+                    this.style.transform = `scale(${scale})`;
+                    this.style.transformOrigin = 'center center';
+                    this.style.transition = 'transform 0.3s ease';
+                    this.style.cursor = 'zoom-out';
+                    isZoomed = true;
+                } else {
+                    // Возвращаем к нормальному размеру
+                    this.style.transform = 'scale(1)';
+                    this.style.cursor = 'zoom-in';
+                    isZoomed = false;
+                    scale = 1;
+                }
+            });
+
+            // Добавляем возможность перемещения при увеличении
+            let isDragging = false;
+            let startX, startY, initialTranslateX = 0, initialTranslateY = 0;
+
+            modalImage.addEventListener('touchstart', function(e) {
+                if (isZoomed) {
+                    isDragging = true;
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+
+                    // Получаем текущие значения translateX и translateY
+                    const transformValue = window.getComputedStyle(this).getPropertyValue('transform');
+                    const matrix = new DOMMatrix(transformValue);
+                    initialTranslateX = matrix.m41;
+                    initialTranslateY = matrix.m42;
+
+                    e.preventDefault();
+                }
+            });
+
+            modalImage.addEventListener('touchmove', function(e) {
+                if (isDragging && isZoomed) {
+                    const x = e.touches[0].clientX;
+                    const y = e.touches[0].clientY;
+
+                    const deltaX = x - startX;
+                    const deltaY = y - startY;
+
+                    // Ограничиваем перемещение исходя из масштаба
+                    const maxTranslate = (scale - 1) * 100; // Примерное ограничение
+
+                    const newTranslateX = Math.min(Math.max(initialTranslateX + deltaX, -maxTranslate), maxTranslate);
+                    const newTranslateY = Math.min(Math.max(initialTranslateY + deltaY, -maxTranslate), maxTranslate);
+
+                    this.style.transform = `scale(${scale}) translate(${newTranslateX / scale}px, ${newTranslateY / scale}px)`;
+
+                    e.preventDefault();
+                }
+            });
+
+            modalImage.addEventListener('touchend', function() {
+                isDragging = false;
+            });
+        } else if (modalImage) {
+            // Для десктопов устанавливаем стиль курсора
+            modalImage.style.cursor = 'zoom-in';
+
+            // Простое увеличение для десктопов
+            let isZoomed = false;
+
+            modalImage.addEventListener('click', function() {
+                if (!isZoomed) {
+                    this.style.transform = 'scale(1.5)';
+                    this.style.cursor = 'zoom-out';
+                    isZoomed = true;
+                } else {
+                    this.style.transform = 'scale(1)';
+                    this.style.cursor = 'zoom-in';
+                    isZoomed = false;
+                }
+            });
+        }
+    });
+</script>
 
 
 <!-- Послуги -->
