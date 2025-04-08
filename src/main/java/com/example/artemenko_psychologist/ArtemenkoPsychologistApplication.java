@@ -12,4 +12,9 @@ public class ArtemenkoPsychologistApplication {
     // // после записи редирект на старницу с поздравлением
     //    docker-compose up -d --build
 
+
+
+    //рейтинг для услуг
+    // рейтинг для блога ( фильтр по популярным статьям)
+
 }

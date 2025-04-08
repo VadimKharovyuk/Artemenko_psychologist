@@ -2,7 +2,7 @@
 
 /* Контейнеры изображений отзывов */
 .review-image-container {
-    height: 220px; /* Фиксированная высота для всех картинок */
+    height: 420px; /* Фиксированная высота для всех картинок */
     overflow: hidden;
     position: relative;
 }
