@@ -10,14 +10,14 @@
     <div class="mb-5">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-          <li class="breadcrumb-item"><a th:href="@{/reviews}">Отзывы</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Новый отзыв</li>
+          <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/reviews}">Відгуки</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Новий відгук</li>
         </ol>
       </nav>
 
-      <h2 class="section-title">Поделитесь своим опытом</h2>
-      <p class="section-subtitle">Ваш отзыв поможет другим людям сделать правильный выбор</p>
+      <h2 class="section-title">Поділіться своїм досвідом</h2>
+      <p class="section-subtitle">Ваш відгук допоможе іншим людям зробити правильний вибір</p>
     </div>
 
     <!-- Alert Messages -->
@@ -32,22 +32,22 @@
           <div class="card-body p-4">
             <form th:action="@{/reviews/new}" method="post" enctype="multipart/form-data" th:object="${review}">
 
-              <!-- Service Selection (if not pre-selected) -->
+              <!-- Вибір послуги (якщо не вибрана заздалегідь) -->
               <div class="mb-4" th:if="${service == null}">
-                <label for="serviceId" class="form-label">Услуга*</label>
+                <label for="serviceId" class="form-label">Послуга*</label>
                 <select class="form-select" id="serviceId" th:field="*{serviceId}" required>
-                  <option value="" selected disabled>Выберите услугу</option>
-                  <option th:each="s : ${services}" th:value="${s.id}" th:text="${s.getTitle()}">Название услуги</option>
+                  <option value="" selected disabled>Оберіть послугу</option>
+                  <option th:each="s : ${services}" th:value="${s.id}" th:text="${s.getTitle()}">Назва послуги</option>
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('serviceId')}" th:errors="*{serviceId}"></div>
               </div>
 
-              <!-- Hidden service ID (if pre-selected) -->
+              <!-- Прихований ідентифікатор послуги (якщо вибрана заздалегідь) -->
               <input type="hidden" th:if="${service != null}" th:field="*{serviceId}" th:value="${service.id}" />
 
-              <!-- Service Info (if pre-selected) -->
+              <!-- Інформація про послугу (якщо вибрана заздалегідь) -->
               <div class="mb-4" th:if="${service != null}">
-                <label class="form-label">Услуга</label>
+                <label class="form-label">Послуга</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-tag"></i></span>
                   <input type="text" class="form-control" th:value="${service.getTitle()}" readonly>
@@ -55,27 +55,27 @@
               </div>
 
               <div class="mb-4">
-                <label for="username" class="form-label">Ваше имя*</label>
+                <label for="username" class="form-label">Ваше ім’я*</label>
                 <input type="text" class="form-control" id="username" th:field="*{username}" required>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
               </div>
 
               <div class="mb-4">
-                <label for="description" class="form-label">Ваш отзыв*</label>
-                <textarea class="form-control" id="description" th:field="*{description}" rows="6" required
-                          placeholder="Поделитесь своими впечатлениями, что вам помогло, что понравилось..."></textarea>
+                <label for="description" class="form-label">Ваш відгук*</label>
+                <textarea class="form-control" id="description" th:field="*{description}" rows="6" required>
+                          placeholder="Поділіться своїми враженнями, що вам допомогло, що сподобалося..."></textarea>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
               </div>
 
               <div class="mb-4">
-                <label for="image" class="form-label">Фото (необязательно)</label>
+                <label for="image" class="form-label">Фото (необов’язково)</label>
                 <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                <div class="form-text">Вы можете добавить фотографию к своему отзыву (макс. размер 5MB)</div>
+                <div class="form-text">Ви можете додати фото до свого відгуку (макс. розмір 5MB)</div>
               </div>
 
               <div class="text-end">
-                <a th:href="${service != null ? '/services/' + service.id : '/reviews'}" class="btn btn-outline-secondary me-2">Отмена</a>
-                <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+                <a th:href="${service != null ? '/services/' + service.id : '/reviews'}" class="btn btn-outline-secondary me-2">Скасувати</a>
+                <button type="submit" class="btn btn-primary">Надіслати відгук</button>
               </div>
             </form>
           </div>
