@@ -17,4 +17,7 @@ public class ArtemenkoPsychologistApplication {
     //рейтинг для услуг
     // рейтинг для блога ( фильтр по популярным статьям)
 
+
+    //main page  blog pic size
+
 }

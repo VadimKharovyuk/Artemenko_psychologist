@@ -26,6 +26,9 @@ public class BlogPost {
     @Column(name = "preview_image_url", length = 500)
     private String previewImageUrl;
 
+    @Column
+    private Long photoId;
+
     @Column(name = "delete_hash")
     private String deleteHash;
 
