@@ -1,68 +1,455 @@
+/*!*!*.faq-accordion .card {*!*!*/
+/*!*!*    border: none;*!*!*/
+/*!*!*    margin-bottom: 1rem;*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*.faq-accordion input[type="checkbox"] {*!*!*/
+/*!*!*    display: none;*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*.faq-accordion label {*!*!*/
+/*!*!*    display: flex;*!*!*/
+/*!*!*    justify-content: space-between;*!*!*/
+/*!*!*    align-items: center;*!*!*/
+/*!*!*    padding: 1rem 1.2rem;*!*!*/
+/*!*!*    background: #fff;*!*!*/
+/*!*!*    cursor: pointer;*!*!*/
+/*!*!*    border: 1px solid #ddd;*!*!*/
+/*!*!*    border-radius: 0.5rem;*!*!*/
+/*!*!*    transition: background 0.3s;*!*!*/
+/*!*!*    font-size: 1rem;*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*.faq-accordion label:hover {*!*!*/
+/*!*!*    background: #f9f9f9;*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*.faq-accordion .content {*!*!*/
+/*!*!*    max-height: 0;*!*!*/
+/*!*!*    overflow: hidden;*!*!*/
+/*!*!*    transition: max-height 0.3s ease, padding 0.3s ease;*!*!*/
+/*!*!*    background: #fff;*!*!*/
+/*!*!*    font-size: 0.95rem;*!*!*/
+/*!*!*    line-height: 1.5;*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*.faq-accordion input[type="checkbox"]:checked ~ .content {*!*!*/
+/*!*!*    max-height: 500px;*!*!*/
+/*!*!*    padding: 1rem 1.2rem;*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*.faq-accordion .accordion-icon {*!*!*/
+/*!*!*    transition: transform 0.3s;*!*!*/
+/*!*!*    margin-left: 1rem;*!*!*/
+/*!*!*    flex-shrink: 0;*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*.faq-accordion input[type="checkbox"]:checked ~ label .accordion-icon {*!*!*/
+/*!*!*    transform: rotate(180deg);*!*!*/
+/*!*!*}*!*!*/
+
+/*!*!*!* Адаптация для мобильных *!*!*!*/
+/*!*!*@media (max-width: 576px) {*!*!*/
+/*!*!*    .faq-accordion label {*!*!*/
+/*!*!*        flex-direction: row;*!*!*/
+/*!*!*        font-size: 0.95rem;*!*!*/
+/*!*!*        padding: 0.8rem 1rem;*!*!*/
+/*!*!*    }*!*!*/
+
+/*!*!*    .faq-accordion .accordion-icon {*!*!*/
+/*!*!*        margin-left: 0.5rem;*!*!*/
+/*!*!*        font-size: 1rem;*!*!*/
+/*!*!*    }*!*!*/
+
+/*!*!*    .faq-accordion .content {*!*!*/
+/*!*!*        font-size: 0.9rem;*!*!*/
+/*!*!*        padding: 0.8rem 1rem;*!*!*/
+/*!*!*    }*!*!*/
+/*!*!*}*!*!*/
+/*!*.faq-accordion .card {*!*/
+/*!*    border: none;*!*/
+/*!*    margin-bottom: 1rem;*!*/
+/*!*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*!*/
+/*!*    border-radius: 0.75rem;*!*/
+/*!*    background: #fff;*!*/
+/*!*}*!*/
+
+/*!*.faq-accordion input[type="checkbox"] {*!*/
+/*!*    display: none;*!*/
+/*!*}*!*/
+
+/*!*.faq-accordion label {*!*/
+/*!*    display: flex;*!*/
+/*!*    justify-content: space-between;*!*/
+/*!*    align-items: center;*!*/
+/*!*    padding: 1.25rem 1.5rem;*!*/
+/*!*    background: #f7f7f7;*!*/
+/*!*    cursor: pointer;*!*/
+/*!*    border: 1px solid #ddd;*!*/
+/*!*    border-radius: 0.5rem;*!*/
+/*!*    font-size: 1rem;*!*/
+/*!*    transition: background 0.3s ease, border-color 0.3s ease;*!*/
+/*!*}*!*/
+
+/*!*.faq-accordion label:hover {*!*/
+/*!*    background: #e6e6e6;*!*/
+/*!*    border-color: #ccc;*!*/
+/*!*}*!*/
+
+/*!*.faq-accordion .content {*!*/
+/*!*    max-height: 0;*!*/
+/*!*    overflow: hidden;*!*/
+/*!*    transition: max-height 0.3s ease, padding 0.3s ease;*!*/
+/*!*    background: #fff;*!*/
+/*!*    font-size: 1rem;*!*/
+/*!*    line-height: 1.6;*!*/
+/*!*    padding: 0;*!*/
+/*!*}*!*/
+
+/*!*.faq-accordion input[type="checkbox"]:checked ~ .content {*!*/
+/*!*    max-height: 500px;*!*/
+/*!*    padding: 1.25rem 1.5rem;*!*/
+/*!*}*!*/
+
+/*!*.faq-accordion .accordion-icon {*!*/
+/*!*    transition: transform 0.3s;*!*/
+/*!*    font-size: 1.2rem;*!*/
+/*!*}*!*/
+
+/*!*.faq-accordion input[type="checkbox"]:checked ~ label .accordion-icon {*!*/
+/*!*    transform: rotate(180deg);*!*/
+/*!*}*!*/
+
+/*!*!* Адаптация для мобильных *!*!*/
+/*!*@media (max-width: 576px) {*!*/
+/*!*    .faq-accordion label {*!*/
+/*!*        flex-direction: row;*!*/
+/*!*        font-size: 0.95rem;*!*/
+/*!*        padding: 1rem;*!*/
+/*!*    }*!*/
+
+/*!*    .faq-accordion .accordion-icon {*!*/
+/*!*        font-size: 1.1rem;*!*/
+/*!*        margin-left: 0.75rem;*!*/
+/*!*    }*!*/
+
+/*!*    !* Скрываем контент на мобильных *!*!*/
+/*!*    .faq-accordion .content {*!*/
+/*!*        padding: 0;*!*/
+/*!*        display: none; !* Скрываем по умолчанию *!*!*/
+/*!*    }*!*/
+
+/*!*    .faq-accordion input[type="checkbox"]:checked ~ .content {*!*/
+/*!*        display: block; !* Показываем при открытии *!*!*/
+/*!*    }*!*/
+/*!*}*!*/
+/*.faq-accordion {*/
+/*    --primary-color: #6366f1;*/
+/*    --hover-color: #4f46e5;*/
+/*    --text-color: #374151;*/
+/*    --light-bg: #f9fafb;*/
+/*    --border-color: #e5e7eb;*/
+/*    --transition-speed: 0.3s;*/
+/*}*/
+
+/*.faq-accordion .card {*/
+/*    border: none;*/
+/*    margin-bottom: 1rem;*/
+/*    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.05);*/
+/*    border-radius: 0.75rem;*/
+/*    background: #fff;*/
+/*    overflow: hidden;*/
+/*    transition: box-shadow var(--transition-speed) ease;*/
+/*}*/
+
+/*.faq-accordion .card:hover {*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.faq-accordion input[type="checkbox"] {*/
+/*    position: absolute;*/
+/*    opacity: 0;*/
+/*    z-index: -1;*/
+/*}*/
+
+/*.faq-accordion label {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: center;*/
+/*    padding: 1.5rem;*/
+/*    background: var(--light-bg);*/
+/*    cursor: pointer;*/
+/*    font-size: 1.05rem;*/
+/*    font-weight: 600;*/
+/*    color: var(--text-color);*/
+/*    transition: all var(--transition-speed) ease;*/
+/*    position: relative;*/
+/*}*/
+
+/*.faq-accordion label::after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 2px;*/
+/*    background: linear-gradient(90deg, var(--primary-color), var(--hover-color));*/
+/*    transform: scaleX(0);*/
+/*    transform-origin: left;*/
+/*    transition: transform var(--transition-speed) ease;*/
+/*}*/
+
+/*.faq-accordion input[type="checkbox"]:checked ~ label::after {*/
+/*    transform: scaleX(1);*/
+/*}*/
+
+/*.faq-accordion label:hover {*/
+/*    background: #f3f4f6;*/
+/*    color: var(--primary-color);*/
+/*}*/
+
+/*.faq-accordion .content {*/
+/*    max-height: 0;*/
+/*    overflow: hidden;*/
+/*    transition: max-height var(--transition-speed) ease, padding var(--transition-speed) ease;*/
+/*    font-size: 1rem;*/
+/*    line-height: 1.7;*/
+/*    color: var(--text-color);*/
+/*    padding: 0 1.5rem;*/
+/*}*/
+
+/*.faq-accordion input[type="checkbox"]:checked ~ .content {*/
+/*    max-height: 500px;*/
+/*    padding: 1.5rem;*/
+/*    padding-top: 1rem;*/
+/*}*/
+
+/*.faq-accordion .accordion-icon {*/
+/*    transition: transform var(--transition-speed) ease;*/
+/*    font-size: 1.1rem;*/
+/*    color: var(--primary-color);*/
+/*    margin-left: 1rem;*/
+/*    flex-shrink: 0;*/
+/*}*/
+
+/*.faq-accordion input[type="checkbox"]:checked ~ label .accordion-icon {*/
+/*    transform: rotate(180deg);*/
+/*}*/
+
+/*!* Анимация для контента *!*/
+/*.faq-accordion .content p {*/
+/*    opacity: 0;*/
+/*    transform: translateY(10px);*/
+/*    transition: opacity 0.2s ease 0.1s, transform 0.2s ease 0.1s;*/
+/*}*/
+
+/*.faq-accordion input[type="checkbox"]:checked ~ .content p {*/
+/*    opacity: 1;*/
+/*    transform: translateY(0);*/
+/*}*/
+
+/*!* Адаптация для мобильных *!*/
+/*@media (max-width: 768px) {*/
+/*    .faq-accordion label {*/
+/*        padding: 1.25rem;*/
+/*        font-size: 1rem;*/
+/*    }*/
+
+/*    .faq-accordion .content {*/
+/*        font-size: 0.95rem;*/
+/*        line-height: 1.6;*/
+/*    }*/
+
+/*    .faq-accordion input[type="checkbox"]:checked ~ .content {*/
+/*        padding: 1.25rem;*/
+/*        padding-top: 0.75rem;*/
+/*    }*/
+/*}*/
+
+/*!* Стили для заголовков *!*/
+/*.section-title {*/
+/*    font-size: 2rem;*/
+/*    font-weight: 700;*/
+/*    color: #111827;*/
+/*    margin-bottom: 0.5rem;*/
+/*    position: relative;*/
+/*    padding-bottom: 0.5rem;*/
+/*}*/
+
+/*.section-title::after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    left: 50%;*/
+/*    transform: translateX(-50%);*/
+/*    width: 60px;*/
+/*    height: 3px;*/
+/*    background: linear-gradient(90deg, var(--primary-color), var(--hover-color));*/
+/*    border-radius: 3px;*/
+/*}*/
+
+/*.section-subtitle {*/
+/*    font-size: 1.1rem;*/
+/*    color: #6b7280;*/
+/*    max-width: 600px;*/
+/*    margin: 0 auto;*/
+/*}*/
+.faq-accordion {
+    --primary-color: #5D8AA8;  /* Спокойный сине-серый */
+    --hover-color: #4A708B;    /* Более темный оттенок */
+    --text-color: #3E4E5D;     /* Мягкий темно-синий вместо черного */
+    --light-bg: #F5F9FC;       /* Очень светлый голубоватый фон */
+    --border-color: #D4E3ED;   /* Светлая голубая граница */
+    --transition-speed: 0.35s; /* Чуть более плавные переходы */
+    --highlight-color: #88B2CC; /* Акцентный цвет для hover */
+}
+
 .faq-accordion .card {
     border: none;
     margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(93, 138, 168, 0.08);
+    border-radius: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+    border: 1px solid var(--border-color);
+}
+
+.faq-accordion .card:hover {
+    box-shadow: 0 4px 12px rgba(93, 138, 168, 0.12);
+    transform: translateY(-2px);
 }
 
 .faq-accordion input[type="checkbox"] {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
 }
 
 .faq-accordion label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.2rem;
-    background: #fff;
+    padding: 1.5rem;
+    background: var(--light-bg);
     cursor: pointer;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-    transition: background 0.3s;
-    font-size: 1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease;
+    position: relative;
+}
+
+.faq-accordion label::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), var(--hover-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-speed) ease;
+}
+
+.faq-accordion input[type="checkbox"]:checked ~ label::after {
+    transform: scaleX(1);
 }
 
 .faq-accordion label:hover {
-    background: #f9f9f9;
+    background: #EBF3F9;
+    color: var(--hover-color);
 }
 
 .faq-accordion .content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
+    transition: max-height var(--transition-speed) ease, padding var(--transition-speed) ease;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-color);
+    padding: 0 1.5rem;
     background: #fff;
-    font-size: 0.95rem;
-    line-height: 1.5;
 }
 
 .faq-accordion input[type="checkbox"]:checked ~ .content {
     max-height: 500px;
-    padding: 1rem 1.2rem;
+    padding: 1.5rem;
+    padding-top: 1rem;
+    background: #fff;
 }
 
 .faq-accordion .accordion-icon {
-    transition: transform 0.3s;
+    transition: all var(--transition-speed) ease;
+    font-size: 1.1rem;
+    color: var(--primary-color);
     margin-left: 1rem;
     flex-shrink: 0;
 }
 
 .faq-accordion input[type="checkbox"]:checked ~ label .accordion-icon {
     transform: rotate(180deg);
+    color: var(--hover-color);
+}
+
+/* Анимация для контента */
+.faq-accordion .content p {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease 0.15s, transform 0.25s ease 0.15s;
+}
+
+.faq-accordion input[type="checkbox"]:checked ~ .content p {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Адаптация для мобильных */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .faq-accordion label {
-        flex-direction: row;
-        font-size: 0.95rem;
-        padding: 0.8rem 1rem;
-    }
-
-    .faq-accordion .accordion-icon {
-        margin-left: 0.5rem;
+        padding: 1.25rem;
         font-size: 1rem;
     }
 
     .faq-accordion .content {
-        font-size: 0.9rem;
-        padding: 0.8rem 1rem;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
+
+    .faq-accordion input[type="checkbox"]:checked ~ .content {
+        padding: 1.25rem;
+        padding-top: 0.75rem;
+    }
+}
+
+/* Стили для заголовков */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2C3E50; /* Более глубокий синий */
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--hover-color));
+    border-radius: 3px;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #6D8BA6; /* Мягкий синий */
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
 }

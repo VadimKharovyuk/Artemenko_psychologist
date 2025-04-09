@@ -787,33 +787,28 @@
 
 <!-- Секция FAQ -->
 <!-- Секция FAQ -->
-
 <section class="py-5 py-md-7" id="faq">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title mx-auto" style="width: fit-content;">Часті запитання</h2>
-            <p class="section-subtitle text-center">Відповіді на популярні запитання про психологічні консультації</p>
+        <div class="text-center mb-5 mb-md-6">
+            <h2 class="section-title mx-auto">Часті запитання</h2>
+            <p class="section-subtitle">Відповіді на популярні запитання про психологічні консультації</p>
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-9 col-xl-8">
                 <div class="accordion faq-accordion" id="faqAccordion">
 
-                    <div th:each="faq, faqStat : ${faqs}" class="card faq-card mb-3 border-0 shadow-sm"
-                         data-aos="fade-up"
-                         th:attr="data-aos-delay=${faqStat.index * 100}">
-
+                    <div th:each="faq, faqStat : ${faqs}" class="card faq-card">
                         <input type="checkbox" th:id="'faq' + ${faqStat.index}">
 
                         <label th:for="'faq' + ${faqStat.index}">
-                            <span class="h6 mb-0 text-secondary font-weight-bold" th:text="${faq.question}">Вопрос</span>
-                            <i class="fas fa-chevron-down faq-icon accordion-icon"></i>
+                            <span class="question-text" th:text="${faq.question}">Вопрос</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
                         </label>
 
                         <div class="content">
                             <p class="mb-0" th:text="${faq.answer}">Ответ на вопрос</p>
                         </div>
-
                     </div>
 
                 </div>
