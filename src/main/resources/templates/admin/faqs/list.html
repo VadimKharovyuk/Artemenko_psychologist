@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Управление FAQ</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .status-badge {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.5rem;
+    }
+    .active-status {
+      background-color: #28a745;
+      color: white;
+    }
+    .inactive-status {
+      background-color: #dc3545;
+      color: white;
+    }
+    .faq-card {
+      margin-bottom: 1rem;
+      border-left: 4px solid #007bff;
+    }
+    .faq-actions {
+      text-align: right;
+    }
+    .toggle-form {
+      display: inline;
+    }
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Подключаем сайдбар -->
+    <div th:replace="~{layout/admin-sidebar :: sidebarmenu}"></div>
+
+    <!-- Основной контент -->
+    <div class="col-md-9 col-lg-10 ml-sm-auto main-content">
+      <h2 class="mt-4">Управление FAQ</h2>
+
+      <!-- Alerts -->
+      <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Create New FAQ Form -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>Добавить новый вопрос</h5>
+        </div>
+        <div class="card-body">
+          <form th:action="@{/admin/faqs}" method="post">
+            <div class="form-group">
+              <label for="question">Вопрос</label>
+              <input type="text" class="form-control" id="question" name="question" required>
+            </div>
+            <div class="form-group">
+              <label for="answer">Ответ</label>
+              <textarea class="form-control" id="answer" name="answer" rows="3" required></textarea>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="active" name="active">
+              <label class="form-check-label" for="active">Активный</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Создать</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- FAQ List -->
+      <h4>Список вопросов и ответов</h4>
+      <div th:if="${#lists.isEmpty(faqs)}" class="alert alert-info">
+        Список FAQ пуст. Создайте первый вопрос, используя форму выше.
+      </div>
+
+      <div th:each="faq : ${faqs}" class="card faq-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <span th:text="${faq.question}"></span>
+            <span th:if="${faq.active}" class="badge active-status status-badge ml-2">Активный</span>
+            <span th:unless="${faq.active}" class="badge inactive-status status-badge ml-2">Неактивный</span>
+          </div>
+          <div class="faq-actions">
+            <!-- Toggle Active Status -->
+            <form th:action="@{/admin/faqs/{id}/toggle(id=${faq.id})}" method="post" class="toggle-form">
+              <button type="submit" class="btn btn-sm btn-outline-secondary">
+                <span th:if="${faq.active}">Деактивировать</span>
+                <span th:unless="${faq.active}">Активировать</span>
+              </button>
+            </form>
+
+            <!-- Edit Button -->
+            <a th:href="@{/admin/faqs/{id}/edit(id=${faq.id})}" class="btn btn-sm btn-outline-primary ml-1">
+              Редактировать
+            </a>
+
+            <!-- Delete Button -->
+            <form th:action="@{/admin/faqs/{id}/delete(id=${faq.id})}" method="post" class="toggle-form">
+              <button type="submit" class="btn btn-sm btn-outline-danger ml-1"
+                      onclick="return confirm('Вы уверены, что хотите удалить этот вопрос?')">
+                Удалить
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text" th:text="${faq.answer}"></p>
+          <p class="card-text text-muted small">
+            <span>Создано: <span th:text="${#temporals.format(faq.createdAt, 'dd.MM.yyyy HH:mm')}"></span></span>
+            <span class="ml-2">Обновлено: <span th:text="${#temporals.format(faq.updatedAt, 'dd.MM.yyyy HH:mm')}"></span></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

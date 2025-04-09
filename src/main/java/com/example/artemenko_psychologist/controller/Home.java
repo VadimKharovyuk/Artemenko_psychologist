@@ -1,6 +1,7 @@
 package com.example.artemenko_psychologist.controller;
 
 import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestCreateDto;
+import com.example.artemenko_psychologist.dto.faq.FaqDto;
 import com.example.artemenko_psychologist.dto.service.ServiceCardDTO;
 import com.example.artemenko_psychologist.dto.blog.BlogPostListDto;
 import com.example.artemenko_psychologist.dto.service.ServiceDTO;
@@ -9,6 +10,7 @@ import com.example.artemenko_psychologist.service.BlogPostService;
 import com.example.artemenko_psychologist.service.ConsultationRequestService;
 import com.example.artemenko_psychologist.service.ServiceService;
 import com.example.artemenko_psychologist.service.impl.DocumentPhotoService;
+import com.example.artemenko_psychologist.service.impl.FaqService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ public class Home {
     private final ServiceService serviceService ;
     private final BlogPostService blogPostService ;
     private final DocumentPhotoService documentPhotoService;
+    private final FaqService faqService ;
 
 
 
@@ -51,6 +54,15 @@ public class Home {
         List<DocumentPhoto> photoList = documentPhotoService.getAllActivePhotos();
         model.addAttribute("photoList", photoList);
 
+//вопросы / ответы
+        List<FaqDto> activeFaqs = faqService.getActiveFaqs();
+        model.addAttribute("faqs", activeFaqs);
+
+
+//        List<FaqDto> activeFaqs = faqService.getActiveFaqs().stream()
+//                .limit(5)
+//                .toList();
+//        model.addAttribute("faqs", activeFaqs);
         return "home";
     }
 }

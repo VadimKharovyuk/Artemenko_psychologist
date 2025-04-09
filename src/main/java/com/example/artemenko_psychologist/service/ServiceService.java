@@ -224,14 +224,7 @@ public class ServiceService {
     public List<ServiceDTO> getLatestServices(int limit) {
         // Get active services
         List<Service> activeServicesForFooter = serviceRepository.findByActiveTrue();
-
-        // Sort by creation date (newest first)
-        // Assuming your Service entity has a createdAt or similar field
         activeServicesForFooter.sort(Comparator.comparing(Service::getCreatedAt).reversed());
-
-        // If you don't have a createdAt field, you can sort by ID (assuming newer services have higher IDs)
-        // activeServicesForFooter.sort(Comparator.comparing(Service::getId).reversed());
-
         // Map to DTOs and limit to the requested number
         return activeServicesForFooter.stream()
                 .map(serviceMapper::toDto)

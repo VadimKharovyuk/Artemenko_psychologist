@@ -11,7 +11,9 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -300,6 +302,59 @@
             color: white;
             background-color: #a58c6b; /* Немного темнее основного цвета */
             border-color: #a58c6b;
+        }
+/*секция вопрлс/ответ*/
+
+        .faq-card {
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .faq-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07) !important;
+        }
+        .faq-accordion .card-header button {
+            color: #343a40;
+            font-weight: 500;
+        }
+        .faq-accordion .card-header button:hover {
+            color: #b69f7e;
+        }
+        .faq-accordion .card-header button:focus {
+            box-shadow: none;
+        }
+        .transition-icon {
+            transition: transform 0.3s ease;
+        }
+        .collapsed .transition-icon {
+            transform: rotate(0deg);
+        }
+        button:not(.collapsed) .transition-icon {
+            transform: rotate(180deg);
+        }
+        .faq-accordion .card-body {
+            line-height: 1.6;
+            color: #6c757d;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 576px) {
+            .faq-accordion .card-header button {
+                padding: 10px !important;
+            }
+            .faq-accordion .h6 {
+                font-size: 0.9rem;
+            }
+            .card-body {
+                padding: 0.75rem !important;
+                font-size: 0.9rem;
+            }
+            .faq-card {
+                margin-bottom: 0.75rem !important;
+            }
+            .faq-accordion .faq-icon {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -773,6 +828,133 @@
         </div>
     </div>
 </section>
+
+
+
+<!-- Секция FAQ -->
+<section class="py-5 py-md-7" id="faq">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Часті запитання</h2>
+            <p class="section-subtitle text-center">Відповіді на популярні запитання про психологічні консультації</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- FAQ аккордеон -->
+                <div class="accordion faq-accordion" id="faqAccordion">
+                    <!-- Повторяем для каждого вопроса -->
+                    <div th:each="faq, faqStat : ${faqs}" class="card faq-card mb-3 border-0 shadow-sm" data-aos="fade-up"
+                         th:attr="data-aos-delay=${faqStat.index * 100}">
+                        <div class="card-header bg-white border-0 p-0" th:id="'faqHeading' + ${faqStat.index}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link w-100 text-left text-decoration-none d-flex justify-content-between align-items-center p-3 collapsed"
+                                        type="button" data-toggle="collapse"
+                                        th:data-target="'#faqCollapse' + ${faqStat.index}"
+                                        aria-expanded="false"
+                                        th:aria-controls="'faqCollapse' + ${faqStat.index}">
+                                    <span class="h6 mb-0 text-secondary font-weight-bold" th:text="${faq.question}">Вопрос</span>
+                                    <i class="fas fa-chevron-down faq-icon transition-icon"></i>
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div th:id="'faqCollapse' + ${faqStat.index}" class="collapse"
+                             th:aria-labelledby="'faqHeading' + ${faqStat.index}"
+                             data-parent="#faqAccordion">
+                            <div class="card-body pt-0 px-3 pb-3">
+                                <p class="mb-0" th:text="${faq.answer}">Ответ на вопрос</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- JavaScript для корректной работы аккордеона -->
+    <script>
+        $(document).ready(function() {
+            // Инициализируем Bootstrap collapse - это должно сработать автоматически
+
+            // Правильная обработка иконок при открытии/закрытии
+            $('.collapse').on('show.bs.collapse', function () {
+                $(this).prev('.card-header').find('.btn-link').removeClass('collapsed');
+            });
+
+            $('.collapse').on('hide.bs.collapse', function () {
+                $(this).prev('.card-header').find('.btn-link').addClass('collapsed');
+            });
+
+            // Дополнительно для мобильных устройств
+            if (window.innerWidth < 576) {
+                // Уменьшаем задержку анимации на мобильных
+                $('.faq-card').attr('data-aos-delay', '50');
+            }
+        });
+    </script>
+</section>
+
+<!--&lt;!&ndash; Секция FAQ &ndash;&gt;-->
+<!--<section class="py-5 py-md-7" id="faq" xmlns:th="http://www.thymeleaf.org">-->
+<!--    <div class="container">-->
+<!--        <div class="text-center mb-5">-->
+<!--            <h2 class="section-title mx-auto" style="width: fit-content;">Часті запитання</h2>-->
+<!--            <p class="section-subtitle text-center">Відповіді на популярні запитання про психологічні консультації</p>-->
+<!--        </div>-->
+
+<!--        <div class="row justify-content-center">-->
+<!--            <div class="col-lg-8">-->
+<!--                &lt;!&ndash; FAQ аккордеон &ndash;&gt;-->
+<!--                <div class="accordion faq-accordion" id="faqAccordion">-->
+<!--                    &lt;!&ndash; Повторяем для каждого вопроса &ndash;&gt;-->
+<!--                    <div th:each="faq, faqStat : ${faqs}" class="card faq-card mb-3 border-0 shadow-sm" data-aos="fade-up"-->
+<!--                         th:attr="data-aos-delay=${faqStat.index * 100}">-->
+<!--                        <div class="card-header bg-white border-0 p-0" th:id="'faqHeading' + ${faqStat.index}">-->
+<!--                            <button class="btn btn-link w-100 text-left text-decoration-none d-flex justify-content-between align-items-center p-3"-->
+<!--                                    type="button" data-toggle="collapse"-->
+<!--                                    th:attr="data-target='#faqCollapse' + ${faqStat.index}"-->
+<!--                                    aria-expanded="false"-->
+<!--                                    th:aria-controls="'faqCollapse' + ${faqStat.index}">-->
+<!--                                <span class="h6 mb-0 text-secondary font-weight-bold" th:text="${faq.question}">Вопрос</span>-->
+<!--                                <i class="fas fa-chevron-down faq-icon transition-icon"></i>-->
+<!--                            </button>-->
+<!--                        </div>-->
+
+<!--                        <div th:id="'faqCollapse' + ${faqStat.index}" class="collapse"-->
+<!--                             th:aria-labelledby="'faqHeading' + ${faqStat.index}"-->
+<!--                             data-parent="#faqAccordion">-->
+<!--                            <div class="card-body pt-0 px-3 pb-3">-->
+<!--                                <p class="mb-0" th:text="${faq.answer}">Ответ на вопрос</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Кнопка для перехода на полную страницу FAQ (если нужно) &ndash;&gt;-->
+<!--                <div class="text-center mt-5">-->
+<!--                    <a th:href="@{/faq}" class="btn custom-outline-btn">Усі запитання</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; JavaScript для инициализации &ndash;&gt;-->
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            // Добавляем класс collapsed всем кнопкам, чтобы иконка была корректной-->
+<!--            $('.faq-accordion .btn.btn-link').addClass('collapsed');-->
+
+<!--            // При клике меняем состояние кнопки-->
+<!--            $('.faq-accordion .btn.btn-link').on('click', function() {-->
+<!--                $(this).toggleClass('collapsed');-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+<!--</section>-->
 
 
 <!-- Запис на консультацію та контакти -->
