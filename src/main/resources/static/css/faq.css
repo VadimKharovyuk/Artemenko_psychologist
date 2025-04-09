@@ -1,0 +1,68 @@
+.faq-accordion .card {
+    border: none;
+    margin-bottom: 1rem;
+}
+
+.faq-accordion input[type="checkbox"] {
+    display: none;
+}
+
+.faq-accordion label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    transition: background 0.3s;
+    font-size: 1rem;
+}
+
+.faq-accordion label:hover {
+    background: #f9f9f9;
+}
+
+.faq-accordion .content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    background: #fff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.faq-accordion input[type="checkbox"]:checked ~ .content {
+    max-height: 500px;
+    padding: 1rem 1.2rem;
+}
+
+.faq-accordion .accordion-icon {
+    transition: transform 0.3s;
+    margin-left: 1rem;
+    flex-shrink: 0;
+}
+
+.faq-accordion input[type="checkbox"]:checked ~ label .accordion-icon {
+    transform: rotate(180deg);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 576px) {
+    .faq-accordion label {
+        flex-direction: row;
+        font-size: 0.95rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .faq-accordion .accordion-icon {
+        margin-left: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .faq-accordion .content {
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
+}

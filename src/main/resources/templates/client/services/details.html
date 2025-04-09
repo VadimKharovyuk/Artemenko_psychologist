@@ -1,128 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org"-->
-<!--      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">-->
-<!--<head>-->
-<!--  <title th:text="${pageTitle}">Детали услуги</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<section>-->
-<!--  &lt;!&ndash; Параллакс заголовок страницы &ndash;&gt;-->
-<!--  <div class="parallax-header service-detail-header">-->
-<!--    <div class="parallax-bg"></div>-->
-<!--    <div class="parallax-content">-->
-<!--      <div class="container">-->
-<!--        <h1 class="display-4 text-white" th:text="${service.title}">Название услуги</h1>-->
-<!--        <nav aria-label="breadcrumb">-->
-<!--          <ol class="breadcrumb bg-transparent mb-0">-->
-<!--            <li class="breadcrumb-item"><a th:href="@{/}" class="text-white">Главная</a></li>-->
-<!--            <li class="breadcrumb-item"><a th:href="@{/services}" class="text-white">Услуги</a></li>-->
-<!--            <li class="breadcrumb-item active text-white-50" aria-current="page" th:text="${service.title}">Название услуги</li>-->
-<!--          </ol>-->
-<!--        </nav>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  &lt;!&ndash; Детали услуги &ndash;&gt;-->
-<!--  <div class="container py-5">-->
-<!--    <div class="row">-->
-<!--      &lt;!&ndash; Левая колонка - изображение и ключевая информация &ndash;&gt;-->
-<!--      <div class="col-lg-4 mb-4 mb-lg-0">-->
-<!--        <div class="card service-detail-card" data-aos="fade-right">-->
-<!--          &lt;!&ndash; Изображение услуги &ndash;&gt;-->
-<!--          <div th:if="${service.imageUrl != null}" class="service-image-container">-->
-<!--            <img th:src="${service.imageUrl}" class="card-img-top service-detail-image"-->
-<!--                 th:alt="${service.title}">-->
-<!--          </div>-->
-<!--          <div class="card-body">-->
-<!--            &lt;!&ndash; Иконка и заголовок &ndash;&gt;-->
-<!--            <div class="d-flex align-items-center mb-3">-->
-<!--              <div class="service-icon me-3">-->
-<!--                <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>-->
-<!--                <i th:unless="${service.iconClass != null}" class="bi bi-stars"></i>-->
-<!--              </div>-->
-<!--              <h3 class="h4 mb-0" th:text="${service.title}">Название услуги</h3>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Информация о цене и длительности &ndash;&gt;-->
-<!--            <div class="service-info">-->
-<!--              <div class="service-price mb-3">-->
-<!--                <span class="price-label">Стоимость:</span>-->
-<!--                <span class="price-amount" th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA', 0, 'POINT')}">2000</span> UAH-->
-<!--              </div>-->
-<!--              <div class="service-duration mb-3">-->
-
-<!--                <a th:href="@{/reviews/service/{id}(id=${service.id})}" class="btn w-100" style="background-color: #b69f7e; color: white; border: none;">-->
-<!--                  <i class="bi bi-chat-quote"></i> Посмотреть отзывы-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Кнопка действия &ndash;&gt;-->
-<!--            <a href="#appointment-form" class="btn w-100" style="background-color: #b69f7e; color: white; border: none;">Записаться</a>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      &lt;!&ndash; Форма записи на консультацию &ndash;&gt;-->
-<!--      <div class="card mt-4" id="appointment-form" data-aos="fade-up">-->
-<!--        <div class="card-body">-->
-<!--          <h3 class="h4 mb-4">Запись на консультацию</h3>-->
-
-<!--          &lt;!&ndash; Сообщения об ошибках валидации &ndash;&gt;-->
-<!--          <div th:if="${#fields.hasErrors('${consultationRequestDto}')}" class="alert alert-danger mb-3">-->
-<!--            <ul>-->
-<!--              <li th:each="err : ${#fields.errors('${consultationRequestDto}')}" th:text="${err}"></li>-->
-<!--            </ul>-->
-<!--          </div>-->
-
-<!--          <form th:action="@{/services/consultation-request}" method="post" th:object="${consultationRequestDto}">-->
-<!--            <input type="hidden" th:field="*{serviceId}" th:value="${service.id}">-->
-
-<!--            <div class="mb-3">-->
-<!--              <label for="clientName" class="form-label">Ваше имя *</label>-->
-<!--              <input type="text" class="form-control" id="clientName" th:field="*{clientName}"-->
-<!--                     th:classappend="${#fields.hasErrors('clientName')} ? 'is-invalid'" required>-->
-<!--              <div class="invalid-feedback" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}">-->
-<!--                Ім'я обов'язкове-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <div class="mb-3">-->
-<!--              <label for="phoneNumber" class="form-label">Телефон *</label>-->
-<!--              <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"-->
-<!--                     th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'" required>-->
-<!--              <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">-->
-<!--                Некоректний формат телефону-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <div class="mb-3">-->
-<!--              <label for="clientEmail" class="form-label">Email</label>-->
-<!--              <input type="email" class="form-control" id="clientEmail" th:field="*{clientEmail}">-->
-<!--            </div>-->
-
-<!--            <div class="mb-3">-->
-<!--              <label for="message" class="form-label">Сообщение (опционально)</label>-->
-<!--              <textarea class="form-control" id="message" th:field="*{message}" rows="3"-->
-<!--                        th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"></textarea>-->
-<!--              <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">-->
-<!--                Повідомлення не може бути довшим за 1000 символів-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <button type="submit" class="btn" style="background-color: #b69f7e; color: white; border: none;">-->
-<!--              Отправить заявку-->
-<!--            </button>-->
-<!--          </form>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</section>-->
-<!--</body>-->
-<!--</html>-->
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
@@ -301,12 +176,11 @@
                             </ul>
                         </div>
 
-                        <form th:action="@{/services/consultation-request}" method="post"
-                              th:object="${consultationRequestDto}">
+                        <form th:action="@{/services/consultation-request}" method="post" th:object="${consultationRequestDto}">
                             <input type="hidden" th:field="*{serviceId}" th:value="${service.id}">
 
                             <div class="mb-3">
-                                <label for="clientName" class="form-label">Ваше имя *</label>
+                                <label for="clientName" class="form-label">Ваше ім'я *</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                     <input type="text" class="form-control" id="clientName" th:field="*{clientName}"
@@ -314,7 +188,7 @@
                                 </div>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('clientName')}"
                                      th:errors="*{clientName}">
-                                    Имя обязательно
+                                    Ім'я обов'язкове
                                 </div>
                             </div>
 
@@ -323,11 +197,14 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-telephone"></i></span>
                                     <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
+                                           placeholder="+380501234567"
+                                           pattern="^\+?[0-9\s-()]{7,20}$"
+                                           title="Введіть коректний номер телефону"
                                            th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'" required>
                                 </div>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}"
                                      th:errors="*{phoneNumber}">
-                                    Некорректный формат телефона
+                                    Некоректний формат телефону
                                 </div>
                             </div>
 
@@ -335,23 +212,30 @@
                                 <label for="clientEmail" class="form-label">Email</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" class="form-control" id="clientEmail" th:field="*{clientEmail}">
+                                    <input type="email" class="form-control" id="clientEmail" th:field="*{clientEmail}"
+                                           th:classappend="${#fields.hasErrors('clientEmail')} ? 'is-invalid'">
+                                </div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('clientEmail')}"
+                                     th:errors="*{clientEmail}">
+                                    Некоректний формат email
                                 </div>
                             </div>
 
+                            <!-- Поле сообщения - сделано обязательным -->
                             <div class="mb-3">
-                                <label for="message" class="form-label">Сообщение (опционально)</label>
+                                <label for="message" class="form-label">Повідомлення *</label>
                                 <textarea class="form-control" id="message" th:field="*{message}" rows="3"
-                                          th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"></textarea>
+                                          th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"
+                                          placeholder="Розкажіть більше про вашу ситуацію або поставте питання" required></textarea>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}"
                                      th:errors="*{message}">
-                                    Сообщение не может быть длиннее 1000 символов
+                                    Повідомлення обов'язкове для заповнення
                                 </div>
                             </div>
 
                             <button type="submit" class="btn btn-lg"
                                     style="background-color: #b69f7e; color: white; border: none;">
-                                <i class="bi bi-send me-2"></i> Отправить заявку
+                                <i class="bi bi-send me-2"></i> Надіслати заявку
                             </button>
                         </form>
                     </div>
@@ -362,3 +246,4 @@
 </section>
 </body>
 </html>
+
