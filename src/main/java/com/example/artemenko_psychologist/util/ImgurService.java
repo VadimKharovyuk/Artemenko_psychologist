@@ -1,4 +1,4 @@
-//package com.example.artemenko_psychologist.util;
+package com.example.artemenko_psychologist.util;//package com.example.artemenko_psychologist.util;
 //
 //import com.fasterxml.jackson.databind.JsonNode;
 //import com.fasterxml.jackson.databind.ObjectMapper;
@@ -440,8 +440,20 @@
 //        return "GOOD";
 //    }
 //}
-
-package com.example.artemenko_psychologist.util;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpMethod;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -488,6 +500,259 @@ public class ImgurService {
     private static final long THROTTLE_INTERVAL_MS = 60000 / MAX_REQUESTS_PER_MINUTE; // Интервал между запросами
     private final Semaphore throttleSemaphore = new Semaphore(1); // Семафор для синхронизации доступа
     private long lastRequestTime = 0; // Время последнего запроса
+    private static final long RETRY_INITIAL_BACKOFF = 5000; // Увеличиваем начальную задержку до 5 секунд
+    private static final double JITTER_FACTOR = 0.2; // Добавляем случайный фактор для задержки
+
+    /**
+     * Применяет улучшенный throttling для ограничения частоты запросов к API
+     * с добавлением случайного компонента и более длительными задержками
+     */
+    private void applyThrottling() throws InterruptedException {
+        throttleSemaphore.acquire(); // Блокируем до получения разрешения
+        try {
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - lastRequestTime;
+
+            // Если с момента последнего запроса прошло меньше времени, чем нужный интервал - ждем
+            if (lastRequestTime > 0 && elapsedTime < THROTTLE_INTERVAL_MS) {
+                // Базовое время ожидания
+                long baseWaitTime = THROTTLE_INTERVAL_MS - elapsedTime;
+
+                // Добавляем случайный "jitter" для предотвращения "thundering herd" эффекта
+                long jitter = (long)(baseWaitTime * JITTER_FACTOR * Math.random());
+                long sleepTime = baseWaitTime + jitter;
+
+                logger.info("Throttling: ожидание {} мс перед следующим запросом к Imgur API", sleepTime);
+                TimeUnit.MILLISECONDS.sleep(sleepTime);
+            } else {
+                // Даже если интервал прошел, добавляем минимальную задержку для стабильности
+                long minWait = (long)(THROTTLE_INTERVAL_MS * 0.1);
+                TimeUnit.MILLISECONDS.sleep(minWait);
+            }
+
+            // Обновляем время последнего запроса
+            lastRequestTime = System.currentTimeMillis();
+        } finally {
+            // Задерживаем освобождение семафора для более агрессивного ограничения
+            // Это создаст дополнительную задержку между запросами, даже если метод вызывается параллельно
+            TimeUnit.MILLISECONDS.sleep((long)(THROTTLE_INTERVAL_MS * 0.5));
+            throttleSemaphore.release(); // Разблокируем, чтобы другие потоки могли продолжить
+        }
+    }
+
+    /**
+     * Модифицированный механизм повторных попыток для загрузки изображения
+     */
+    private UploadResult uploadWithRetries(HttpEntity<MultiValueMap<String, Object>> requestEntity, String cacheKey, byte[] fileBytes) throws IOException {
+        int maxRetries = 5; // Увеличиваем количество повторов
+        int retryCount = 0;
+        long retryDelay = RETRY_INITIAL_BACKOFF; // Начинаем с большей задержки
+
+        while (true) {
+            try {
+                // Применяем throttling перед отправкой запроса
+                try {
+                    applyThrottling();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException("Прерывание во время throttling", e);
+                }
+
+                // Проверяем, не превышены ли лимиты запросов перед отправкой
+                Map<String, Object> rateLimits = checkRateLimits();
+                int clientRemaining = Integer.parseInt(rateLimits.getOrDefault("clientRemaining", "0").toString());
+                int userRemaining = Integer.parseInt(rateLimits.getOrDefault("userRemaining", "0").toString());
+
+                // Если лимиты на исходе, применяем дополнительную задержку
+                if (clientRemaining < 10 || userRemaining < 10) {
+                    logger.warn("Лимиты API на исходе (клиент: {}, пользователь: {}). Применяем дополнительную задержку.",
+                            clientRemaining, userRemaining);
+                    Thread.sleep(10000); // Ждем 10 секунд перед попыткой
+                }
+
+                logger.info("Отправка запроса на загрузку изображения в Imgur (попытка {})", retryCount + 1);
+
+                // Пробуем альтернативный метод загрузки при повторных попытках
+                if (retryCount > 2) {
+                    // При повторных попытках используем альтернативный метод загрузки через URL
+                    return uploadImageAlternative(fileBytes, cacheKey);
+                }
+
+                ResponseEntity<Map> response = restTemplate.postForEntity(
+                        IMGUR_API_URL,
+                        requestEntity,
+                        Map.class
+                );
+
+                // Логируем информацию о лимитах из заголовков
+                logRateLimitInfo(response.getHeaders());
+
+                // Обрабатываем успешный ответ
+                if (response.getBody() != null && response.getBody().containsKey("data")) {
+                    Map<String, Object> data = (Map<String, Object>) response.getBody().get("data");
+                    if (data.containsKey("link") && data.containsKey("deletehash")) {
+                        String link = (String) data.get("link");
+                        String deleteHash = (String) data.get("deletehash");
+
+                        UploadResult result = new UploadResult(link, deleteHash);
+
+                        // Сохраняем в кэш
+                        imageCache.put(cacheKey, result);
+
+                        logger.info("Изображение успешно загружено на Imgur: {}", link);
+
+                        return result;
+                    }
+                }
+
+                throw new IOException("Неверный формат ответа от Imgur API");
+
+            } catch (HttpClientErrorException e) {
+                if (e.getStatusCode().value() == 429 && retryCount < maxRetries) {
+                    retryCount++;
+
+                    // Логируем информацию об ошибке
+                    logger.warn("Получена ошибка 429 Too Many Requests от Imgur API. " +
+                                    "Повторная попытка {} из {} через {} мс",
+                            retryCount, maxRetries, retryDelay);
+
+                    try {
+                        // Добавляем случайный jitter к задержке
+                        long jitter = (long)(retryDelay * 0.3 * Math.random());
+                        Thread.sleep(retryDelay + jitter);
+
+                        // Увеличиваем задержку для следующей попытки (экспоненциальная задержка)
+                        retryDelay *= 2;
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new IOException("Прерывание во время ожидания перед повторной попыткой", ie);
+                    }
+                } else {
+                    if (retryCount < maxRetries) {
+                        // Пробуем альтернативный метод при других ошибках
+                        try {
+                            logger.info("Пробуем альтернативный метод загрузки...");
+                            return uploadImageAlternative(fileBytes, cacheKey);
+                        } catch (Exception altEx) {
+                            logger.error("Ошибка при альтернативной загрузке: {}", altEx.getMessage());
+                        }
+                    }
+
+                    logger.error("Ошибка при загрузке изображения в Imgur: {}", e.getMessage());
+                    throw new IOException("Ошибка при загрузке изображения в Imgur: " + e.getMessage(), e);
+                }
+            } catch (Exception e) {
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    logger.warn("Непредвиденная ошибка при загрузке: {}. Повторная попытка {} из {}",
+                            e.getMessage(), retryCount, maxRetries);
+                    try {
+                        Thread.sleep(retryDelay);
+                        retryDelay *= 2;
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                    }
+                } else {
+                    throw new IOException("Ошибка при загрузке изображения: " + e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Альтернативный метод загрузки изображения с использованием другого эндпоинта
+     */
+    private UploadResult uploadImageAlternative(byte[] fileBytes, String cacheKey) throws IOException, InterruptedException {
+        logger.info("Используем альтернативный метод загрузки");
+
+        // Создаем временный файл
+        Path tempFile = Files.createTempFile("imgur_upload_", ".jpg");
+        try {
+            Files.write(tempFile, fileBytes);
+
+            // Создаем клиент для многочастной загрузки
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            headers.set("Authorization", "Bearer " + accessToken);
+            headers.set("Client-ID", clientId);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("image", new FileSystemResource(tempFile.toFile()));
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+            // Применяем throttling с увеличенной задержкой
+            Thread.sleep(THROTTLE_INTERVAL_MS * 2);
+
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    IMGUR_API_URL,
+                    requestEntity,
+                    Map.class
+            );
+
+            if (response.getBody() != null && response.getBody().containsKey("data")) {
+                Map<String, Object> data = (Map<String, Object>) response.getBody().get("data");
+                if (data.containsKey("link") && data.containsKey("deletehash")) {
+                    String link = (String) data.get("link");
+                    String deleteHash = (String) data.get("deletehash");
+
+                    UploadResult result = new UploadResult(link, deleteHash);
+                    imageCache.put(cacheKey, result);
+
+                    logger.info("Изображение успешно загружено альтернативным методом: {}", link);
+                    return result;
+                }
+            }
+
+            throw new IOException("Неверный формат ответа при альтернативной загрузке");
+        } finally {
+            // Удаляем временный файл
+            try {
+                Files.deleteIfExists(tempFile);
+            } catch (Exception e) {
+                logger.warn("Не удалось удалить временный файл: {}", e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Проверяет текущие лимиты запросов без выполнения загрузки
+     */
+    private Map<String, Object> checkRateLimits() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("clientRemaining", "100"); // значение по умолчанию
+        result.put("userRemaining", "100");  // значение по умолчанию
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + accessToken);
+            headers.set("Client-ID", clientId);
+
+            HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+            // Используем HEAD-запрос для проверки лимитов (меньше нагрузки)
+            ResponseEntity<Object> response = restTemplate.exchange(
+                    "https://api.imgur.com/3/credits",
+                    HttpMethod.HEAD,
+                    requestEntity,
+                    Object.class
+            );
+
+            List<String> clientRemaining = response.getHeaders().get("X-RateLimit-ClientRemaining");
+            List<String> userRemaining = response.getHeaders().get("X-RateLimit-UserRemaining");
+
+            if (clientRemaining != null && !clientRemaining.isEmpty()) {
+                result.put("clientRemaining", clientRemaining.get(0));
+            }
+            if (userRemaining != null && !userRemaining.isEmpty()) {
+                result.put("userRemaining", userRemaining.get(0));
+            }
+        } catch (Exception e) {
+            logger.warn("Не удалось проверить лимиты запросов: {}", e.getMessage());
+        }
+
+        return result;
+    }
 
     @Value("${imgur.client-id}")
     private String clientId;
@@ -521,29 +786,6 @@ public class ImgurService {
         }
     }
 
-    /**
-     * Применяет throttling для ограничения частоты запросов к API
-     * Ждет необходимое время перед выполнением следующего запроса
-     */
-    private void applyThrottling() throws InterruptedException {
-        throttleSemaphore.acquire(); // Блокируем, чтобы только один поток мог выполнять этот блок одновременно
-        try {
-            long currentTime = System.currentTimeMillis();
-            long elapsedTime = currentTime - lastRequestTime;
-
-            // Если с момента последнего запроса прошло меньше времени, чем нужный интервал - ждем
-            if (lastRequestTime > 0 && elapsedTime < THROTTLE_INTERVAL_MS) {
-                long sleepTime = THROTTLE_INTERVAL_MS - elapsedTime;
-                logger.debug("Throttling: ожидание {} мс перед следующим запросом к Imgur API", sleepTime);
-                TimeUnit.MILLISECONDS.sleep(sleepTime);
-            }
-
-            // Обновляем время последнего запроса
-            lastRequestTime = System.currentTimeMillis();
-        } finally {
-            throttleSemaphore.release(); // Разблокируем, чтобы другие потоки могли продолжить
-        }
-    }
 
     /**
      * Загружает изображение в Imgur и возвращает URL и deleteHash
