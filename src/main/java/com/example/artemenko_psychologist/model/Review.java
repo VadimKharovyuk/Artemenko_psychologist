@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "reviews")
 @Data
@@ -25,6 +26,8 @@ public class Review {
     @Column(name = "delete_hash")
     private String deleteHash;
 
+    @Column(name = "public_id")
+    private String publicId;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;

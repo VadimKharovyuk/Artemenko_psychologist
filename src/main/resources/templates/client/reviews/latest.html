@@ -1,3 +1,251 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org"&ndash;&gt;-->
+<!--&lt;!&ndash;      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;  <title>Последние отзывы | Психолог Артеменко</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<section class="latest-reviews-section py-5">&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="text-center mb-5">&ndash;&gt;-->
+<!--&lt;!&ndash;      <h2 class="section-title">Последние отзывы клиентов</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;      <p class="section-subtitle">Истории и результаты последних консультаций</p>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Reviews Carousel for Larger Screens &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div id="reviewsCarousel" class="carousel slide d-none d-md-block mb-5" data-bs-ride="carousel">&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="carousel-inner">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div th:each="review, iterStat : ${latestReviews}"&ndash;&gt;-->
+<!--&lt;!&ndash;             th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class="row justify-content-center">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="col-lg-8">&ndash;&gt;-->
+<!--&lt;!&ndash;              <div class="card shadow-sm">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="card-body p-4 text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <div th:if="${review.previewImageUrl}" class="mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <img th:src="${review.previewImageUrl}" class="img-fluid rounded" style="max-height: 200px;" alt="Фото отзыва">&ndash;&gt;-->
+<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <p class="lead mb-4" th:text="${#strings.abbreviate(review.description, 250)}">Текст отзыва...</p>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <div class="d-flex justify-content-center align-items-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <h5 class="mb-0 me-3" th:text="${review.username}">Имя клиента</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <span class="text-muted fs-6" th:text="${#temporals.format(review.createdAt, 'dd MMMM yyyy')}">Дата</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <div class="mt-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-primary">Читать полностью</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;              </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">&ndash;&gt;-->
+<!--&lt;!&ndash;        <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;        <span class="visually-hidden">Предыдущий</span>&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">&ndash;&gt;-->
+<!--&lt;!&ndash;        <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;        <span class="visually-hidden">Следующий</span>&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Reviews List for Mobile &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="row g-4 d-md-none">&ndash;&gt;-->
+<!--&lt;!&ndash;      <div th:each="review : ${latestReviews}" class="col-12" data-aos="fade-up">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card h-100 shadow-sm">&ndash;&gt;-->
+<!--&lt;!&ndash;          <div th:if="${review.previewImageUrl}" class="review-image-container">&ndash;&gt;-->
+<!--&lt;!&ndash;            <img th:src="${review.previewImageUrl}" class="card-img-top" alt="Фото к отзыву">&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class="card-body">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="d-flex justify-content-between align-items-center mb-2">&ndash;&gt;-->
+<!--&lt;!&ndash;              <h5 class="card-title mb-0" th:text="${review.username}">Имя клиента</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;              <small class="text-muted" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy')}">Дата</small>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <p class="card-text" th:text="${#strings.abbreviate(review.description, 150)}">Текст отзыва...</p>&ndash;&gt;-->
+<!--&lt;!&ndash;            <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-outline-primary mt-2">Читать полностью</a>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div class="text-center mt-5">&ndash;&gt;-->
+<!--&lt;!&ndash;      <a th:href="@{/reviews}" class="btn btn-primary">Смотреть все отзывы</a>&ndash;&gt;-->
+<!--&lt;!&ndash;      <a th:href="@{/reviews/new}" class="btn btn-outline-primary ms-2">Оставить отзыв</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</section>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">-->
+<!--<head>-->
+<!--  <title>Последние отзывы | Психолог Артеменко</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<section class="latest-reviews-section py-5">-->
+<!--  <div class="container">-->
+<!--    <div class="text-center mb-5">-->
+<!--      <h2 class="section-title">Последние отзывы клиентов</h2>-->
+<!--      <p class="section-subtitle">Истории и результаты последних консультаций</p>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Reviews Carousel for Larger Screens &ndash;&gt;-->
+<!--    <div id="reviewsCarousel" class="carousel slide d-none d-md-block mb-5" data-bs-ride="carousel">-->
+<!--      <div class="carousel-inner" style="min-height: 450px;">-->
+<!--        <div th:each="review, iterStat : ${latestReviews}"-->
+<!--             th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">-->
+<!--          <div class="row justify-content-center">-->
+<!--            <div class="col-lg-8">-->
+<!--              <div class="card shadow-sm">-->
+<!--                <div class="card-body p-4 text-center">-->
+<!--                  <div th:if="${review.previewImageUrl}" class="mb-4">-->
+<!--                    <img th:src="${review.previewImageUrl}" class="img-fluid rounded review-img-clickable"-->
+<!--                         style="max-height: 400px;" alt="Фото отзыва"-->
+<!--                         th:data-img-src="${review.previewImageUrl}">-->
+<!--                  </div>-->
+<!--                  <p class="lead mb-4" th:text="${#strings.abbreviate(review.description, 250)}">Текст отзыва...</p>-->
+<!--                  <div class="d-flex justify-content-center align-items-center">-->
+<!--                    <h5 class="mb-0 me-3" th:text="${review.username}">Имя клиента</h5>-->
+<!--                    <span class="text-muted fs-6" th:text="${#temporals.format(review.createdAt, 'dd MMMM yyyy')}">Дата</span>-->
+<!--                  </div>-->
+<!--                  <div class="mt-3">-->
+<!--                    <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-primary">Читать полностью</a>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">-->
+<!--        <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>-->
+<!--        <span class="visually-hidden">Предыдущий</span>-->
+<!--      </button>-->
+<!--      <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">-->
+<!--        <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>-->
+<!--        <span class="visually-hidden">Следующий</span>-->
+<!--      </button>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Отладочная информация &ndash;&gt;-->
+<!--    <div class="d-md-none alert alert-info mb-3">-->
+<!--      Найдено отзывов: <span th:text="${#lists.size(latestReviews)}">0</span>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Reviews List for Mobile &ndash;&gt;-->
+<!--    <div class="row g-4 mobile-reviews-list d-md-none">-->
+<!--      <div th:each="review : ${latestReviews}" class="col-12" data-aos="fade-up">-->
+<!--        <div class="card h-100 shadow-sm">-->
+<!--          <div th:if="${review.previewImageUrl}" class="review-image-container" style="max-height: 250px; overflow: hidden;">-->
+<!--            <img th:src="${review.previewImageUrl}" class="card-img-top review-img-clickable"-->
+<!--                 alt="Фото к отзыву" th:data-img-src="${review.previewImageUrl}"-->
+<!--                 style="width: 100%; height: auto; object-fit: cover;">-->
+<!--          </div>-->
+<!--          <div class="card-body">-->
+<!--            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-2">-->
+<!--              <h5 class="card-title mb-1 mb-sm-0" th:text="${review.username}">Имя клиента</h5>-->
+<!--              <small class="text-muted mt-1 mt-sm-0" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy')}">Дата</small>-->
+<!--            </div>-->
+<!--            <p class="card-text" th:text="${#strings.abbreviate(review.description, 150)}">Текст отзыва...</p>-->
+<!--            <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-outline-primary mt-2">Читать полностью</a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="text-center mt-5">-->
+<!--      <a th:href="@{/reviews}" class="btn btn-primary">Смотреть все отзывы</a>-->
+<!--      <a th:href="@{/reviews/new}" class="btn btn-outline-primary ms-2">Оставить отзыв</a>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Модальное окно внутри section &ndash;&gt;-->
+<!--  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-xl">-->
+<!--      <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>-->
+<!--        </div>-->
+<!--        <div class="modal-body text-center p-0">-->
+<!--          <img src="" id="modalImage" class="img-fluid" alt="Фото отзыва в полном размере">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; CSS для мобильного отображения &ndash;&gt;-->
+<!--  <style>-->
+<!--    @media (max-width: 767.98px) {-->
+<!--      .mobile-reviews-list {-->
+<!--        display: block !important;-->
+<!--      }-->
+
+<!--      .review-image-container {-->
+<!--        max-height: 200px !important;-->
+<!--        overflow: hidden;-->
+<!--      }-->
+
+<!--      .card-body {-->
+<!--        padding: 1rem;-->
+<!--      }-->
+
+<!--      .card-text {-->
+<!--        font-size: 0.9rem;-->
+<!--        margin-bottom: 0.5rem;-->
+<!--      }-->
+
+<!--      .carousel {-->
+<!--        display: none !important;-->
+<!--      }-->
+<!--    }-->
+
+<!--    /* Улучшенные стили для карусели */-->
+<!--    #reviewsCarousel .carousel-item img {-->
+<!--      max-height: 400px;-->
+<!--      width: auto;-->
+<!--      margin: 0 auto;-->
+<!--      object-fit: contain;-->
+<!--    }-->
+
+<!--    /* Стили для кликабельных изображений */-->
+<!--    .review-img-clickable {-->
+<!--      cursor: pointer;-->
+<!--      transition: opacity 0.3s ease;-->
+<!--    }-->
+
+<!--    .review-img-clickable:hover {-->
+<!--      opacity: 0.9;-->
+<!--    }-->
+<!--  </style>-->
+
+<!--  &lt;!&ndash; JavaScript с использованием th:inline для совместимости с Thymeleaf &ndash;&gt;-->
+<!--  <script th:inline="javascript">-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--      // Проверяем, доступен ли bootstrap-->
+<!--      if (typeof bootstrap !== 'undefined') {-->
+<!--        // Получаем модальный элемент-->
+<!--        const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));-->
+
+<!--        // Устанавливаем обработчики для всех кликабельных изображений-->
+<!--        document.querySelectorAll('.review-img-clickable').forEach(img => {-->
+<!--          img.addEventListener('click', function() {-->
+<!--            document.getElementById('modalImage').src = this.getAttribute('data-img-src');-->
+<!--            imageModal.show(); // Программно показываем модальное окно-->
+<!--          });-->
+<!--        });-->
+
+<!--        console.log('Обработчики модального окна установлены');-->
+<!--      } else {-->
+<!--        console.error('Bootstrap не найден. Убедитесь, что скрипт bootstrap.js подключен.');-->
+<!--      }-->
+<!--    });-->
+<!--  </script>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
@@ -8,70 +256,129 @@
 <section class="latest-reviews-section py-5">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="section-title">Последние отзывы клиентов</h2>
-      <p class="section-subtitle">Истории и результаты последних консультаций</p>
+      <h2 class="section-title">Останні відгуки клієнтів</h2>
+      <p class="section-subtitle">Історії та результати останніх консультацій</p>
     </div>
 
-    <!-- Reviews Carousel for Larger Screens -->
-    <div id="reviewsCarousel" class="carousel slide d-none d-md-block mb-5" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div th:each="review, iterStat : ${latestReviews}"
-             th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
-          <div class="row justify-content-center">
-            <div class="col-lg-8">
-              <div class="card shadow-sm">
-                <div class="card-body p-4 text-center">
-                  <div th:if="${review.previewImageUrl}" class="mb-4">
-                    <img th:src="${review.previewImageUrl}" class="img-fluid rounded" style="max-height: 200px;" alt="Фото отзыва">
-                  </div>
-                  <p class="lead mb-4" th:text="${#strings.abbreviate(review.description, 250)}">Текст отзыва...</p>
-                  <div class="d-flex justify-content-center align-items-center">
-                    <h5 class="mb-0 me-3" th:text="${review.username}">Имя клиента</h5>
-                    <span class="text-muted fs-6" th:text="${#temporals.format(review.createdAt, 'dd MMMM yyyy')}">Дата</span>
-                  </div>
-                  <div class="mt-3">
-                    <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-primary">Читать полностью</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
-        <span class="visually-hidden">Предыдущий</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
-        <span class="visually-hidden">Следующий</span>
-      </button>
-    </div>
-
-    <!-- Reviews List for Mobile -->
-    <div class="row g-4 d-md-none">
-      <div th:each="review : ${latestReviews}" class="col-12" data-aos="fade-up">
-        <div class="card h-100 shadow-sm">
-          <div th:if="${review.previewImageUrl}" class="review-image-container">
-            <img th:src="${review.previewImageUrl}" class="card-img-top" alt="Фото к отзыву">
+    <!-- Reviews Cards Grid -->
+    <div class="row g-4 reviews-grid">
+      <div th:each="review : ${latestReviews}" class="col-md-6 col-lg-4" data-aos="fade-up">
+        <div class="card h-100 shadow-sm review-card">
+          <div th:if="${review.previewImageUrl}" class="review-image-container" style="height: 200px; overflow: hidden;">
+            <img th:src="${review.previewImageUrl}" class="card-img-top review-img-clickable img-cover"
+                 alt="Фото до відгуку" th:data-img-src="${review.previewImageUrl}">
           </div>
           <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h5 class="card-title mb-0" th:text="${review.username}">Имя клиента</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0" th:text="${review.username}">Ім’я клієнта</h5>
               <small class="text-muted" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy')}">Дата</small>
             </div>
-            <p class="card-text" th:text="${#strings.abbreviate(review.description, 150)}">Текст отзыва...</p>
-            <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-outline-primary mt-2">Читать полностью</a>
+            <p class="card-text" th:text="${#strings.abbreviate(review.description, 120)}">Текст відгуку...</p>
+          </div>
+          <div class="card-footer bg-transparent border-top-0">
+            <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-primary w-100 stretched-link">
+              Переглянути відгук
+            </a>
           </div>
         </div>
       </div>
     </div>
 
     <div class="text-center mt-5">
-      <a th:href="@{/reviews}" class="btn btn-primary">Смотреть все отзывы</a>
-      <a th:href="@{/reviews/new}" class="btn btn-outline-primary ms-2">Оставить отзыв</a>
+      <a th:href="@{/reviews}" class="btn btn-primary">Переглянути всі відгуки</a>
+      <a th:href="@{/reviews/new}" class="btn btn-outline-primary ms-2">Залишити відгук</a>
     </div>
   </div>
+
+  <!-- Модальное окно для изображений -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body text-center p-0">
+          <img src="" id="modalImage" class="img-fluid" alt="Фото отзыва в полном размере">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Стили для карточек */
+    .review-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .review-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .img-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .review-card:hover .img-cover {
+      transform: scale(1.03);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .card-text {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Стили для кликабельных изображений */
+    .review-img-clickable {
+      cursor: pointer;
+    }
+
+    /* Адаптивные стили */
+    @media (max-width: 767.98px) {
+      .reviews-grid .col-md-6 {
+        margin-bottom: 1.5rem;
+      }
+
+      .review-image-container {
+        height: 160px !important;
+      }
+    }
+  </style>
+
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Проверяем, доступен ли bootstrap
+      if (typeof bootstrap !== 'undefined') {
+        // Получаем модальный элемент
+        const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+
+        // Устанавливаем обработчики для всех кликабельных изображений
+        document.querySelectorAll('.review-img-clickable').forEach(img => {
+          img.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('modalImage').src = this.getAttribute('data-img-src');
+            imageModal.show();
+          });
+        });
+
+        console.log('Обработчики модального окна установлены');
+      } else {
+        console.error('Bootstrap не найден. Убедитесь, что скрипт bootstrap.js подключен.');
+      }
+    });
+  </script>
 </section>
 </body>
 </html>

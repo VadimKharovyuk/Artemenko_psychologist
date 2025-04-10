@@ -25,4 +25,5 @@ public interface DocumentPhotoService {
     DocumentPhoto activatePhoto(Long id);
 
     List<DocumentPhoto> getAllPhotos();
+
 }

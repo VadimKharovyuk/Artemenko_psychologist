@@ -7,6 +7,7 @@ import com.example.artemenko_psychologist.dto.reviews.ReviewListDTO;
 import com.example.artemenko_psychologist.model.Service;
 import com.example.artemenko_psychologist.repository.ServiceRepository;
 import com.example.artemenko_psychologist.service.ReviewService;
+import com.example.artemenko_psychologist.service.impl.ReviewPhotoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final ReviewService reviewService;
+    private final ReviewPhotoService reviewService;
     private final ServiceRepository serviceRepository;
 
     /**
@@ -32,7 +33,7 @@ public class ReviewController {
      */
     @GetMapping
     public String getAllReviews(Model model) {
-        List<ReviewListDTO> reviews = reviewService.getAllReviews();
+        List<ReviewListDTO> reviews = reviewService.getAllPhotos();
         model.addAttribute("reviews", reviews);
         return "client/reviews/list";
     }
@@ -41,7 +42,7 @@ public class ReviewController {
      * Показать последние отзывы на главной странице
      */
     @GetMapping("/latest")
-    public String getLatestReviews(Model model, @RequestParam(defaultValue = "3") int limit) {
+    public String getLatestReviews(Model model, @RequestParam(defaultValue = "6") int limit) {
         List<ReviewListDTO> latestReviews = reviewService.getLatestReviews(limit);
         model.addAttribute("latestReviews", latestReviews);
         return "client/reviews/latest";
@@ -107,7 +108,6 @@ public class ReviewController {
                                @RequestParam(value = "image", required = false) MultipartFile image,
                                RedirectAttributes redirectAttributes,
                                Model model) {
-        System.out.println("ServiceId в контроллере: " + reviewDTO.getServiceId());
 
         if (bindingResult.hasErrors()) {
             // Загружаем данные для формы в случае ошибки
@@ -125,44 +125,11 @@ public class ReviewController {
             ReviewDetailsDTO createdReview = reviewService.createReview(reviewDTO, image);
             redirectAttributes.addFlashAttribute("successMessage", "Отзыв успешно создан!");
             return "redirect:/reviews/service/" + reviewDTO.getServiceId();
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при загрузке изображения: " + e.getMessage());
-            return "redirect:/reviews/new?serviceId=" + reviewDTO.getServiceId();
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при создании отзыва: " + e.getMessage());
             return "redirect:/reviews/new?serviceId=" + reviewDTO.getServiceId();
         }
     }
 
-
-    /**
-     * Обработка обновления отзыва (только для администратора)
-     */
-    @PostMapping("/{id}/edit")
-    public String updateReview(@PathVariable Long id,
-                               @Valid @ModelAttribute("review") ReviewCreateDTO reviewDTO,
-                               BindingResult bindingResult,
-                               @RequestParam(value = "image", required = false) MultipartFile image,
-                               RedirectAttributes redirectAttributes,
-                               Model model) {
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("reviewId", id);
-            model.addAttribute("services", serviceRepository.findAll());
-            return "reviews/edit";
-        }
-
-        try {
-            ReviewDetailsDTO updatedReview = reviewService.updateReview(id, reviewDTO, image);
-            redirectAttributes.addFlashAttribute("successMessage", "Отзыв успешно обновлен!");
-            return "redirect:/reviews/" + id;
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при загрузке изображения: " + e.getMessage());
-            return "redirect:/reviews/" + id + "/edit";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении отзыва: " + e.getMessage());
-            return "redirect:/reviews/" + id + "/edit";
-        }
-    }
 
 }

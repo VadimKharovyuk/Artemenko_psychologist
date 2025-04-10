@@ -29,4 +29,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     long countByServiceId(Long serviceId);
 
+
+    List<Review> findAllByPreviewImageUrlIsNotNull();
+    List<Review> findAllByServiceIdOrderByCreatedAtDesc(Long serviceId);
+
 }

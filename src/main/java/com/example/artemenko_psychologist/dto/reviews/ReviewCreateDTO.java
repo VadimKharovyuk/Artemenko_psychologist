@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewCreateDTO {
     private String previewImageUrl;
-    private String deleteHash;
+    private String publicId;
     private String description;
     private String username;
     private Long serviceId;

@@ -4,6 +4,7 @@ import com.example.artemenko_psychologist.dto.reviews.ReviewDetailsDTO;
 import com.example.artemenko_psychologist.dto.reviews.ReviewListDTO;
 import com.example.artemenko_psychologist.service.ReviewService;
 import com.example.artemenko_psychologist.service.ServiceService;
+import com.example.artemenko_psychologist.service.impl.ReviewPhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminReviewController {
 
-    private final ReviewService reviewService;
+    private final ReviewPhotoService reviewService;
     private final ServiceService serviceService;
 
     /**
@@ -27,7 +28,7 @@ public class AdminReviewController {
      */
     @GetMapping
     public String listAllReviews(Model model) {
-        List<ReviewListDTO> reviews = reviewService.getAllReviews();
+        List<ReviewListDTO> reviews = reviewService.getAllPhotos();
 
         // Получение названий услуг для каждого отзыва
         Map<Long, String> serviceNames = reviews.stream()

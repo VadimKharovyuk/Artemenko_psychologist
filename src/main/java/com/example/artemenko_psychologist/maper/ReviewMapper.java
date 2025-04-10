@@ -50,7 +50,7 @@ public class ReviewMapper {
     public Review toEntity(ReviewCreateDTO dto, Service service) {
         return Review.builder()
                 .previewImageUrl(dto.getPreviewImageUrl())
-                .deleteHash(dto.getDeleteHash())
+                .publicId(dto.getPublicId())
                 .description(dto.getDescription())
                 .createdAt(LocalDateTime.now()) // Устанавливаем текущее время
                 .username(dto.getUsername())
@@ -61,7 +61,7 @@ public class ReviewMapper {
     // Обновление существующего Entity из CreateDTO
     public void updateEntity(Review review, ReviewCreateDTO dto, Service service) {
         review.setPreviewImageUrl(dto.getPreviewImageUrl());
-        review.setDeleteHash(dto.getDeleteHash());
+        review.setPublicId(dto.getPublicId());
         review.setDescription(dto.getDescription());
         review.setUsername(dto.getUsername());
         review.setService(service);
