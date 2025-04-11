@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Результат удаления</title>
+</head>
+<body>
+<div th:if="${message}" class="success">
+  <p th:text="${message}">Сообщение об успехе</p>
+</div>
+<div th:if="${error}" class="error">
+  <p th:text="${error}">Сообщение об ошибке</p>
+</div>
+</body>
+</html>

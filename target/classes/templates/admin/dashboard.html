@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления | Администратор</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #b69f7e;
+            --primary-dark: #9a8569;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            background-color: #343a40;
+            min-height: 100vh;
+        }
+        .sidebar-header {
+            padding: 20px 15px;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .sidebar-link {
+            padding: 12px 15px;
+            color: #adb5bd;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .sidebar-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        .content {
+            padding: 20px;
+        }
+        .dashboard-card {
+            height: 100%;
+            transition: transform 0.3s;
+            border-radius: 10px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 2rem;
+        }
+        .bg-service {
+            background-color: #17a2b8;
+        }
+        .bg-blog {
+            background-color: #28a745;
+        }
+        .bg-consultation {
+            background-color: #ffc107;
+        }
+        .bg-newsletter {
+            background-color: #dc3545;
+        }
+        .bg-category {
+            background-color: #6610f2;
+        }
+        .stat-card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            margin-bottom: 20px;
+        }
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0;
+        }
+        .stat-card p {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+        .bg-reviews {
+            background-color: #FFD700; /* Gold color for stars/reviews */
+            color: #212529;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Боковая панель -->
+        <div class="col-md-3 col-lg-2 px-0 sidebar">
+            <div class="sidebar-header">
+                <h4 class="mb-0">Админ-панель</h4>
+            </div>
+            <div class="d-flex flex-column">
+                <a href="/admin/dashboard" class="sidebar-link active">
+                    <i class="bi bi-speedometer2"></i> Главная
+                </a>
+                <a href="/admin/services" class="sidebar-link">
+                    <i class="bi bi-grid"></i> Услуги
+                </a>
+                <a href="/admin/faqs" class="sidebar-link">
+                    <i class="bi bi-question-circle"></i> FAQ
+                </a>
+                <a href="/admin/blog-posts" class="sidebar-link">
+                    <i class="bi bi-file-earmark-text"></i> Блог
+                </a>
+                <a href="/admin/blog-categories" class="sidebar-link">
+                    <i class="bi bi-folder"></i> Категории блога
+                </a>
+                <a href="/admin/consultations" class="sidebar-link">
+                    <i class="bi bi-calendar-check"></i> Консультации
+                </a>
+                <a href="/admin/reviews" class="sidebar-link">
+                    <i class="bi bi-star"></i> Отзывы
+                </a>
+                <a href="/admin/newsletter" class="sidebar-link">
+                    <i class="bi bi-envelope"></i> Рассылка
+                </a>
+                <a href="/admin/profiles" class="sidebar-link">
+                    <i class="bi bi-person"></i> Профиль
+                </a>
+                <a href="/admin/imgur-status" class="sidebar-link">
+                    <i class="bi bi-cloud-upload"></i> Imgur-status
+                </a>
+                <a href="/cloudinary/usage" class="sidebar-link">
+                    <i class="bi bi-bar-chart"></i> Сloudinary-usage
+                </a>
+                <a href="/admin/photos" class="sidebar-link">
+                    <i class="bi bi-images"></i> Фото-документы
+                </a>
+                <a href="/" class="sidebar-link mt-auto">
+                    <i class="bi bi-box-arrow-left"></i> На сайт
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9 col-lg-10 content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3">Панель управления</h1>
+                <span class="text-muted" th:text="${#temporals.format(#temporals.createNow(), 'dd.MM.yyyy HH:mm')}">01.01.2023 12:34</span>
+            </div>
+
+            <!-- Статистика -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <p class="text-primary mb-0">Услуги</p>
+                            <i class="bi bi-grid text-primary"></i>
+                        </div>
+                        <h3 th:text="${activeServicesCount}">12</h3>
+                        <p>Активных услуг</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <p class="text-success mb-0">Статьи</p>
+                            <i class="bi bi-file-earmark-text text-success"></i>
+                        </div>
+                        <h3 th:text="${publishedPostsCount}">25</h3>
+                        <p>Опубликованных статей</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <p class="text-warning mb-0">Консультации</p>
+                            <i class="bi bi-calendar-check text-warning"></i>
+                        </div>
+                        <h3 th:text="${newConsultationsCount}">8</h3>
+                        <p>Новых запросов</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <p class="text-danger mb-0">Подписчики</p>
+                            <i class="bi bi-envelope text-danger"></i>
+                        </div>
+                        <h3 th:text="${subscribersCount}">156</h3>
+                        <p>Подписчиков</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Разделы админ-панели -->
+            <h2 class="h4 mb-4">Управление сайтом</h2>
+
+            <div class="row g-4">
+                <!-- Услуги -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-icon bg-service">
+                            <i class="bi bi-grid"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Услуги</h5>
+                            <p class="card-text">Управление услугами психолога, редактирование описаний и цен.</p>
+                            <div class="d-grid">
+                                <a href="/admin/services" class="btn btn-outline-primary">Перейти к услугам</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блог -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-icon bg-blog">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Блог</h5>
+                            <p class="card-text">Написание и публикация статей, управление контентом блога.</p>
+                            <div class="d-grid">
+                                <a href="/admin/blog-posts" class="btn btn-outline-success">Перейти к статьям</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категории блога -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-icon bg-category">
+                            <i class="bi bi-folder"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Категории блога</h5>
+                            <p class="card-text">Управление категориями для структурирования статей блога.</p>
+                            <div class="d-grid">
+                                <a href="/admin/blog-categories" class="btn btn-outline-primary">Перейти к категориям</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Консультации -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-icon bg-consultation">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Запросы на консультации</h5>
+                            <p class="card-text">Просмотр и обработка заявок на консультации от клиентов.</p>
+                            <div class="d-grid">
+                                <a href="/admin/consultations" class="btn btn-outline-warning">Просмотреть запросы</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-icon bg-reviews">
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Отзывы</h5>
+                            <p class="card-text">Просмотр отзывов клиентов.</p>
+                            <div class="d-grid">
+                                <a href="/admin/reviews" class="btn btn-outline-success">Перейти к отзывам</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Рассылка -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-icon bg-newsletter">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Рассылка</h5>
+                            <p class="card-text">Управление подписчиками и отправка почтовых рассылок.</p>
+                            <div class="d-grid">
+                                <a href="/admin/newsletter" class="btn btn-outline-danger">Перейти к рассылке</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

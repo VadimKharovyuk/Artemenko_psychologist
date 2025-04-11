@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Оставить отзыв | Психолог Артеменко</title>
+</head>
+<body>
+<section class="new-review-section py-5">
+  <div class="container">
+    <div class="mb-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/reviews}">Відгуки</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Новий відгук</li>
+        </ol>
+      </nav>
+
+      <h2 class="section-title">Поділіться своїм досвідом</h2>
+      <p class="section-subtitle">Ваш відгук допоможе іншим людям зробити правильний вибір</p>
+    </div>
+
+    <!-- Alert Messages -->
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <span th:text="${errorMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-body p-4">
+            <form th:action="@{/reviews/new}" method="post" enctype="multipart/form-data" th:object="${review}">
+
+              <!-- Вибір послуги (якщо не вибрана заздалегідь) -->
+              <div class="mb-4" th:if="${service == null}">
+                <label for="serviceId" class="form-label">Послуга*</label>
+                <select class="form-select" id="serviceId" th:field="*{serviceId}" required>
+                  <option value="" selected disabled>Оберіть послугу</option>
+                  <option th:each="s : ${services}" th:value="${s.id}" th:text="${s.getTitle()}">Назва послуги</option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('serviceId')}" th:errors="*{serviceId}"></div>
+              </div>
+
+              <!-- Прихований ідентифікатор послуги (якщо вибрана заздалегідь) -->
+              <input type="hidden" th:if="${service != null}" th:field="*{serviceId}" th:value="${service.id}" />
+
+              <!-- Інформація про послугу (якщо вибрана заздалегідь) -->
+              <div class="mb-4" th:if="${service != null}">
+                <label class="form-label">Послуга</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                  <input type="text" class="form-control" th:value="${service.getTitle()}" readonly>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="username" class="form-label">Ваше ім’я*</label>
+                <input type="text" class="form-control" id="username" th:field="*{username}" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+              </div>
+
+              <div class="mb-4">
+                <label for="description" class="form-label">Ваш відгук*</label>
+                <textarea class="form-control" id="description" th:field="*{description}" rows="6" required>
+                          placeholder="Поділіться своїми враженнями, що вам допомогло, що сподобалося..."></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+              </div>
+
+              <div class="mb-4">
+                <label for="image" class="form-label">Фото (необов’язково)</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <div class="form-text">Ви можете додати фото до свого відгуку (макс. розмір 5MB)</div>
+              </div>
+
+              <div class="text-end">
+                <a th:href="${service != null ? '/services/' + service.id : '/reviews'}" class="btn btn-outline-secondary me-2">Скасувати</a>
+                <button type="submit" class="btn btn-primary">Надіслати відгук</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

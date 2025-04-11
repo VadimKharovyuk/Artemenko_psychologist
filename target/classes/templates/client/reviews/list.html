@@ -1,0 +1,120 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">-->
+<!--<head>-->
+<!--  <title>Отзывы клиентов | Психолог Артеменко</title>-->
+<!--  <style>-->
+
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<section class="reviews-section py-5">-->
+<!--  <div class="container">-->
+<!--    &lt;!&ndash; Alert Messages &ndash;&gt;-->
+<!--    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">-->
+<!--      <span th:text="${successMessage}"></span>-->
+<!--      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--    </div>-->
+
+<!--    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">-->
+<!--      <span th:text="${errorMessage}"></span>-->
+<!--      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Reviews List &ndash;&gt;-->
+<!--    <div class="row g-4">-->
+<!--      <div th:if="${#lists.isEmpty(reviews)}" class="col-12 text-center">-->
+<!--        <p>Пока нет отзывов. Станьте первым, кто поделится своим опытом!</p>-->
+<!--      </div>-->
+<!--      <div class="text-center mb-5">-->
+<!--        <h2 class="section-title">Отзывы клиентов</h2>-->
+<!--        <p class="section-subtitle">Истории тех, кто уже прошел свой путь к переменам</p>-->
+<!--        <a th:href="@{/reviews/new}" class="btn btn-primary mt-3">-->
+<!--          <i class="bi bi-pencil-square me-2"></i>Поделиться своим отзывом-->
+<!--        </a>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Review Card &ndash;&gt;-->
+
+<!--      <div th:each="review : ${reviews}" class="col-md-6 col-lg-4" data-aos="fade-up">-->
+<!--        <div class="card shadow-sm d-flex flex-column h-100">-->
+<!--          <div th:if="${review.previewImageUrl}" class="review-image-container">-->
+<!--            <img th:src="${review.previewImageUrl}" class="card-img-top" alt="Фото к отзыву">-->
+<!--          </div>-->
+<!--          <div class="card-body d-flex flex-column">-->
+<!--            <div class="d-flex justify-content-between align-items-center mb-2">-->
+<!--              <h5 class="card-title mb-0" th:text="${review.username}">Имя клиента</h5>-->
+<!--              <small class="text-muted" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy')}">Дата</small>-->
+<!--            </div>-->
+<!--            <p class="card-text flex-grow-1" th:text="${#strings.abbreviate(review.description, 150)}">Текст отзыва...</p>-->
+<!--            <div class="mt-auto">-->
+<!--              <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-outline-primary w-100">Читать полностью</a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Відгуки клієнтів | Психолог Артеменко</title>
+  <style>
+
+  </style>
+</head>
+<body>
+<section class="reviews-section py-5">
+  <div class="container">
+    <!-- Alert Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span th:text="${successMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрити"></button>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <span th:text="${errorMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрити"></button>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="row g-4">
+      <div th:if="${#lists.isEmpty(reviews)}" class="col-12 text-center">
+        <p>Поки що немає відгуків. Станьте першим, хто поділиться своїм досвідом!</p>
+      </div>
+      <div class="text-center mb-5">
+        <h2 class="section-title">Відгуки клієнтів</h2>
+        <p class="section-subtitle">Історії тих, хто вже пройшов свій шлях до змін</p>
+        <a th:href="@{/reviews/new}" class="btn btn-primary mt-3">
+          <i class="bi bi-pencil-square me-2"></i>Поділитися своїм відгуком
+        </a>
+      </div>
+      <!-- Review Card -->
+
+      <div th:each="review : ${reviews}" class="col-md-6 col-lg-4" data-aos="fade-up">
+        <div class="card shadow-sm d-flex flex-column h-100">
+          <div th:if="${review.previewImageUrl}" class="review-image-container">
+            <img th:src="${review.previewImageUrl}" class="card-img-top" alt="Фото до відгуку">
+          </div>
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title mb-0" th:text="${review.username}">Ім'я клієнта</h5>
+              <small class="text-muted" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy')}">Дата</small>
+            </div>
+            <p class="card-text flex-grow-1" th:text="${#strings.abbreviate(review.description, 150)}">Текст відгуку...</p>
+            <div class="mt-auto">
+              <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-sm btn-outline-primary w-100">Читати повністю</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+</body>
+</html>

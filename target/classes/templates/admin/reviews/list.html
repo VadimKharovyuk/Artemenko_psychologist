@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="${pageTitle}">Управление отзывами</title>
+</head>
+<body>
+<section>
+  <div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Управление отзывами</h1>
+    </div>
+
+    <!-- Сообщения об успехе или ошибке -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span th:text="${successMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <span th:text="${errorMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Таблица отзывов -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Все отзывы</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="reviewsTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Автор</th>
+              <th>Услуга</th>
+              <th>Дата создания</th>
+              <th>Превью</th>
+              <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review : ${reviews}">
+              <td th:text="${review.id}"></td>
+              <td th:text="${review.username}"></td>
+              <td th:text="${serviceNames.get(review.id)}"></td>
+              <td th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+              <td>
+                <img th:if="${review.previewImageUrl != null}"
+                     th:src="${review.previewImageUrl}"
+                     alt="Preview" class="img-thumbnail" style="max-height: 60px;">
+                <span th:unless="${review.previewImageUrl != null}">Нет изображения</span>
+              </td>
+              <td>
+                <div class="btn-group" role="group">
+                  <a th:href="@{/admin/reviews/{id}(id=${review.id})}"
+                     class="btn btn-sm btn-info">
+                    <i class="bi bi-eye"></i> Просмотр
+                  </a>
+                  <a th:href="@{/admin/reviews/{id}/delete(id=${review.id})}"
+                     class="btn btn-sm btn-danger">
+                    <i class="bi bi-trash"></i> Удалить
+                  </a>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Отзыв клиента | Психолог Артеменко</title>
+</head>
+<body>
+<section class="review-details-section py-5">
+  <div class="container">
+    <div class="mb-4">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/reviews}">Отзывы</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Отзыв клиента</li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- Alert Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span th:text="${successMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <span th:text="${errorMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div th:if="${review.previewImageUrl}" class="review-image">
+            <img th:src="${review.previewImageUrl}" class="img-fluid w-100" alt="Фото к отзыву">
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="card-title" th:text="${review.username}">Имя клиента</h3>
+              <span class="badge bg-light text-dark p-2">
+                  <i class="bi bi-calendar3"></i>
+                  <span th:text="${#temporals.format(review.createdAt, 'dd MMMM yyyy')}">Дата</span>
+                </span>
+            </div>
+
+            <div class="mb-4">
+              <a th:href="@{/services/{id}(id=${review.serviceId})}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-up-right-circle"></i>
+                <span th:text="${review.serviceName}">Название услуги</span>
+              </a>
+            </div>
+
+            <div class="review-content mb-4">
+              <p th:text="${review.description}" class="lead">Текст отзыва...</p>
+            </div>
+
+            <div class="text-end mt-4">
+              <a th:href="@{/services/{id}(id=${review.serviceId})}" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> К услуге
+              </a>
+              <a th:href="@{/reviews/service/{id}(id=${review.serviceId})}" class="btn btn-primary">
+                Другие отзывы <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

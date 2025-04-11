@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">Психолог Артеменко</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- AOS Animation Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <!-- Additional CSS for services -->
+  <link rel="stylesheet" th:href="@{/css/services.css}">
+
+<!--  <link rel="stylesheet" th:href="@{/css/reviews.css}">-->
+</head>
+<body>
+<!-- Header -->
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+      <!-- Логотип -->
+      <a class="navbar-brand" th:href="@{/}">
+        Психолог Артеменко
+      </a>
+
+      <!-- Кнопка для мобильных -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarMain" aria-controls="navbarMain"
+              aria-expanded="false" aria-label="Перемикач навігації">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Меню навигации -->
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/}">Головна</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/profiles}">Про мене</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/services}">Послуги</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/blog}">Блог</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/reviews/latest}">Відгуки</a>
+          </li>
+          <li class="nav-item">
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Main Content -->
+<main>
+  <div th:replace="${content}">
+    <!-- The content section will be inserted here -->
+  </div>
+</main>
+<!-- Footer -->
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Contact Information -->
+      <div class="col-lg-4">
+        <h5>Контакти</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <i class="bi bi-geo-alt me-2"></i> Харків, вул. Прикладна, 123
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-telephone me-2"></i> +7 (999) 123-45-67
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-envelope me-2"></i> example@mail.com
+          </li>
+        </ul>
+
+
+        <!-- Social Media Icons -->
+        <div class="mt-3">
+          <h6 class="mb-2">Соціальні мережі:</h6>
+          <div class="social-links">
+            <a href="https://t.me/MariiaArt" class="text-white me-2"><i class="bi bi-telegram"></i></a>
+            <a href="#" class="text-white me-2"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://www.instagram.com/mariia_artemenkoo/" class="text-white me-2"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.facebook.com/mariiaartemenkoo" class="text-white me-2"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-4">
+        <h5>Швидкі посилання</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a th:href="@{/}" class="text-white text-decoration-none">Головна</a>
+          </li>
+          <li class="mb-2">
+            <a th:href="@{/services}" class="text-white text-decoration-none">Послуги</a>
+          </li>
+          <li class="mb-2">
+            <a th:href="@{/blog}" class="text-white text-decoration-none">Блог</a>
+          </li>
+          <li class="mb-2">
+            <a th:href="@{/reviews/latest}" class="text-white text-decoration-none">Відгуки</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Subscription -->
+      <!-- Newsletter Subscription -->
+      <div class="col-lg-4">
+        <h5>Підписатися на новини</h5>
+        <p class="mb-3">Отримуйте корисні статті та поради психолога на вашу пошту</p>
+        <form th:action="@{/subscribe}" method="post" class="mb-3">
+          <div class="input-group mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Ваш email" aria-label="Email для підписки" required>
+            <button class="btn btn-primary" type="submit">Підписатися</button>
+          </div>
+        </form>
+
+        <!-- Working Hours -->
+        <div class="mt-4">
+          <h6>Графік роботи:</h6>
+          <p class="mb-1">Пн-Пт: 9:00 - 18:00</p>
+          <p class="mb-0">Сб: 10:00 - 15:00 (за попереднім записом)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-top border-secondary mt-4 pt-4 text-center">
+      <p class="mb-0">&copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2023</span>
+        Психолог Артеменко. Всі права захищені.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS Animation Library -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Initialize AOS -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+  });
+</script>
+
+</body>
+</html>

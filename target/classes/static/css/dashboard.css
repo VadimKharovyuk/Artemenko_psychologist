@@ -1,0 +1,46 @@
+/* Боковая панель администратора */
+.sidebar {
+    background-color: #343a40;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+.sidebar-header {
+    padding: 20px 15px;
+    background-color: #b69f7e;
+    color: white;
+}
+
+.sidebar-link {
+    padding: 12px 15px;
+    color: #adb5bd;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-link i {
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+    }
+
+    .sidebar-header {
+        padding: 15px;
+    }
+
+    .sidebar-link {
+        padding: 10px 15px;
+    }
+}

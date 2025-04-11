@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${pageTitle}">Статус API Imgur</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <style>
+    .status-card {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .status-good {
+      background-color: #d4edda;
+      color: #155724;
+      border-color: #c3e6cb;
+    }
+    .status-moderate {
+      background-color: #fff3cd;
+      color: #856404;
+      border-color: #ffeeba;
+    }
+    .status-warning {
+      background-color: #ffe8cc;
+      color: #ff6700;
+      border-color: #ffd6a5;
+    }
+    .status-critical {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb;
+    }
+    .status-error {
+      background-color: #ffdce0;
+      color: #dc3545;
+      border-color: #ffc9ce;
+    }
+    .progress {
+      height: 20px;
+      margin-bottom: 15px;
+    }
+    .progress-bar-good {
+      background-color: #28a745;
+    }
+    .progress-bar-moderate {
+      background-color: #ffc107;
+    }
+    .progress-bar-warning {
+      background-color: #fd7e14;
+    }
+    .progress-bar-critical {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+<div class="container my-5">
+  <h1 class="mb-4">
+    <i class="fab fa-imgur me-2 text-secondary"></i>
+    Статус API Imgur
+  </h1>
+
+  <div class="row mb-4">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Общий статус</h5>
+        </div>
+        <div th:if="${rateLimits.error}" class="card-body status-error">
+          <h4 class="card-title">
+            <i class="fas fa-exclamation-triangle me-2"></i> Ошибка
+          </h4>
+          <p class="card-text" th:text="${rateLimits.errorMessage}">Не удалось получить информацию о лимитах API.</p>
+          <a href="#" class="btn btn-outline-danger" onclick="location.reload()">
+            <i class="fas fa-sync-alt me-1"></i> Обновить
+          </a>
+        </div>
+        <div th:unless="${rateLimits.error}" th:class="'card-body status-' + ${rateLimits.status?.toLowerCase()}">
+          <h4 class="card-title">
+            <i th:if="${rateLimits.status == 'GOOD'}" class="fas fa-check-circle me-2"></i>
+            <i th:if="${rateLimits.status == 'MODERATE'}" class="fas fa-info-circle me-2"></i>
+            <i th:if="${rateLimits.status == 'WARNING'}" class="fas fa-exclamation-circle me-2"></i>
+            <i th:if="${rateLimits.status == 'CRITICAL'}" class="fas fa-exclamation-triangle me-2"></i>
+            <span th:text="${rateLimits.status}">GOOD</span>
+          </h4>
+          <p class="card-text">
+            <span th:if="${rateLimits.status == 'GOOD'}">Все системы работают нормально.</span>
+            <span th:if="${rateLimits.status == 'MODERATE'}">Умеренное использование лимитов.</span>
+            <span th:if="${rateLimits.status == 'WARNING'}">Высокое использование лимитов.</span>
+            <span th:if="${rateLimits.status == 'CRITICAL'}">Критическое использование лимитов!</span>
+          </p>
+          <p class="mt-3">
+            <a href="#" class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+              <i class="fas fa-sync-alt me-1"></i> Обновить
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Лимиты запросов</h5>
+        </div>
+        <div class="card-body">
+          <h5>Клиентские лимиты</h5>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Использовано: <strong th:text="${rateLimits.clientUsedPercent + '%'}">0%</strong></span>
+            <span>Осталось: <strong th:text="${rateLimits.clientRemaining + ' из ' + rateLimits.clientLimit}">1000 из 1000</strong></span>
+          </div>
+          <div class="progress">
+            <div th:class="'progress-bar ' + (${rateLimits.clientUsedPercent < 50} ? 'progress-bar-good' : (${rateLimits.clientUsedPercent < 75} ? 'progress-bar-moderate' : (${rateLimits.clientUsedPercent < 90} ? 'progress-bar-warning' : 'progress-bar-critical')))"
+                 th:style="'width: ' + ${rateLimits.clientUsedPercent + '%'}"
+                 th:text="${rateLimits.clientUsedPercent + '%'}"
+                 aria-valuemin="0" aria-valuemax="100">
+              0%
+            </div>
+          </div>
+
+          <h5 class="mt-4">Пользовательские лимиты</h5>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Использовано: <strong th:text="${rateLimits.userUsedPercent + '%'}">0%</strong></span>
+            <span>Осталось: <strong th:text="${rateLimits.userRemaining + ' из ' + rateLimits.userLimit}">1000 из 1000</strong></span>
+          </div>
+          <div class="progress">
+            <div th:class="'progress-bar ' + (${rateLimits.userUsedPercent < 50} ? 'progress-bar-good' : (${rateLimits.userUsedPercent < 75} ? 'progress-bar-moderate' : (${rateLimits.userUsedPercent < 90} ? 'progress-bar-warning' : 'progress-bar-critical')))"
+                 th:style="'width: ' + ${rateLimits.userUsedPercent + '%'}"
+                 th:text="${rateLimits.userUsedPercent + '%'}"
+                 aria-valuemin="0" aria-valuemax="100">
+              0%
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <small class="text-muted">
+              <i class="fas fa-clock me-1"></i> Сброс клиентского лимита:
+              <span th:text="${rateLimits.resetClientRemaining}">01.01.2023 00:00:00</span>
+            </small>
+            <br>
+            <small class="text-muted">
+              <i class="fas fa-clock me-1"></i> Сброс пользовательского лимита:
+              <span th:text="${rateLimits.resetUserRemaining}">01.01.2023 00:00:00</span>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Информация об API</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h6><i class="fas fa-info-circle me-2"></i>О лимитах Imgur API</h6>
+          <p>
+            Imgur API имеет два типа лимитов:
+          </p>
+          <ul>
+            <li><strong>Клиентский лимит</strong> - ограничение на количество запросов от вашего приложения.</li>
+            <li><strong>Пользовательский лимит</strong> - ограничение на количество запросов от авторизованного пользователя.</li>
+          </ul>
+          <p>
+            При использовании access token вы получаете увеличенный лимит запросов.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h6><i class="fas fa-exclamation-triangle me-2"></i>Что делать при достижении лимита</h6>
+          <ol>
+            <li>Уменьшить частоту запросов к API.</li>
+            <li>Дождаться сброса лимитов (обычно каждые 24 часа).</li>
+            <li>При необходимости рассмотреть другие варианты хранения изображений.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <a href="/admin/photos" class="btn btn-secondary">
+      <i class="fas fa-arrow-left me-2"></i> Вернуться к управлению фотографиями
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

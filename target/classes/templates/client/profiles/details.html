@@ -1,0 +1,1081 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title th:text="${profile.fullName}">Профиль психолога</title>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"-->
+<!--          rel="stylesheet">-->
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary: #8a5cf6;-->
+<!--            &#45;&#45;primary-dark: #6a3dc7;-->
+<!--            &#45;&#45;secondary: #ffd700;-->
+<!--            &#45;&#45;dark: #121212;-->
+<!--            &#45;&#45;dark-gray: #1e1e1e;-->
+<!--            &#45;&#45;medium-gray: #2a2a2a;-->
+<!--            &#45;&#45;light-gray: #3a3a3a;-->
+<!--            &#45;&#45;text: #e0e0e0;-->
+<!--            &#45;&#45;text-light: #f5f5f5;-->
+<!--            &#45;&#45;text-gray: #b0b0b0;-->
+<!--            &#45;&#45;transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Montserrat', sans-serif;-->
+<!--            color: var(&#45;&#45;text);-->
+<!--            line-height: 1.7;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            background-color: var(&#45;&#45;dark);-->
+<!--            position: relative;-->
+<!--            overflow-x: hidden;-->
+<!--        }-->
+
+<!--        .global-parallax-bg {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95)),-->
+<!--            url('/img/yelow.jpg');-->
+<!--            background-size: cover;-->
+<!--            background-position: center;-->
+<!--            background-attachment: fixed;-->
+<!--            z-index: -2;-->
+<!--            opacity: 0.5;-->
+<!--        }-->
+
+<!--        .profile-header {-->
+<!--            position: relative;-->
+<!--            height: 70vh;-->
+<!--            min-height: 500px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            overflow: hidden;-->
+<!--            margin-bottom: 4rem;-->
+<!--            z-index: 1;-->
+<!--            background: linear-gradient(135deg, rgba(18, 18, 18, 0.9), rgba(30, 30, 30, 0.7));-->
+<!--            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);-->
+<!--        }-->
+
+<!--        .header-overlay {-->
+<!--            position: absolute;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background: linear-gradient(-->
+<!--                    45deg,-->
+<!--                    rgba(138, 92, 246, 0.1) 0%,-->
+<!--                    rgba(106, 61, 199, 0.05) 100%-->
+<!--            );-->
+<!--            z-index: -1;-->
+<!--        }-->
+
+<!--        .header-content {-->
+<!--            text-align: center;-->
+<!--            padding: 0 20px;-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto;-->
+<!--        }-->
+
+<!--        .header-content h1 {-->
+<!--            font-size: 3.5rem;-->
+<!--            font-weight: 700;-->
+<!--            margin-bottom: 1rem;-->
+<!--            background: linear-gradient(to right, var(&#45;&#45;primary), var(&#45;&#45;secondary));-->
+<!--            -webkit-background-clip: text;-->
+<!--            -webkit-text-fill-color: transparent;-->
+<!--            text-shadow: 0 0 20px rgba(138, 92, 246, 0.3);-->
+<!--        }-->
+
+<!--        .header-content p {-->
+<!--            font-size: 1.2rem;-->
+<!--            color: var(&#45;&#45;text-gray);-->
+<!--            font-weight: 300;-->
+<!--            letter-spacing: 1px;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            width: 100%;-->
+<!--            max-width: 1200px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 0 20px;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .profile-content {-->
+<!--            background-color: var(&#45;&#45;dark-gray);-->
+<!--            border-radius: 16px;-->
+<!--            padding: 3rem;-->
+<!--            margin-bottom: 5rem;-->
+<!--            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);-->
+<!--            border: 1px solid var(&#45;&#45;light-gray);-->
+<!--            position: relative;-->
+<!--            z-index: 2;-->
+<!--        }-->
+
+<!--        .profile-photo-container {-->
+<!--            position: relative;-->
+<!--            z-index: 3;-->
+<!--            margin-top: -120px;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .profile-photo {-->
+<!--            width: 280px;-->
+<!--            height: 280px;-->
+<!--            border-radius: 50%;-->
+<!--            object-fit: cover;-->
+<!--            border: 5px solid var(&#45;&#45;dark-gray);-->
+<!--            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),-->
+<!--            0 0 0 10px rgba(138, 92, 246, 0.2);-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            filter: grayscale(20%);-->
+<!--        }-->
+
+<!--        .profile-photo:hover {-->
+<!--            transform: scale(1.05);-->
+<!--            filter: grayscale(0%);-->
+<!--            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),-->
+<!--            0 0 0 10px rgba(138, 92, 246, 0.3);-->
+<!--        }-->
+
+<!--        .profile-name {-->
+<!--            font-size: 2.2rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;text-light);-->
+<!--            margin-bottom: 2rem;-->
+<!--            position: relative;-->
+<!--            display: inline-block;-->
+<!--            letter-spacing: 1px;-->
+<!--        }-->
+
+<!--        .profile-name::after {-->
+<!--            content: '';-->
+<!--            position: absolute;-->
+<!--            width: 60px;-->
+<!--            height: 3px;-->
+<!--            background: linear-gradient(to right, var(&#45;&#45;primary), var(&#45;&#45;secondary));-->
+<!--            bottom: -12px;-->
+<!--            left: 0;-->
+<!--            border-radius: 3px;-->
+<!--        }-->
+
+<!--        .profile-section {-->
+<!--            background-color: var(&#45;&#45;medium-gray);-->
+<!--            border-radius: 12px;-->
+<!--            padding: 2rem;-->
+<!--            margin-bottom: 2rem;-->
+<!--            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            position: relative;-->
+<!--            overflow: hidden;-->
+<!--            border-left: 3px solid var(&#45;&#45;primary);-->
+<!--        }-->
+
+<!--        .profile-section:hover {-->
+<!--            transform: translateY(-5px);-->
+<!--            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);-->
+<!--            border-left: 3px solid var(&#45;&#45;secondary);-->
+<!--        }-->
+
+<!--        .profile-section h3 {-->
+<!--            font-size: 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;text-light);-->
+<!--            margin-bottom: 1.5rem;-->
+<!--            position: relative;-->
+<!--            padding-left: 25px;-->
+<!--        }-->
+
+<!--        .profile-section h3::before {-->
+<!--            content: '';-->
+<!--            position: absolute;-->
+<!--            left: 0;-->
+<!--            top: 50%;-->
+<!--            transform: translateY(-50%);-->
+<!--            width: 12px;-->
+<!--            height: 12px;-->
+<!--            background: var(&#45;&#45;primary);-->
+<!--            border-radius: 50%;-->
+<!--            box-shadow: 0 0 10px var(&#45;&#45;primary);-->
+<!--        }-->
+
+<!--        .profile-section p {-->
+<!--            font-size: 1.1rem;-->
+<!--            line-height: 1.8;-->
+<!--            color: var(&#45;&#45;text-gray);-->
+<!--            font-weight: 400;-->
+<!--        }-->
+
+<!--        .section-icon {-->
+<!--            position: absolute;-->
+<!--            right: 20px;-->
+<!--            top: 20px;-->
+<!--            font-size: 2.5rem;-->
+<!--            opacity: 0.1;-->
+<!--            color: var(&#45;&#45;primary);-->
+<!--            z-index: -1;-->
+<!--        }-->
+
+<!--        .row {-->
+<!--            display: flex;-->
+<!--            flex-wrap: wrap;-->
+<!--            margin: 0 -15px;-->
+<!--        }-->
+
+<!--        .col-md-4 {-->
+<!--            flex: 0 0 33.333333%;-->
+<!--            max-width: 33.333333%;-->
+<!--            padding: 0 15px;-->
+<!--        }-->
+
+<!--        .col-md-8 {-->
+<!--            flex: 0 0 66.666667%;-->
+<!--            max-width: 66.666667%;-->
+<!--            padding: 0 15px;-->
+<!--        }-->
+
+<!--        .text-center {-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        /* Анимации */-->
+<!--        .fade-in-section {-->
+<!--            opacity: 0;-->
+<!--            transform: translateY(30px);-->
+<!--            transition: opacity 0.8s ease-out, transform 0.8s ease-out;-->
+<!--        }-->
+
+<!--        .fade-in-section.is-visible {-->
+<!--            opacity: 1;-->
+<!--            transform: translateY(0);-->
+<!--        }-->
+
+<!--        /* Декоративные элементы */-->
+<!--        .glow-effect {-->
+<!--            position: absolute;-->
+<!--            width: 300px;-->
+<!--            height: 300px;-->
+<!--            background: radial-gradient(circle, rgba(138, 92, 246, 0.15) 0%, rgba(138, 92, 246, 0) 70%);-->
+<!--            border-radius: 50%;-->
+<!--            z-index: -1;-->
+<!--        }-->
+
+<!--        .glow-1 {-->
+<!--            top: -100px;-->
+<!--            left: -100px;-->
+<!--        }-->
+
+<!--        .glow-2 {-->
+<!--            bottom: -50px;-->
+<!--            right: -50px;-->
+<!--        }-->
+
+<!--        /* Адаптивность */-->
+<!--        @media (max-width: 992px) {-->
+<!--            .header-content h1 {-->
+<!--                font-size: 2.8rem;-->
+<!--            }-->
+
+<!--            .profile-photo {-->
+<!--                width: 240px;-->
+<!--                height: 240px;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .profile-header {-->
+<!--                height: 60vh;-->
+<!--                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);-->
+<!--            }-->
+
+<!--            .header-content h1 {-->
+<!--                font-size: 2.2rem;-->
+<!--            }-->
+
+<!--            .header-content p {-->
+<!--                font-size: 1rem;-->
+<!--            }-->
+
+<!--            .col-md-4, .col-md-8 {-->
+<!--                flex: 0 0 100%;-->
+<!--                max-width: 100%;-->
+<!--            }-->
+
+<!--            .profile-photo-container {-->
+<!--                margin-top: -80px;-->
+<!--                margin-bottom: 30px;-->
+<!--            }-->
+
+<!--            .profile-name {-->
+<!--                text-align: center;-->
+<!--                width: 100%;-->
+<!--            }-->
+
+<!--            .profile-name::after {-->
+<!--                left: 50%;-->
+<!--                transform: translateX(-50%);-->
+<!--            }-->
+
+<!--            .profile-content {-->
+<!--                padding: 2rem 1.5rem;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (max-width: 576px) {-->
+<!--            .profile-header {-->
+<!--                height: 50vh;-->
+<!--            }-->
+
+<!--            .profile-photo {-->
+<!--                width: 200px;-->
+<!--                height: 200px;-->
+<!--            }-->
+
+<!--            .profile-section {-->
+<!--                padding: 1.5rem;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash; Параллакс фон для всей страницы &ndash;&gt;-->
+<!--<div class="global-parallax-bg" id="parallaxBackground"></div>-->
+
+<!--&lt;!&ndash; Декоративные элементы &ndash;&gt;-->
+<!--<div class="glow-effect glow-1"></div>-->
+<!--<div class="glow-effect glow-2"></div>-->
+
+<!--&lt;!&ndash; Заголовок с параллакс эффектом &ndash;&gt;-->
+<!--<div class="profile-header">-->
+<!--    <div class="header-overlay"></div>-->
+<!--    <div class="container">-->
+<!--        <div class="header-content" style="-->
+<!--    background-color: rgba(15, 15, 15, 0.3);  /* Более прозрачный фон */-->
+<!--    backdrop-filter: blur(8px);               /* Усиленное размытие */-->
+<!--    padding: 2.5rem;-->
+<!--    border-radius: 16px;-->
+<!--    border: 1px solid rgba(255, 255, 255, 0.08); /* Более тонкая граница */-->
+<!--    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);-->
+<!--    text-align: center;-->
+<!--  ">-->
+<!--            <h1 class="display-4" th:text="${profile.fullName}" style="-->
+<!--      color: white;-->
+<!--      text-shadow: 0 0 12px rgba(138, 92, 246, 0.6);-->
+<!--      margin-bottom: 1.2rem;-->
+<!--      font-weight: 600;-->
+<!--      letter-spacing: 0.5px;-->
+<!--      font-size: 3rem;-->
+<!--    ">Имя психолога</h1>-->
+<!--            <p class="lead" style="-->
+<!--      color: rgba(255, 255, 255, 0.9);       /* Более контрастный текст */-->
+<!--      font-size: 1.3rem;-->
+<!--      letter-spacing: 1.2px;-->
+<!--      font-weight: 300;-->
+<!--      margin: 0;-->
+<!--      text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);-->
+<!--    ">Профессиональный психолог</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="container">-->
+<!--    <div class="profile-content">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-4">-->
+<!--                <div class="profile-photo-container">-->
+<!--                    <img th:if="${profile.profilePhotoUrl}"-->
+<!--                         th:src="${profile.profilePhotoUrl}"-->
+<!--                         class="profile-photo"-->
+<!--                         alt="Фото психолога">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+<!--                <h1 class="profile-name" th:text="${profile.fullName}">Имя психолога</h1>-->
+
+<!--                <div class="profile-section fade-in-section">-->
+<!--                    <i class="section-icon">❤</i>-->
+<!--                    <h3>Личная история</h3>-->
+<!--                    <p th:text="${profile.personalHistory}">-->
+<!--                        Описание личной истории психолога, его путь в профессии, мотивация и личный опыт,-->
+<!--                        который помогает лучше понимать клиентов.-->
+<!--                    </p>-->
+<!--                </div>-->
+
+<!--                <div class="profile-section fade-in-section">-->
+<!--                    <i class="section-icon">🎓</i>-->
+<!--                    <h3>Профессиональный путь</h3>-->
+<!--                    <p th:text="${profile.professionalJourney}">-->
+<!--                        Образование, специализации, профессиональный опыт и достижения.-->
+<!--                        Какие методы и подходы использует в работе.-->
+<!--                    </p>-->
+<!--                </div>-->
+
+<!--                <div class="profile-section fade-in-section">-->
+<!--                    <i class="section-icon">💭</i>-->
+<!--                    <h3>Личные размышления</h3>-->
+<!--                    <p th:text="${profile.personalReflections}">-->
+<!--                        Философия работы, взгляды на психологическую помощь,-->
+<!--                        ценности и принципы профессиональной деятельности.-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        // Анимация появления при прокрутке-->
+<!--        const fadeSections = document.querySelectorAll('.fade-in-section');-->
+
+<!--        const observer = new IntersectionObserver(entries => {-->
+<!--            entries.forEach(entry => {-->
+<!--                if (entry.isIntersecting) {-->
+<!--                    entry.target.classList.add('is-visible');-->
+<!--                }-->
+<!--            });-->
+<!--        }, {threshold: 0.1});-->
+
+<!--        fadeSections.forEach(section => {-->
+<!--            observer.observe(section);-->
+<!--        });-->
+
+<!--        // Параллакс-эффект-->
+<!--        window.addEventListener('scroll', function () {-->
+<!--            const scrollPosition = window.pageYOffset;-->
+<!--            const parallaxBg = document.getElementById('parallaxBackground');-->
+<!--            parallaxBg.style.transform = `translateY(${scrollPosition * 0.4}px)`;-->
+<!--        }, {passive: true});-->
+
+<!--        // Динамическое затемнение фона при скролле-->
+<!--        window.addEventListener('scroll', function () {-->
+<!--            const scrollPosition = window.pageYOffset;-->
+<!--            const header = document.querySelector('.profile-header');-->
+<!--            const maxOpacity = 0.8;-->
+<!--            const opacity = Math.min(scrollPosition / 300, maxOpacity);-->
+<!--            header.style.backgroundColor = `rgba(18, 18, 18, ${0.9 + opacity * 0.1})`;-->
+<!--        }, {passive: true});-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!--черный дизайн-->
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${profile.fullName}">Профиль психолога</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- AOS Animation Library -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --primary: #8a5cf6;  /* Фиолетовый */
+            --primary-light: #a37ff6;
+            --secondary: #f8f9fa;
+            --light: #ffffff;       /* Белый */
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #6c757d;
+            --text: #212529;      /* Темный текст */
+            --text-light: #6c757d;
+            --text-gray: #adb5bd;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .global-parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(248, 245, 241, 0.8), rgba(238, 235, 230, 0.9)),
+            url('/img/yelow.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -2;
+            opacity: 0.8;
+        }
+
+        .profile-header {
+            position: relative;
+            height: 70vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 4rem;
+            z-index: 1;
+            background: linear-gradient(135deg, rgba(248, 245, 241, 0.9), rgba(238, 235, 230, 0.7));
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                    45deg,
+                    rgba(182, 159, 126, 0.1) 0%,
+                    rgba(212, 196, 169, 0.05) 100%
+            );
+            z-index: -1;
+        }
+
+        .header-content {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 196, 169, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            transition: var(--transition);
+        }
+
+        .header-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            letter-spacing: 0.5px;
+        }
+
+        .header-content p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(182, 159, 126, 0.3);
+        }
+
+        .cta-button:hover {
+            background-color: #8e7a5e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(182, 159, 126, 0.4);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .profile-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--light-gray);
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-photo-container {
+            position: relative;
+            z-index: 3;
+            margin-top: -120px;
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1),
+            0 0 0 10px rgba(182, 159, 126, 0.05);
+            transition: var(--transition);
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.03);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15),
+            0 0 0 10px rgba(182, 159, 126, 0.1);
+        }
+
+        .profile-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-name::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 2px;
+            background-color: var(--primary);
+            bottom: -12px;
+            left: 0;
+        }
+
+        .profile-section {
+            background-color: rgba(248, 245, 241, 0.7);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border-left: 3px solid var(--primary);
+        }
+
+        .profile-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-section h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .profile-section h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        .profile-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-gray);
+            font-weight: 400;
+        }
+
+        .section-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2.5rem;
+            opacity: 0.1;
+            color: var(--primary);
+            z-index: -1;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+
+        .col-md-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding: 0 15px;
+        }
+
+        .col-md-8 {
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
+            padding: 0 15px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 992px) {
+            .header-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .profile-photo {
+                width: 240px;
+                height: 240px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                height: 60vh;
+                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            }
+
+            .header-content {
+                padding: 2rem;
+            }
+
+            .header-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .header-content p {
+                font-size: 1rem;
+            }
+
+            .col-md-4, .col-md-8 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .profile-photo-container {
+                margin-top: -80px;
+                margin-bottom: 30px;
+            }
+
+            .profile-name {
+                text-align: center;
+                width: 100%;
+            }
+
+            .profile-name::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .profile-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-header {
+                height: 50vh;
+            }
+
+            .profile-photo {
+                width: 200px;
+                height: 200px;
+            }
+
+            .profile-section {
+                padding: 1.5rem;
+            }
+        }
+        /* Стили для фиксированного хедера */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        /* Для плавного появления тени при скролле */
+        .site-header.scrolled {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Стили для логотипа */
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            color: #a08a6b !important;
+            font-size: 1.4rem;
+        }
+
+        /* Стили для пунктов меню */
+        .navbar-nav .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            color: #4a4743;
+            font-weight: 500;
+            padding: 1rem 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #a08a6b;
+        }
+
+        /* Активный пункт меню */
+        .navbar-nav .nav-link.active {
+            color: #a08a6b;
+            position: relative;
+        }
+
+        .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background-color: #a08a6b;
+        }
+
+
+        /* Добавляем отступ для основного контента, чтобы он не скрывался под фиксированным хедером */
+        body {
+            padding-top: 80px; /* Высота хедера + дополнительный отступ */
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background-color: white;
+                padding: 1rem;
+                border-radius: 0 0 10px 10px;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.5rem 0;
+            }
+
+            .btn-primary {
+                margin-top: 1rem;
+                display: inline-block;
+            }
+        }
+        .btn-main {
+            background-color: var(--accent-color);
+            color: #ec8f84;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-main:hover {
+            background-color: white;
+            color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" th:href="@{/}">
+                Психолог Артеменко
+            </a>
+
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarMain" aria-controls="navbarMain"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Menu -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/#about}">Обо мне</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/services}">Услуги</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/blog}">Блог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/reviews}">Відгуки</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>
+<!-- Параллакс фон -->
+<div class="global-parallax-bg" id="parallaxBackground"></div>
+
+<!-- Заголовок -->
+<div class="profile-header">
+    <div class="header-overlay"></div>
+    <div class="container">
+        <div class="header-content">
+            <h1 class="display-4" th:text="${profile.fullName}">Ім'я психолога</h1>
+            <p class="lead">Професійний психолог з індивідуальним підходом</p>
+            <a class="btn-main" th:href="@{/#contact}">Записатися</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="profile-content">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-photo-container">
+                    <img th:if="${profile.profilePhotoUrl}"
+                         th:src="${profile.profilePhotoUrl}"
+                         class="profile-photo"
+                         alt="Фото психолога">
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <h1 class="profile-name" th:text="${profile.fullName}">Ім'я психолога</h1>
+
+                <div class="profile-section fade-in-section">
+                    <i class="section-icon">❤</i>
+                    <h3>Особиста історія</h3>
+                    <p th:text="${profile.personalHistory}">
+                        Опис особистої історії психолога, його шлях у професії, мотивація та особистий досвід,
+                        що допомагає краще розуміти клієнтів.
+                    </p>
+                </div>
+
+                <div class="profile-section fade-in-section">
+                    <i class="section-icon">🎓</i>
+                    <h3>Професійний шлях</h3>
+                    <p th:text="${profile.professionalJourney}">
+                        Освіта, спеціалізації, професійний досвід та досягнення.
+                        Які методи та підходи використовує в роботі.
+                    </p>
+                    <a href="/services" class="cta-button" style="margin-top: 15px;">Мої послуги</a>
+                </div>
+
+                <div class="profile-section fade-in-section">
+                    <i class="section-icon">💭</i>
+                    <h3>Особисті роздуми</h3>
+                    <p th:text="${profile.personalReflections}">
+                        Філософія роботи, погляди на психологічну допомогу,
+                        цінності та принципи професійної діяльності.
+                    </p>
+                </div>
+
+
+
+                <div class="profile-section fade-in-section">
+                    <i class="section-icon">💭</i>
+                    <h3>Готовы начать работу над собой?</h3>
+                    <p th:text="${profile.getFullName()}">
+                        Запишитесь на первую консультацию, и мы вместе найдем решение вашей ситуации
+                    </p>
+                    <a class="cta-button" th:href="@{/#contact}" style="margin-top: 15px;">Записаться</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Анимация появления при прокрутке
+        const fadeSections = document.querySelectorAll('.fade-in-section');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {threshold: 0.1});
+
+        fadeSections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Параллакс-эффект
+        window.addEventListener('scroll', function () {
+            const scrollPosition = window.pageYOffset;
+            const parallaxBg = document.getElementById('parallaxBackground');
+            parallaxBg.style.transform = `translateY(${scrollPosition * 0.4}px)`;
+        }, {passive: true});
+
+        // Динамическое изменение прозрачности фона при скролле
+        window.addEventListener('scroll', function () {
+            const scrollPosition = window.pageYOffset;
+            const header = document.querySelector('.profile-header');
+            const maxOpacity = 0.2;
+            const opacity = Math.min(scrollPosition / 300, maxOpacity);
+            header.style.backgroundColor = `rgba(248, 245, 241, ${0.9 + opacity * 0.1})`;
+        }, {passive: true});
+    });
+</script>

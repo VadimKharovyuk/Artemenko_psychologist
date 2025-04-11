@@ -1,0 +1,118 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">-->
+<!--<head>-->
+<!--    <title>Блог психолога Артеменко - Полезные статьи</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<section>-->
+<!--    &lt;!&ndash; Заголовок страницы &ndash;&gt;-->
+<!--    <div class="container py-5">-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-8 mx-auto text-center">-->
+<!--                <h1 class="display-4 mb-4">Блог</h1>-->
+<!--                <p class="lead">Полезные статьи, советы и наблюдения из практики психолога</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Список статей &ndash;&gt;-->
+<!--    <div class="container pb-5">-->
+<!--        <div class="row g-4">-->
+<!--            &lt;!&ndash; Если постов нет &ndash;&gt;-->
+<!--            <div class="col-12" th:if="${posts.empty}">-->
+<!--                <div class="alert alert-info">-->
+<!--                    В настоящее время статьи не найдены. Пожалуйста, загляните позже.-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Карточки постов &ndash;&gt;-->
+<!--            &lt;!&ndash; Карточки постов &ndash;&gt;-->
+<!--            <div class="col-md-6 col-lg-4" th:each="post : ${posts}">-->
+<!--                <div class="card h-100 shadow-sm" data-aos="fade-up">-->
+<!--                    &lt;!&ndash; Изображение поста &ndash;&gt;-->
+<!--                    <div class="blog-image-container">-->
+<!--                        <img th:if="${post.previewImageUrl}" th:src="${post.previewImageUrl}" class="card-img-top" alt="Изображение статьи">-->
+<!--                        <img th:unless="${post.previewImageUrl}" src="/images/default-blog.jpg" class="card-img-top" alt="Изображение статьи">-->
+<!--                    </div>-->
+
+<!--                    <div class="card-body d-flex flex-column">-->
+<!--                        &lt;!&ndash; Метаданные поста &ndash;&gt;-->
+<!--                        <div class="d-flex justify-content-between mb-2 text-muted small">-->
+<!--                            <span th:if="${post.categoryName}" th:text="${post.categoryName}">Категория</span>-->
+<!--                            <span th:text="${#temporals.format(post.publicationDate, 'dd.MM.yyyy')}">01.01.2023</span>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Заголовок и краткое описание &ndash;&gt;-->
+<!--                        <h3 class="h5 card-title" th:text="${post.title}">Заголовок статьи</h3>-->
+<!--                        <p class="card-text" th:text="${post.shortDescription}">Краткое описание статьи...</p>-->
+
+<!--                        &lt;!&ndash; Кнопка "Читать далее" &ndash;&gt;-->
+<!--                        <a th:href="@{/blog/{id}(id=${post.id})}" class="btn btn-outline-secondary mt-auto">Читать далее</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Блог психолога Артеменка - Корисні статті</title>
+</head>
+<body>
+<section>
+    <!-- Заголовок сторінки -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 mb-4">Блог</h1>
+                <p class="lead">Корисні статті, поради та спостереження з практики психолога</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список статей -->
+    <div class="container pb-5">
+        <div class="row g-4">
+            <!-- Якщо публікацій немає -->
+            <div class="col-12" th:if="${posts.empty}">
+                <div class="alert alert-info">
+                    На даний момент статті не знайдено. Будь ласка, завітайте пізніше.
+                </div>
+            </div>
+
+            <!-- Картки публікацій -->
+            <div class="col-md-6 col-lg-4" th:each="post : ${posts}">
+                <div class="card h-100 shadow-sm" data-aos="fade-up">
+                    <!-- Зображення публікації -->
+                    <div class="blog-image-container">
+                        <img th:if="${post.previewImageUrl}" th:src="${post.previewImageUrl}" class="card-img-top" alt="Зображення статті">
+                        <img th:unless="${post.previewImageUrl}" src="/images/default-blog.jpg" class="card-img-top" alt="Зображення статті">
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <!-- Мета-дані публікації -->
+                        <div class="d-flex justify-content-between mb-2 text-muted small">
+                            <span th:if="${post.categoryName}" th:text="${post.categoryName}">Категорія</span>
+                            <span th:text="${#temporals.format(post.publicationDate, 'dd.MM.yyyy')}">01.01.2023</span>
+                        </div>
+
+                        <!-- Заголовок і короткий опис -->
+                        <h3 class="h5 card-title" th:text="${post.title}">Заголовок статті</h3>
+                        <p class="card-text" th:text="${post.shortDescription}">Короткий опис статті...</p>
+
+                        <!-- Кнопка "Читати далі" -->
+                        <a th:href="@{/blog/{id}(id=${post.id})}" class="btn btn-outline-secondary mt-auto">Читати далі</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

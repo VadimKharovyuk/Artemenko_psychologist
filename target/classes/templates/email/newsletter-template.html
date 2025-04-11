@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Новая статья от психолога Артеменко</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #b69f7e;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .post-title {
+      font-size: 24px;
+      color: #b69f7e;
+      margin-bottom: 15px;
+    }
+    .post-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #777;
+      padding: 20px;
+    }
+    .button {
+      display: inline-block;
+      background-color: #b69f7e;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #777;
+      padding: 20px;
+    }
+    .social-links {
+      margin-top: 15px;
+    }
+    .social-link {
+      display: inline-block;
+      margin: 0 10px;
+      color: #b69f7e;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Психолог Артеменко</h1>
+  <p>Нова стаття на сайті</p>
+</div>
+
+<div class="content">
+  <h2 class="post-title" th:text="${postTitle}">Назва статті</h2>
+
+  <div th:if="${postImageUrl != null}">
+    <img class="post-image" th:src="${postImageUrl}" alt="Зображення до статті">
+  </div>
+
+  <p th:text="${postContent}">Короткий опис статті</p>
+
+  <a class="button" th:href="@{'https://artemenko-psychologist.onrender.com/blog/' + ${blogPostId}}">Читати статтю повністю</a>
+</div>
+
+<div class="footer">
+  <p>Ви отримали цей email, тому що підписані на розсилку.</p>
+  <p>
+    <!--    <a th:href="@{http://localhost:2232/unsubscribe(email=${recipientEmail})}">-->
+    <!--      Відписатися від розсилки-->
+    <!--    </a>-->
+  </p>
+  <div class="social-links">
+    <!-- Тут можна додати посилання на соціальні мережі -->
+    <a href="https://www.facebook.com/mariiaartemenkoo" class="social-link" target="_blank" rel="noopener noreferrer">Facebook</a>
+    <a href="https://www.instagram.com/mariia_artemenkoo/" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a href="https://t.me/MariiaArt" class="social-link" target="_blank" rel="noopener noreferrer">Telegram</a>
+  </div>
+</div>
+</body>
+</html>

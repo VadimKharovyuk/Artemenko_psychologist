@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление фотографии</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Добавление новой фотографии</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form method="post" th:action="@{/photos/add}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Название</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Категория</label>
+            <select id="category" name="category" class="form-select" required>
+                <option value="profile">Профиль</option>
+                <option value="blog">Блог</option>
+                <option value="gallery">Галерея</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="imageFile" class="form-label">Выберите изображение</label>
+            <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Загрузить</button>
+        <a th:href="@{/photos}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

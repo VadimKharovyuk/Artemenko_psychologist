@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в админ-панель | Психолог Артеменко</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #5c8d76;
+            --secondary-color: #f0f5f2;
+            --accent-color: #d4a373;
+            --dark-color: #2c3e35;
+            --light-color: #fafcfb;
+
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --radius-xl: 2rem;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.08);
+
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--dark-color);
+            background-color: var(--secondary-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0.25rem;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo img {
+            max-width: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .login-logo h1 {
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo p {
+            color: var(--primary-color);
+            font-size: 0.875rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--dark-color);
+        }
+
+        .login-form .form-control {
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--radius-md);
+            background-color: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .login-form .form-control:focus {
+            border-color: var(--accent-color);
+            background-color: white;
+            box-shadow: 0 0 0 0.25rem rgba(212, 163, 115, 0.15);
+        }
+
+        .login-form .input-group-text {
+            border-color: var(--secondary-color);
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            background-color: var(--dark-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .back-link {
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .back-link a {
+            color: var(--primary-color);
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .back-link a:hover {
+            color: var(--accent-color);
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+
+        .alert {
+            border-radius: var(--radius-md);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-danger {
+            background-color: #fcf0ed;
+            border-color: #f8d5cc;
+            color: #e07a5f;
+        }
+
+        .alert-success {
+            background-color: #f0f7e9;
+            border-color: #dbeccb;
+            color: #a7c957;
+        }
+
+        /* Анимация встряски для ошибки */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.6s;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <!-- Сообщение об ошибке -->
+    <div th:if="${param.error}" class="alert alert-danger" role="alert">
+        <i class="ri-error-warning-line"></i>
+        Неверное имя пользователя или пароль
+    </div>
+
+    <!-- Сообщение о выходе -->
+    <div th:if="${param.logout}" class="alert alert-success" role="alert">
+        <i class="ri-check-line"></i>
+        Вы успешно вышли из системы
+    </div>
+
+    <div class="login-card">
+        <div class="login-logo">
+            <i class="ri-psychology-line" style="font-size: 3rem; color: var(--accent-color);"></i>
+            <h1>Админ-панель</h1>
+            <p>Психолог Артеменко</p>
+        </div>
+
+        <form class="login-form" th:action="@{/admin/login-process}" method="post" th:classappend="${param.error} ? 'shake' : ''">
+            <div class="form-group">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="ri-user-line"></i>
+                        </span>
+                    <input type="text" class="form-control" id="username" name="username" required autocomplete="username" autofocus>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Пароль</label>
+                <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="ri-lock-line"></i>
+                        </span>
+                    <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn login-btn">
+                <i class="ri-login-box-line me-2"></i> Войти
+            </button>
+        </form>
+    </div>
+
+    <div class="back-link">
+        <a href="/" title="На главную страницу">
+            <i class="ri-arrow-left-line"></i> Вернуться на сайт
+        </a>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

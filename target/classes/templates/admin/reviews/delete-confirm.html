@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/client-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="${pageTitle}">Подтверждение удаления отзыва</title>
+</head>
+<body>
+<section>
+  <div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Подтверждение удаления отзыва</h1>
+      <a th:href="@{/admin/reviews}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Назад к списку
+      </a>
+    </div>
+
+    <!-- Карточка подтверждения удаления -->
+    <div class="card shadow mb-4 border-left-danger">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">Вы уверены, что хотите удалить этот отзыв?</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="mb-4">
+              <h5 class="font-weight-bold">Информация об отзыве</h5>
+              <hr>
+              <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">ID:</div>
+                <div class="col-md-8" th:text="${review.id}"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Автор:</div>
+                <div class="col-md-8" th:text="${review.username}"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Услуга:</div>
+                <div class="col-md-8" th:text="${serviceName}"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Рейтинг:</div>
+                <div class="col-md-8">
+
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4 font-weight-bold">Дата создания:</div>
+                <div class="col-md-8" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy HH:mm')}"></div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h5 class="font-weight-bold">Текст отзыва</h5>
+              <hr>
+              <div class="p-3 bg-light rounded">
+                <p th:text="${review.description}" class="mb-0"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-4">
+              <h5 class="font-weight-bold">Изображение</h5>
+              <hr>
+              <div class="text-center">
+                <img th:if="${review.previewImageUrl != null}"
+                     th:src="${review.previewImageUrl}"
+                     alt="Preview" class="img-fluid rounded">
+                <div th:unless="${review.previewImageUrl != null}"
+                     class="p-5 bg-light text-center rounded">
+                  <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                  <p class="mt-2 mb-0">Нет изображения</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning mt-3">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <strong>Внимание!</strong> Это действие нельзя отменить. Вместе с отзывом будет удалено связанное изображение.
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between">
+          <a th:href="@{/admin/reviews}" class="btn btn-secondary">
+            <i class="bi bi-x-circle"></i> Отменить
+          </a>
+          <form th:action="@{/admin/reviews/{id}/delete(id=${review.id})}" method="post">
+            <button type="submit" class="btn btn-danger">
+              <i class="bi bi-trash"></i> Подтвердить удаление
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Статистика Cloudinary</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 20px;-->
+<!--            background-color: #f4f4f4;-->
+<!--        }-->
+<!--        .usage-container {-->
+<!--            background-color: white;-->
+<!--            border-radius: 8px;-->
+<!--            padding: 20px;-->
+<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.1);-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        .usage-title {-->
+<!--            text-align: center;-->
+<!--            color: #333;-->
+<!--            border-bottom: 2px solid #f0f0f0;-->
+<!--            padding-bottom: 10px;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        .usage-item {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            margin-bottom: 15px;-->
+<!--            padding: 10px;-->
+<!--            background-color: #f9f9f9;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+<!--        .usage-item label {-->
+<!--            font-weight: bold;-->
+<!--            color: #555;-->
+<!--        }-->
+<!--        .progress-bar {-->
+<!--            width: 100%;-->
+<!--            background-color: #e0e0e0;-->
+<!--            padding: 3px;-->
+<!--            border-radius: 3px;-->
+<!--            margin-top: 5px;-->
+<!--        }-->
+<!--        .progress {-->
+<!--            height: 20px;-->
+<!--            background-color: #4CAF50;-->
+<!--            border-radius: 3px;-->
+<!--        }-->
+<!--        .error {-->
+<!--            color: red;-->
+<!--            text-align: center;-->
+<!--            padding: 20px;-->
+<!--            background-color: #fff0f0;-->
+<!--            border: 1px solid #ffd0d0;-->
+<!--            border-radius: 8px;-->
+<!--        }-->
+<!--        .debug-info {-->
+<!--            background-color: #f0f0f0;-->
+<!--            padding: 10px;-->
+<!--            margin-top: 20px;-->
+<!--            border-radius: 4px;-->
+<!--            font-size: 0.8em;-->
+<!--            word-wrap: break-word;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:if="${error}" class="error">-->
+<!--    <p th:text="${error}">Произошла ошибка</p>-->
+<!--</div>-->
+
+<!--<div th:unless="${error}" class="usage-container">-->
+<!--    <h1 class="usage-title">Статистика использования Cloudinary</h1>-->
+
+<!--    <div class="usage-item">-->
+<!--        <label>Использовано хранилище:</label>-->
+<!--        <div>-->
+<!--            <span th:text="${totalStorage} + ' из ' + ${storageLimitTotal}">0 MB из 1 GB</span>-->
+<!--            <div class="progress-bar">-->
+<!--                <div class="progress" th:style="'width: ' + ${storageUsagePercent} + '%'"></div>-->
+<!--            </div>-->
+<!--            <small th:text="${#numbers.formatDecimal(storageUsagePercent, 0, 2)} + '%'">0.00%</small>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="usage-item">-->
+<!--        <label>Использовано трафика:</label>-->
+<!--        <div>-->
+<!--            <span th:text="${totalBandwidth} + ' из ' + ${bandwidthLimitTotal}">0 MB из 1 GB</span>-->
+<!--            <div class="progress-bar">-->
+<!--                <div class="progress" th:style="'width: ' + ${bandwidthUsagePercent} + '%'"></div>-->
+<!--            </div>-->
+<!--            <small th:text="${#numbers.formatDecimal(bandwidthUsagePercent, 0, 2)} + '%'">0.00%</small>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="usage-item">-->
+<!--        <label>Количество преобразований:</label>-->
+<!--        <span th:text="${transformations}">0</span>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Отладочная информация &ndash;&gt;-->
+<!--    <div class="debug-info">-->
+<!--        <h3>Отладочная информация (Raw Data)</h3>-->
+<!--        <pre th:text="${rawUsageData}">Детали ответа API</pre>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика Cloudinary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .usage-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .usage-title {
+            text-align: center;
+            color: #333;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .usage-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .usage-item {
+            flex: 1;
+            min-width: 200px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .usage-item h3 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            height: 20px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 3px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff0f0;
+            border: 1px solid #ffd0d0;
+            border-radius: 8px;
+        }
+        .debug-info {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+<div th:if="${error}" class="error">
+    <p th:text="${error}">Произошла ошибка</p>
+</div>
+<div class="button-group">
+    <a href="/cloudinary/resources" class="button button-view">
+        Просмотр ресурсов
+    </a>
+    <a href="/info/cloudinary/delete-samples" class="button button-delete">
+        Удалить демо-изображения
+    </a>
+</div>
+
+
+<div th:unless="${error}" class="usage-container">
+    <h1 class="usage-title">Статистика использования Cloudinary</h1>
+
+    <div class="usage-group">
+        <div class="usage-item">
+            <h3>Хранилище</h3>
+            <p>Использовано: <span th:text="${totalStorage}">0 MB</span></p>
+            <div class="progress-bar">
+                <div class="progress" th:style="'width: ' + ${storageUsagePercent} + '%'"></div>
+            </div>
+            <small th:text="${#numbers.formatDecimal(storageUsagePercent, 0, 2)} + '%'">0.00%</small>
+        </div>
+
+        <div class="usage-item">
+            <h3>Кредиты</h3>
+            <div class="progress-bar">
+                <div class="progress" th:style="'width: ' + ${creditsUsedPercent} + '%'"></div>
+            </div>
+            <small th:text="${#numbers.formatDecimal(creditsUsedPercent, 0, 2)} + '%'">0.00%</small>
+        </div>
+    </div>
+
+    <div class="usage-group">
+        <div class="usage-item">
+            <h3>Объекты</h3>
+            <p>Загружено: <span th:text="${objectsCount}">0</span> файлов</p>
+        </div>
+
+        <div class="usage-item">
+            <h3>Трансформации</h3>
+            <p>Выполнено: <span th:text="${transformationsCount}">0</span></p>
+        </div>
+    </div>
+
+    <div class="usage-group">
+        <div class="usage-item">
+            <h3>Медиа лимиты</h3>
+            <p>Макс. размер изображения: <span th:text="${imageMaxSizeBytes}">10 MB</span></p>
+            <p>Макс. размер видео: <span th:text="${videoMaxSizeBytes}">100 MB</span></p>
+        </div>
+
+        <div class="usage-item">
+            <h3>План</h3>
+            <p>Тип: <span th:text="${planType}">Free</span></p>
+        </div>
+    </div>
+
+    <!-- Отладочная информация -->
+    <div class="debug-info">
+        <h3>Отладочная информация (Raw Data)</h3>
+        <pre th:text="${rawUsageData}">Детали ответа API</pre>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Психолог Артеменко - Профессиональная помощь</title>
+
+    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- AOS CSS (для анимаций при прокрутке) -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <!-- Пользовательские стили -->
+    <link rel="stylesheet" th:href="@{/css/DocumentMainPage.css}">
+    <link rel="stylesheet" th:href="@{/css/faq.css}">
+
+    <!-- Пользовательские стили -->
+    <style>
+
+        :root {
+            --primary-color: #5a717f;
+            --secondary-color: #e9ebe8;
+            --accent-color: #b69f7e;
+            --dark-color: #333333;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark-color);
+            overflow-x: hidden;
+        }
+
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .navbar {
+            transition: all 0.4s;
+            padding: 1rem 0;
+        }
+
+        .navbar-scrolled {
+            background-color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar .nav-link {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 1rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s;
+        }
+
+        .navbar .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/img/clasic.jpg') no-repeat center center;
+            background-size: cover; /* меняем с 'cover' на 'contain' */
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+            background-color: #333; /* добавляем фоновый цвет для незаполненных областей */
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-main {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-main:hover {
+            background-color: white;
+            color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 1rem 0;
+        }
+
+        .testimonial-section {
+            background-color: var(--secondary-color);
+            padding: 6rem 0;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-date {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .stats-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/img/smile.jpg') no-repeat center center;
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            padding: 6rem 0;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .contact-info i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            margin-right: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-title {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .scroll-top.show {
+            opacity: 1;
+        }
+
+        .custom-outline-btn {
+            color: #b69f7e;
+            border-color: #b69f7e;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .custom-outline-btn:hover {
+            color: white;
+            background-color: #a58c6b; /* Немного темнее основного цвета */
+            border-color: #a58c6b;
+        }
+
+        /*секция вопрлс/ответ*/
+
+        .faq-card {
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07) !important;
+        }
+
+        .faq-accordion .card-header button {
+            color: #343a40;
+            font-weight: 500;
+        }
+
+        .faq-accordion .card-header button:hover {
+            color: #b69f7e;
+        }
+
+        .faq-accordion .card-header button:focus {
+            box-shadow: none;
+        }
+
+        .transition-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .collapsed .transition-icon {
+            transform: rotate(0deg);
+        }
+
+        button:not(.collapsed) .transition-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-accordion .card-body {
+            line-height: 1.6;
+            color: #6c757d;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 576px) {
+            .faq-accordion .card-header button {
+                padding: 10px !important;
+            }
+
+            .faq-accordion .h6 {
+                font-size: 0.9rem;
+            }
+
+            .card-body {
+                padding: 0.75rem !important;
+                font-size: 0.9rem;
+            }
+
+            .faq-card {
+                margin-bottom: 0.75rem !important;
+            }
+
+            .faq-accordion .faq-icon {
+                font-size: 0.8rem;
+            }
+        }
+
+
+        /* Контейнер для изображений фиксированной высоты для постов */
+        .image-container {
+            height: 300px; /* Фиксированная высота */
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Стиль для изображений */
+        .blog-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Важное свойство для сохранения пропорций и заполнения контейнера */
+            object-position: center; /* Центрирование изображения */
+        }
+
+        /* Дополнительные стили для карточек блога */
+        .blog-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .image-container {
+                height: 180px; /* Немного меньше на мобильных */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .image-container {
+                height: 160px; /* Еще меньше на маленьких экранах */
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Кнопка прокрутки наверх -->
+<div class="scroll-top" id="scrollTop">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<!-- Шапка та навігація -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Психолог Артеменко</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Головна</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profiles">Про мене</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services">Послуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/blog">Блог</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/reviews/latest">Відгуки</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero секція -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
+            <h1>Психологічна допомога для вашого добробуту</h1>
+            <p>Я допомагаю людям долати життєві труднощі, знаходити внутрішню гармонію та покращувати якість життя.
+                Разом ми знайдемо шлях до вашої емоційної рівноваги.</p>
+            <div class="d-flex">
+                <a href="#contact" class="btn btn-main me-3">Записатися на консультацію</a>
+                <a href="#about" class="btn btn-outline-light">Дізнатися більше</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- О психологе -->
+<section class="py-5 py-md-7" id="about">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <div class="about-image">
+                    <img src="/img/black.jpg" alt="Психолог Артеменко" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <h2 class="section-title">Про мене</h2>
+                <p class="section-subtitle">Професійний психолог із 10-річним досвідом роботи</p>
+                <p>Я дипломований психолог із багаторічним досвідом роботи з різноманітними психологічними проблемами.
+                    Моя мета — допомогти вам подолати труднощі, знайти внутрішню гармонію та покращити якість життя.</p>
+                <p>У своїй практиці я використовую комплексний підхід, що включає елементи когнітивно-поведінкової
+                    терапії, позитивної психології та інших сучасних методик, які довели свою ефективність.</p>
+                <div class="mt-4">
+                    <a href="#contact" class="btn btn-main">Записатися на консультацію</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Фото-документи -->
+<section class="py-5 py-md-7 bg-white" id="documents">
+    <div class="container">
+        <div class="text-center mb-4 mb-md-5" data-aos="fade-up">
+            <h2 class="section-title mx-auto position-relative" style="width: fit-content;">
+                Мої документи
+                <span class="position-absolute bottom-0 start-50 translate-middle-x"
+                      style="width: 80px; height: 3px; background-color: #b69f7e;"></span>
+            </h2>
+            <p class="section-subtitle text-center mt-3 mt-md-4">Сертифікати та дипломи професійної кваліфікації</p>
+        </div>
+
+        <!-- Сетка для документов с адаптивными классами -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2 g-md-3 g-lg-4">
+            <!-- Динамічний список фото-документів -->
+            <div th:each="photo, stat : ${photoList}"
+                 class="col"
+                 th:data-aos="fade-up"
+                 th:data-aos-delay="${100 + stat.index * 100}">
+                <div class="card document-card h-100 d-flex flex-column">
+                    <div class="card-img-top position-relative" data-bs-toggle="modal" data-bs-target="#documentModal"
+                         th:data-document-url="${photo.photoUrl}">
+                        <!-- Фото документу -->
+                        <img th:src="${photo.photoUrl}" alt="Документ">
+                        <!-- Дата в правому верхньому куті -->
+                        <div class="position-absolute top-0 end-0 bg-light px-2 py-1 m-2 rounded-pill small d-none d-sm-block">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            <span th:text="${#temporals.format(photo.uploadedAt, 'dd.MM.yyyy')}">Дата</span>
+                        </div>
+                        <!-- Оверлей при наведении, скрыт на мобильных -->
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-none d-md-flex align-items-center justify-content-center"
+                             style="background-color: rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s ease; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                            <span class="btn btn-light rounded-circle p-2">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body text-center p-2 p-md-3">
+                        <!-- Дата только для мобильных -->
+                        <div class="d-block d-sm-none mb-2 small text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            <span th:text="${#temporals.format(photo.uploadedAt, 'dd.MM.yyyy')}">Дата</span>
+                        </div>
+                        <!-- Кнопка для перегляду документу -->
+                        <a th:href="${photo.photoUrl}" target="_blank"
+                           class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-external-link-alt me-1 me-md-2"></i>
+                            <span class="d-none d-sm-inline">Відкрити в новому вікні</span>
+                            <span class="d-inline d-sm-none">Відкрити</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Повідомлення, якщо документи відсутні -->
+        <div th:if="${#lists.isEmpty(photoList)}" class="text-center py-4 py-md-5">
+            <i class="fas fa-file-image fa-3x mb-3 text-secondary"></i>
+            <p class="text-muted">Документи скоро будуть додані</p>
+        </div>
+
+        <!-- Кнопка "Переглянути всі документи" -->
+        <div th:if="${!#lists.isEmpty(photoList) && photoList.size() > 8}" class="text-center mt-3 mt-md-4"
+             data-aos="fade-up">
+            <a th:href="@{/documents}"
+               class="btn d-inline-flex align-items-center"
+               style="background-color: #b69f7e; color: white; border: none;">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                <span>Переглянути всі документи</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Модальное окно для просмотра документов (оптимизировано для мобильных) -->
+    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-sm-down modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="documentModalLabel">Документ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 text-center" style="background-color: #f8f9fa;">
+                    <!-- Контейнер для изображения с возможностью увеличения на мобильных -->
+                    <div class="position-relative" id="imageZoomContainer" style="min-height: 200px;">
+                        <img id="modalDocumentImage" src="" class="img-fluid" alt="Документ в полном размере"
+                             style="max-height: 70vh; width: auto; max-width: 100%;">
+                    </div>
+                </div>
+                <div class="modal-footer flex-wrap justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Закрити
+                        </button>
+                    </div>
+                    <div>
+
+                        <a id="openDocumentLink" href="#" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-external-link-alt me-1"></i>У новому вікні
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Послуги -->
+<section class="py-5 py-md-7 bg-light" id="services">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Мої послуги</h2>
+            <p class="section-subtitle text-center">Індивідуальний підхід до кожного клієнта</p>
+        </div>
+        <div class="row">
+            <!-- Динамічний список послуг -->
+            <div th:each="service, stat : ${serviceCardDTO}"
+                 class="col-md-6 col-lg-4"
+                 th:data-aos="fade-up"
+                 th:data-aos-delay="${100 + stat.index * 100}">
+                <div class="card service-card h-100 d-flex flex-column">
+                    <div class="card-body text-center p-4 p-md-5 d-flex flex-column">
+                        <div class="service-icon mb-3">
+                            <!-- Якщо у послуги є клас іконки, використовуємо його -->
+                            <i th:if="${service.iconClass != null}" th:class="${service.iconClass}"></i>
+                            <!-- Якщо іконки немає, використовуємо стандартну -->
+                            <i th:unless="${service.iconClass != null}" class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="h4 mb-3" th:text="${service.title}">Назва послуги</h3>
+                        <p class="card-text flex-grow-1"
+                           style="min-height: 4.5rem; max-height: 4.5rem; overflow: hidden;"
+                           th:text="${service.shortDescription}">Опис послуги.</p>
+                        <div class="mt-auto">
+                            <a th:href="@{/services/{id}(id=${service.id})}"
+                               class="btn btn-outline-secondary mt-3">
+                                Детальніше
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопка "Переглянути всі" -->
+        <div class="text-center mt-4" data-aos="fade-up">
+            <a th:href="@{/services}"
+               class="btn d-inline-flex align-items-center"
+               style="background-color: #b69f7e; color: white; border: none;">
+                <i class="bi bi-grid me-2"></i>Переглянути всі послуги
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Статистика -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up">
+                <div class="stat-number" data-target="10">0</div>
+                <div>Років досвіду</div>
+            </div>
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-number" data-target="500">0</div>
+                <div>Клієнтів</div>
+            </div>
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-number" data-target="25">0</div>
+                <div>Програм</div>
+            </div>
+            <div class="col-md-3 col-6 text-center mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-number" data-target="95">0</div>
+                <div>% Позитивних відгуків</div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Відгуки клієнтів -->
+<section class="testimonial-section" id="testimonials">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Відгуки клієнтів</h2>
+            <p class="section-subtitle text-center">Що кажуть люди, які пройшли консультації</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-quote-left fa-2x text-muted"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Анна М.</h5>
+                            <small class="text-muted">Клієнтка 1 рік</small>
+                        </div>
+                    </div>
+                    <p>Завдяки консультаціям я змогла подолати депресію та налагодити стосунки з близькими. Дякую за
+                        професіоналізм та підтримку!</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-quote-left fa-2x text-muted"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Сергій К.</h5>
+                            <small class="text-muted">Клієнт 6 місяців</small>
+                        </div>
+                    </div>
+                    <p>Звернувся з проблемою професійного вигорання. Після кількох сесій зміг знайти нові сенси в роботі
+                        та житті. Рекомендую!</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-quote-left fa-2x text-muted"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Олена Д.</h5>
+                            <small class="text-muted">Клієнтка 2 роки</small>
+                        </div>
+                    </div>
+                    <p>Сімейна терапія допомогла нам з чоловіком почути одне одного та відновити стосунки, які були на
+                        межі розлучення. Дуже вдячна!</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 py-md-7" id="blog" xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mx-auto" style="width: fit-content;">Останні публікації</h2>
+            <p class="section-subtitle text-center">Корисні статті та поради від психолога</p>
+        </div>
+        <div class="row">
+            <div th:each="post : ${blogPostList}" class="col-md-6 col-lg-4" data-aos="fade-up"
+                 th:attr="data-aos-delay=${postStat.index * 100}">
+                <div class="card blog-card h-100 d-flex flex-column">
+                    <div class="image-container">
+                        <img th:src="${post.previewImageUrl}" class="card-img-top blog-image" alt="Блог">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="blog-date mb-2"
+                             th:text="${#temporals.format(post.publicationDate, 'dd MMMM yyyy')}">
+                            10 березня 2025
+                        </div>
+                        <h3 class="h5 mb-3" th:text="${post.title}">
+                            Назва блог-посту
+                        </h3>
+                        <p class="card-text flex-grow-1"
+                           style="min-height: 4.5rem; max-height: 4.5rem; overflow: hidden;"
+                           th:text="${post.shortDescription}">
+                            Короткий опис посту
+                        </p>
+                        <div class="mt-auto">
+                            <a th:href="@{/blog/{id}(id=${post.id})}"
+                               class="btn btn-link p-0 d-inline-flex align-items-center">
+                                Читати далі <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a th:href="@{/blog}" class="btn custom-outline-btn">Усі статті</a>
+        </div>
+    </div>
+
+</section>
+
+<!-- Секция FAQ -->
+<!-- Секция FAQ -->
+<section class="py-5 py-md-7" id="faq">
+    <div class="container">
+        <div class="text-center mb-5 mb-md-6">
+            <h2 class="section-title mx-auto">Часті запитання</h2>
+            <p class="section-subtitle">Відповіді на популярні запитання про психологічні консультації</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-8">
+                <div class="accordion faq-accordion" id="faqAccordion">
+
+                    <div th:each="faq, faqStat : ${faqs}" class="card faq-card">
+                        <input type="checkbox" th:id="'faq' + ${faqStat.index}">
+
+                        <label th:for="'faq' + ${faqStat.index}">
+                            <span class="question-text" th:text="${faq.question}">Вопрос</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </label>
+
+                        <div class="content">
+                            <p class="mb-0" th:text="${faq.answer}">Ответ на вопрос</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Запис на консультацію та контакти -->
+<section class="py-5 py-md-7 bg-light" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <h2 class="section-title">Запис на консультацію</h2>
+                <p class="mb-4">Заповніть форму, і я зв'яжуся з вами найближчим часом для підтвердження запису.</p>
+
+                <form th:action="@{/services/consultation-request}" method="post" th:object="${consultationRequestDto}">
+                    <div class="row g-3">
+                        <!-- Сообщения об ошибках, если они есть -->
+                        <div class="col-12" th:if="${#fields.hasErrors('*')}">
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" th:field="*{clientName}"
+                                   placeholder="Ваше ім'я" required
+                                   th:classappend="${#fields.hasErrors('clientName')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('clientName')}"
+                                 th:errors="*{clientName}"></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="tel" class="form-control" th:field="*{phoneNumber}"
+                                   placeholder="Телефон" required
+                                   th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}"
+                                 th:errors="*{phoneNumber}"></div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <input type="email" class="form-control" th:field="*{clientEmail}"
+                                   placeholder="Email (опціонально)"
+                                   th:classappend="${#fields.hasErrors('clientEmail')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('clientEmail')}"
+                                 th:errors="*{clientEmail}"></div>
+                        </div>
+
+                        <div class="col-12">
+                            <select class="form-select" th:field="*{serviceId}" required
+                                    th:classappend="${#fields.hasErrors('serviceId')} ? 'is-invalid'">
+                                <option value="" selected disabled>Оберіть послугу</option>
+                                <option th:each="service : ${allServices}"
+                                        th:value="${service.id}"
+                                        th:text="${service.title}">Назва послуги
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('serviceId')}"
+                                 th:errors="*{serviceId}"></div>
+                        </div>
+
+                        <div class="col-12">
+ <textarea class="form-control" rows="4" th:field="*{message}"
+           placeholder="Ваше повідомлення"
+           th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"
+           required></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}"
+                                 th:errors="*{message}"></div>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-main">Відправити заявку</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-6" data-aos="fade-left">
+                <h2 class="section-title">Контактна інформація</h2>
+                <p class="mb-4">Ви також можете зв'язатися зі мною безпосередньо за вказаними контактами або відвідати
+                    мій офіс.</p>
+                <div class="contact-info mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Адреса</h5>
+                            <p class="mb-0">м. Киев, вул. Прикладна, буд. 123, офіс 45</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Телефон</h5>
+                            <p class="mb-0">+380 (63) 123-45-67</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Email</h5>
+                            <p class="mb-0">infomary@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h5 class="h6 mb-0">Години роботи</h5>
+                            <p class="mb-0">Пн-Пт: 9:00 - 20:00, Сб: 10:00 - 15:00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Футер -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="footer-title">Психолог Артеменко</h5>
+                <p>Професійна психологічна допомога для вашого благополуччя та гармонії.</p>
+                <div class="mt-3">
+
+                    <a href="https://t.me/MariiaArt" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/mariia_artemenkoo/" class="social-icon"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/mariiaartemenkoo" class="social-icon"><i
+                            class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2 mb-4 mb-md-0">
+                <h5 class="footer-title">Навігація</h5>
+                <div class="footer-links">
+                    <a href="/">Головна</a>
+                    <a href="/profiles">Про мене</a>
+                    <a href="/services">Послуги</a>
+                    <a href="/blog">Блог</a>
+                    <a href="/reviews">Відгуки</a>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4 mb-md-0">
+                <h5 class="footer-title">Послуги</h5>
+                <div class="footer-links">
+                    <!-- Loop through the latest services -->
+                    <th:block th:each="service : ${footerServices}">
+                        <a th:href="@{/services/{id}(id=${service.id})}" th:text="${service.title}">Назва послуги</a>
+                    </th:block>
+
+                    <!-- If you have fewer than 5 services, you can add a "view all" link -->
+                    <a th:href="@{/services}" class="mt-2">Усі послуги →</a>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h5>Підписатися на новини</h5>
+                <!-- Флеш-сообщения -->
+                <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${successMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span th:text="${warningMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <p>Будьте в курсі нових статей, спеціальних пропозицій та подій</p>
+                <form th:action="@{/subscribe}" method="post" class="mb-3">
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
+                        <button class="btn btn-primary" type="submit">Підписатися</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr class="mt-4 mb-4" style="background-color: rgba(255,255,255,0.1);">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="mb-0">© 2025 Психолог Артеменко. Усі права захищені.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <a href="#" class="text-white me-3">Політика конфіденційності</a>
+                <a href="#" class="text-white">Умови використання</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS JS (для анимаций при прокрутке) -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Пользовательские скрипты -->
+<script>
+    // Инициализация AOS
+    AOS.init({
+        once: true
+    });
+
+    // Анимация счетчиков статистики
+    document.addEventListener('DOMContentLoaded', function () {
+        const counters = document.querySelectorAll('.stat-number');
+
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000; // 2 секунды
+            const increment = target / (duration / 20); // Обновление каждые 20мс
+
+            let currentValue = 0;
+
+            const updateCounter = () => {
+                currentValue += increment;
+
+                if (currentValue < target) {
+                    counter.textContent = Math.ceil(currentValue);
+                    setTimeout(updateCounter, 20);
+                } else {
+                    counter.textContent = target;
+                }
+            };
+
+            // Запускаем счетчик когда элемент в области видимости
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        updateCounter();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            observer.observe(counter);
+        });
+    });
+
+    // Изменение навигационной панели при прокрутке
+    window.addEventListener('scroll', function () {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+
+        // Кнопка прокрутки наверх
+        const scrollTopBtn = document.getElementById('scrollTop');
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add('show');
+        } else {
+            scrollTopBtn.classList.remove('show');
+        }
+    });
+
+    // Прокрутка наверх
+    document.getElementById('scrollTop').addEventListener('click', function () {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Плавная прокрутка к разделам
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+<!-- jQuery -->
+<!-- jQuery (полная версия) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS Bundle (включает Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Пользовательские скрипты -->
+<script th:src="@{/js/navbar.js}"></script>
+<!--<script th:src="@{/js/faq-accordion.js}"></script>-->
+<script th:src="@{/js/document-modal.js}"></script>
+</body>
+</html>
