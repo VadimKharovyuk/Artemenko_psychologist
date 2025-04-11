@@ -4,7 +4,6 @@ import com.example.artemenko_psychologist.dto.service.ServiceCardDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceCreateFormDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceUpdateFormDTO;
-
 import com.example.artemenko_psychologist.model.Service;
 import org.springframework.stereotype.Component;
 
@@ -36,8 +35,58 @@ public class ServiceMapper {
                 .imageUrl(dto.getImageUrl())
                 .displayOrder(dto.getDisplayOrder())
                 .active(dto.isActive())
-                // Удален дублирующийся imageUrl
+                .publicId(dto.getPublicId())
                 .build();
+    }
+
+    /**
+     * Преобразует форму создания в Entity
+     */
+    public Service toEntity(ServiceCreateFormDTO formDTO) {
+        if (formDTO == null) {
+            return null;
+        }
+
+        return Service.builder()
+                .title(formDTO.getTitle())
+                .description(formDTO.getDescription())
+                .shortDescription(formDTO.getShortDescription())
+                .price(formDTO.getPrice())
+                .durationMinutes(formDTO.getDurationMinutes())
+                .iconClass(formDTO.getIconClass())
+                .imageUrl(formDTO.getImageUrl())
+                .publicId(formDTO.getPublicId())
+                .displayOrder(formDTO.getDisplayOrder())
+                .active(formDTO.isActive())
+                .build();
+    }
+
+    /**
+     * Обновляет существующую сущность данными из формы обновления
+     */
+    public void updateEntity(Service service, ServiceUpdateFormDTO formDTO) {
+        if (service == null || formDTO == null) {
+            return;
+        }
+
+        service.setTitle(formDTO.getTitle());
+        service.setDescription(formDTO.getDescription());
+        service.setShortDescription(formDTO.getShortDescription());
+        service.setPrice(formDTO.getPrice());
+        service.setDurationMinutes(formDTO.getDurationMinutes());
+        service.setIconClass(formDTO.getIconClass());
+        service.setDisplayOrder(formDTO.getDisplayOrder());
+        service.setActive(formDTO.isActive());
+
+        // Обновляем URL изображения только если он предоставлен в DTO
+        if (formDTO.getImageUrl() != null) {
+            service.setImageUrl(formDTO.getImageUrl());
+        }
+
+        // Обновляем publicId только если он предоставлен в DTO
+        if (formDTO.getPublicId() != null) {
+            service.setPublicId(formDTO.getPublicId());
+        }
     }
 
     /**
@@ -57,14 +106,14 @@ public class ServiceMapper {
                 .durationMinutes(entity.getDurationMinutes())
                 .iconClass(entity.getIconClass())
                 .imageUrl(entity.getImageUrl())
+                .publicId(entity.getPublicId())
                 .displayOrder(entity.getDisplayOrder())
                 .active(entity.isActive())
-                // Удален дублирующийся imageUrl
                 .build();
     }
 
     /**
-     * Преобразует Entity в DTO для карточки услуги (для главной страницы)
+     * Преобразует Entity в DTO карточки услуги
      */
     public ServiceCardDTO toCardDto(Service entity) {
         if (entity == null) {
@@ -80,7 +129,30 @@ public class ServiceMapper {
     }
 
     /**
-     * Преобразует список Entity в список DTO
+     * Преобразует Entity в DTO для формы обновления
+     */
+    public ServiceUpdateFormDTO toUpdateFormDto(Service entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        return ServiceUpdateFormDTO.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .shortDescription(entity.getShortDescription())
+                .price(entity.getPrice())
+                .durationMinutes(entity.getDurationMinutes())
+                .iconClass(entity.getIconClass())
+                .imageUrl(entity.getImageUrl())
+                .publicId(entity.getPublicId())
+                .displayOrder(entity.getDisplayOrder())
+                .active(entity.isActive())
+                .build();
+    }
+
+    /**
+     * Преобразует список сущностей в список DTO
      */
     public List<ServiceDTO> toDtoList(List<Service> entities) {
         if (entities == null) {
@@ -93,7 +165,7 @@ public class ServiceMapper {
     }
 
     /**
-     * Преобразует список Entity в список DTO для карточек
+     * Преобразует список сущностей в список карточек DTO
      */
     public List<ServiceCardDTO> toCardDtoList(List<Service> entities) {
         if (entities == null) {
@@ -103,126 +175,5 @@ public class ServiceMapper {
         return entities.stream()
                 .map(this::toCardDto)
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Преобразует DTO формы создания в Entity
-     */
-    public Service toEntityFromForm(ServiceCreateFormDTO formDTO) {
-        if (formDTO == null) {
-            return null;
-        }
-
-        return Service.builder()
-                .id(formDTO.getId())
-                .title(formDTO.getTitle())
-                .description(formDTO.getDescription())
-                .shortDescription(formDTO.getShortDescription())
-                .price(formDTO.getPrice())
-                .durationMinutes(formDTO.getDurationMinutes())
-                .iconClass(formDTO.getIconClass())
-                .displayOrder(formDTO.getDisplayOrder())
-                .active(formDTO.isActive())
-                .imageUrl(formDTO.getImageUrl()) // Добавлен imageUrl
-                .build();
-    }
-
-    /**
-     * Преобразует Entity в DTO для формы создания/редактирования
-     */
-    public ServiceCreateFormDTO toCreateFormDto(Service entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        String shortDescription = ensureValidShortDescription(entity.getShortDescription());
-
-        return ServiceCreateFormDTO.builder()
-                .id(entity.getId())
-                .title(entity.getTitle())
-                .description(entity.getDescription())
-                .shortDescription(shortDescription)
-                .price(entity.getPrice())
-                .durationMinutes(entity.getDurationMinutes())
-                .iconClass(entity.getIconClass())
-                .displayOrder(entity.getDisplayOrder())
-                .active(entity.isActive())
-                .imageUrl(entity.getImageUrl()) // Добавлен imageUrl
-                .build();
-    }
-
-    /**
-     * Обновляет Entity из DTO формы создания
-     */
-    public void updateServiceFromForm(ServiceCreateFormDTO formDTO, Service service) {
-        if (formDTO == null || service == null) {
-            return;
-        }
-
-        service.setTitle(formDTO.getTitle());
-        service.setDescription(formDTO.getDescription());
-        service.setShortDescription(formDTO.getShortDescription());
-        service.setPrice(formDTO.getPrice());
-        service.setDurationMinutes(formDTO.getDurationMinutes());
-        service.setIconClass(formDTO.getIconClass());
-        service.setDisplayOrder(formDTO.getDisplayOrder());
-        service.setActive(formDTO.isActive());
-        // Не обновляем imageUrl, так как это делается отдельно при обработке загрузки файла
-    }
-
-    /**
-     * Преобразует Entity в DTO для формы обновления
-     */
-    public ServiceUpdateFormDTO toUpdateFormDto(Service service) {
-        if (service == null) {
-            return null;
-        }
-
-        String shortDescription = ensureValidShortDescription(service.getShortDescription());
-
-        return ServiceUpdateFormDTO.builder()
-                .id(service.getId())
-                .title(service.getTitle())
-                .description(service.getDescription())
-                .shortDescription(shortDescription)
-                .price(service.getPrice())
-                .durationMinutes(service.getDurationMinutes())
-                .iconClass(service.getIconClass())
-                .displayOrder(service.getDisplayOrder())
-                .active(service.isActive())
-                .imageUrl(service.getImageUrl())
-                .build();
-    }
-
-    /**
-     * Обновляет Entity из DTO формы обновления
-     */
-    public void updateServiceFromDto(Service service, ServiceUpdateFormDTO updateForm) {
-        if (updateForm == null || service == null) {
-            return;
-        }
-
-        service.setTitle(updateForm.getTitle());
-        service.setDescription(updateForm.getDescription());
-        service.setShortDescription(updateForm.getShortDescription());
-        service.setPrice(updateForm.getPrice());
-        service.setDurationMinutes(updateForm.getDurationMinutes());
-        service.setIconClass(updateForm.getIconClass());
-        service.setDisplayOrder(updateForm.getDisplayOrder());
-        service.setActive(updateForm.isActive());
-        // Не обновляем imageUrl, так как это делается отдельно при обработке загрузки файла
-    }
-
-    /**
-     * Обеспечивает, что краткое описание соответствует требованиям валидации
-     */
-    private String ensureValidShortDescription(String shortDescription) {
-        if (shortDescription == null || shortDescription.isEmpty()) {
-            return "Краткое описание услуги";
-        } else if (shortDescription.length() < 10) {
-            // Дополняем до минимальной длины
-            return shortDescription + " " + "дополнительная информация".substring(0, 10 - shortDescription.length());
-        }
-        return shortDescription;
     }
 }

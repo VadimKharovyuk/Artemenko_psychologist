@@ -1,5 +1,6 @@
 package com.example.artemenko_psychologist.dto.service;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +25,5 @@ public class ServiceDTO {
     private boolean active;
     private String imageUrl;
     private MultipartFile imageFile;
+    private String publicId;
 }

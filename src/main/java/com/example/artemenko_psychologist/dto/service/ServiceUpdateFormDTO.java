@@ -32,7 +32,6 @@ public class ServiceUpdateFormDTO {
     private String description;
 
     @NotBlank(message = "Краткое описание не может быть пустым")
-
     private String shortDescription;
 
     @NotNull(message = "Цена не может быть пустой")
@@ -49,6 +48,9 @@ public class ServiceUpdateFormDTO {
 
     // Существующее изображение
     private String imageUrl;
+
+    // Идентификатор изображения в Cloudinary
+    private String publicId;
 
     // Новое изображение (если загружается)
     private MultipartFile imageFile;

@@ -3,9 +3,11 @@ package com.example.artemenko_psychologist.controller;
 import com.example.artemenko_psychologist.service.BlogPostService;
 import com.example.artemenko_psychologist.service.ConsultationRequestService;
 import com.example.artemenko_psychologist.service.NewsletterService;
-import com.example.artemenko_psychologist.service.ServiceService;
+
+import com.example.artemenko_psychologist.service.impl.ServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class Dashboard {
 
-    private final ServiceService serviceService;
+private final ServiceService serviceService;
     private final BlogPostService blogPostService;
     private final ConsultationRequestService consultationRequestService;
     private final NewsletterService newsletterService;

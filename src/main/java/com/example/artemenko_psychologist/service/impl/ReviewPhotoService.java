@@ -19,8 +19,6 @@ public interface ReviewPhotoService {
     ReviewDetailsDTO getReviewById(Long id);
 
 
-    boolean deletePhoto(Long id);
-
     List<ReviewListDTO> getAllPhotos();
 
     List<ReviewListDTO> getLatestReviews(int limit);

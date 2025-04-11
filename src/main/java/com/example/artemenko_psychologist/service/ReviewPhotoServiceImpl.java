@@ -65,52 +65,6 @@ public class ReviewPhotoServiceImpl implements ReviewPhotoService {
                 .orElseThrow(() -> new RuntimeException("Отзыв с ID " + id + " не найден"));
     }
 
-    @Override
-    @Transactional
-    public boolean deletePhoto(Long id) {
-        log.info("Удаление фото для отзыва с ID: {}", id);
-
-        try {
-            // Находим отзыв
-            Optional<Review> reviewOptional = reviewRepository.findById(id);
-            if (reviewOptional.isEmpty()) {
-                log.warn("Отзыв с ID {} не найден", id);
-                return false;
-            }
-
-            Review review = reviewOptional.get();
-
-            // Важно! Сохраняем publicId в локальную переменную
-            String publicId = review.getPublicId();
-            log.info("Пытаемся удалить изображение с publicId: {}", publicId);
-
-            // Проверяем, есть ли у отзыва фото
-            if (publicId == null || publicId.isEmpty()) {
-                log.warn("У отзыва с ID {} нет фото", id);
-                return false;
-            }
-
-            // Удаляем фото из Cloudinary, используя правильный publicId из отзыва
-            boolean deleted = cloudinaryService.deleteImage(review.getPublicId());
-            log.info("Пытаемся удалить изображение с publicId: {}", review.getPublicId());
-
-            if (deleted) {
-                // Очищаем ссылки на фото в отзыве
-                review.setPreviewImageUrl(null);
-                review.setPublicId(null);
-                reviewRepository.save(review);
-                log.info("Пытаемся удалить изображение с publicId: {}", review.getPublicId());
-                log.info("Фото для отзыва с ID {} успешно удалено", id);
-                return true;
-            } else {
-                log.warn("Не удалось удалить фото из Cloudinary для отзыва с ID {}", id);
-                return false;
-            }
-        } catch (Exception e) {
-            log.error("Ошибка при удалении фото для отзыва с ID {}: {}", id, e.getMessage(), e);
-            return false;
-        }
-    }
 
     @Override
     @Transactional(readOnly = true)

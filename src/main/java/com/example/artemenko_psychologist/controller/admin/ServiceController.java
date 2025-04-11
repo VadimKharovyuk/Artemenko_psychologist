@@ -4,13 +4,14 @@ import com.example.artemenko_psychologist.dto.service.ServiceCreateFormDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceDTO;
 import com.example.artemenko_psychologist.dto.service.ServiceUpdateFormDTO;
 import com.example.artemenko_psychologist.exception.ResourceNotFoundException;
-import com.example.artemenko_psychologist.service.ServiceService;
+import com.example.artemenko_psychologist.service.impl.ServiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -67,6 +68,7 @@ public class ServiceController {
             @PathVariable Long id,
             @Valid @ModelAttribute("serviceForm") ServiceUpdateFormDTO serviceForm,
             BindingResult bindingResult,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
             RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -77,8 +79,11 @@ public class ServiceController {
         }
 
         try {
-            serviceService.updateService(serviceForm);
+            // Передаем файл изображения в метод сервиса
+            serviceService.updateService(serviceForm, imageFile);
             redirectAttributes.addFlashAttribute("successMessage", "Услуга успешно обновлена");
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при загрузке изображения: " + e.getMessage());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении услуги: " + e.getMessage());
         }
@@ -109,11 +114,6 @@ public class ServiceController {
                             "Услуга успешно создана" :
                             "Услуга \"" + savedService.getTitle() + "\" успешно обновлена");
             return "redirect:/admin/services";
-        } catch (IOException e) {
-            log.error("Ошибка при загрузке изображения", e);
-            model.addAttribute("errorMessage", "Ошибка при загрузке изображения: " + e.getMessage());
-            model.addAttribute("isNew", serviceForm.getId() == null);
-            return "admin/services/form";
         } catch (Exception e) {
             log.error("Ошибка при сохранении услуги", e);
             model.addAttribute("errorMessage", "Ошибка при сохранении услуги: " + e.getMessage());

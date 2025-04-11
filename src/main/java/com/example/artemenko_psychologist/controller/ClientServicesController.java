@@ -5,7 +5,8 @@ import com.example.artemenko_psychologist.dto.service.ServiceDTO;
 import com.example.artemenko_psychologist.exception.ResourceNotFoundException;
 import com.example.artemenko_psychologist.service.ConsultationRequestService;
 import com.example.artemenko_psychologist.service.ReviewService;
-import com.example.artemenko_psychologist.service.ServiceService;
+
+import com.example.artemenko_psychologist.service.impl.ServiceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,9 +24,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ClientServicesController {
 
-    private final ServiceService serviceService;
+
     private final ConsultationRequestService consultationRequestService;
     private final ReviewService reviewService;
+    private final ServiceService serviceService;
 
     /**
      * Отображает список всех услуг

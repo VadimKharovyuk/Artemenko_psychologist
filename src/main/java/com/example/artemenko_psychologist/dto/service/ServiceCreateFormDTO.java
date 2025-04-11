@@ -1,5 +1,6 @@
 package com.example.artemenko_psychologist.dto.service;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -48,5 +49,5 @@ public class ServiceCreateFormDTO {
 
     private MultipartFile imageFile;
     private String imageUrl;
-
+    private String publicId;
 }

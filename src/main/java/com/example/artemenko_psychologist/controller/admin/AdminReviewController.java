@@ -3,8 +3,9 @@ package com.example.artemenko_psychologist.controller.admin;
 import com.example.artemenko_psychologist.dto.reviews.ReviewDetailsDTO;
 import com.example.artemenko_psychologist.dto.reviews.ReviewListDTO;
 import com.example.artemenko_psychologist.service.ReviewService;
-import com.example.artemenko_psychologist.service.ServiceService;
+
 import com.example.artemenko_psychologist.service.impl.ReviewPhotoService;
+import com.example.artemenko_psychologist.service.impl.ServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +60,7 @@ public class AdminReviewController {
 
         return "admin/reviews/view";
     }
+
 
     /**
      * Удаление отзыва

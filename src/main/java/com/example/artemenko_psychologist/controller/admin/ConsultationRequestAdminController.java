@@ -4,7 +4,8 @@ import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestDe
 import com.example.artemenko_psychologist.dto.consultation.ConsultationRequestListDto;
 import com.example.artemenko_psychologist.enums.ConsultationStatus;
 import com.example.artemenko_psychologist.service.ConsultationRequestService;
-import com.example.artemenko_psychologist.service.ServiceService;
+
+import com.example.artemenko_psychologist.service.impl.ServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

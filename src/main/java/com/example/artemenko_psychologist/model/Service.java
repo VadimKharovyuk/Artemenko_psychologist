@@ -49,6 +49,9 @@ public class Service {
     @Column(name = "delete_hash")
     private String deleteHash;
 
+    @Column(name = "public_id")
+    private String publicId;
+
     @Column(name = "display_order")
     private Integer displayOrder;
 
